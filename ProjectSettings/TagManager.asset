@@ -10,6 +10,9 @@ TagManager:
   - Defence
   - Support
   - HP
+  - EnemyHP
+  - PlayerHP
+  - passive
   layers:
   - Default
   - TransparentFX
