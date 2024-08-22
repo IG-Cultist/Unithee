@@ -23,7 +23,7 @@ public class Title : MonoBehaviour
         //ƒNƒŠƒbƒN
         if (Input.GetMouseButtonUp(0))
         {
-            SceneManager.LoadScene("Main");
+            SceneManager.LoadScene("SelectScene");
         }
 
         if (cnt == 0)

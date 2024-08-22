@@ -335,7 +335,7 @@ public class Card : MonoBehaviour
     }
     public void endGame()
     {
-        SceneManager.LoadScene("Result");
+        SceneManager.LoadScene("SelectScene");
     }
 
     void cardType()
