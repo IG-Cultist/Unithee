@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class Passive : MonoBehaviour
 {
-    //パッシブリスト
+    //PassiveList
     [SerializeField] List<string> passiveList;
 
     //セットされたパッシブを入れるリスト
@@ -25,12 +25,12 @@ public class Passive : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //取得してきたパッシブを突っ込む予定
+        // Get and Set Passives
         passiveList = new List<string>() {"Spike","Spike","Spike","ArmorChip" };
 
         activePassives = new List<GameObject>();
 
-        //取得したパッシブを設置
+        // Set Passives
         SetPassives();
     }
 
@@ -41,7 +41,7 @@ public class Passive : MonoBehaviour
     }
 
     /// <summary>
-    /// パッシブ設置処理
+    /// Set Passives
     /// </summary>
     void SetPassives()
     {
@@ -50,13 +50,13 @@ public class Passive : MonoBehaviour
 
         foreach (var passive in passiveList)
         {
-            // リスト内にある名前と同じプレハブを取得
+            //  Get Prefabs from List
             GameObject obj = (GameObject)Resources.Load(passive);
-            // 設定されたパッシブを生成、
+            // Create Setted Passives
             GameObject item = Instantiate(obj, new Vector2(pos.x + (2.0f * cnt),pos.y), Quaternion.identity);
-            // 名前を訂正
+            // Rename
             item.name = passive;
-            // アクティブリストに追加
+            // Add ActiveList
             activePassives.Add(item);
             cnt++;
         }

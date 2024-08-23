@@ -13,56 +13,57 @@ using System.Threading.Tasks;
 
 public class Card : MonoBehaviour
 {
-    //現在持っているカード
+    //Active Cards
     [SerializeField] List<GameObject> card;
 
-    //終了ボタン
+    //TurnEnd Button
     [SerializeField] GameObject button;
 
-    //パッシブゲームオブジェクト(仮)
+    //Passive's GameObject
     GameObject spike;
     GameObject armorChip;
 
-    //現在持っているカード
+    //Passives
     List<GameObject> passive;
 
-    //ヘルススクリプト
+    //HealthScript
     Health healthScript;
 
-    //ヘルススクリプト
+    //EnemyScript
     Enemy enemyScript;
 
-    //選択カード
+    //Selected Cards
     List<GameObject> selectedCard;
 
-    //アクティブなカード
+    //Active Card's List
     [SerializeField] List<GameObject> activeList;
 
-    //順序管理
+    //Card Turn's Count
     int count;
 
-    //パッシブ順序管理
+    //Passive Turn's Count
     int passiveCnt;
 
-    //敵HP
+    //Enemy's HP
     GameObject[] enemyHP;
 
-    //HP残量
+    //HP Count
     int enemyLife;
 
-    //攻撃値
+    //Damage Value
     int dmg;
 
-    //防御値
+    //Defence Value
     int block = 1;
 
+    //Enemy's Defence Value
     int enemBlock;
 
     // Start is called before the first frame update
     void Start()
     {
         button.SetActive(false);
-        //敵HPをタグで取得
+        //Get for Enemy Life from tag
         enemyHP = GameObject.FindGameObjectsWithTag("EnemyHP");
         //取得したHPの個数を代入
         healthScript = FindObjectOfType<Health>();
@@ -70,10 +71,10 @@ public class Card : MonoBehaviour
 
         enemyScript = FindObjectOfType<Enemy>();
 
-        //各リストをnewする
+        //Set Lists
         activeList = new List<GameObject>();
         selectedCard = new List<GameObject>();
-        //順序を初期化
+        //Set Counts
         count = 0;
         passiveCnt = 0;
         enemBlock = 0;
@@ -99,7 +100,7 @@ public class Card : MonoBehaviour
     }
 
     /// <summary>
-    /// カードクリック処理
+    /// Card Click
     /// </summary>
     void CardClick()
     {
@@ -116,24 +117,24 @@ public class Card : MonoBehaviour
 
             if (!selectedCard.Contains(hitCard)) //何も選択していなかった場合
             {
-                //選択カードの色を変更
+                //Change the Card's Color
                 hitCard.GetComponent<Renderer>().material.color = new Color32(127, 127, 127, 255);
-                //リストに選択カードを追加
+                //Add List for Selected Card
                 selectedCard.Add(hitCard);
 
                 foreach (var item in card)
                 {
                     if (item.name == hitCard.name) //選択カードと現在のカードの名前が一致した場合
                     {
-                        // 現在のカードプレハブを元に、インスタンスを生成、
+                        // Create Instance from Now Turn's Cards
                         GameObject obj = Instantiate(item, new Vector2(-8.0f + (2.0f * count), -3.5f), Quaternion.identity);
                         //オブジェクトの色を訂正
                         obj.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
-                        //クローンしたオブジェクトの名前を訂正
+                        //Rename Item
                         obj.name = item.name;
-                        //カードのタグをクローンオブジェクトにも追加
+                        //Add Tag for Clone Items
                         obj.tag = item.tag;
-                        //activeListに追加
+                        //Add ActiveList
                         activeList.Add(obj);
                         //順序を加算
                         count++;
@@ -144,18 +145,18 @@ public class Card : MonoBehaviour
             {
                 //選択カードの色を戻す
                 hitCard.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
-                //リストから選択カードを除去
+                //Remove Selected Card from Lists
                 selectedCard.Remove(hitCard);
 
                 foreach (var item in activeList)
                 {
                     if (item.name == hitCard.name)
                     {
-                        //そのカードを消す
+                        //Delete Card
                         Destroy(item);
-                        //消したカードをリストからも除去
+                        //Remove from List
                         activeList.Remove(item);
-                        //並び直し
+                        //Refresh
                         cardRefresh();
                         break;
                     }
@@ -165,13 +166,13 @@ public class Card : MonoBehaviour
     }
 
     /// <summary>
-    /// ターン終了処理
+    /// Turn End Process
     /// </summary>
     public async void TurnEnd()
     {
         if (activeList.Count != 4)
         {
-            Debug.Log("カードが足りない");
+            Debug.Log("Should Use 4 Cards");
         }
         else
         {
@@ -179,14 +180,14 @@ public class Card : MonoBehaviour
             {
                 dmg = 1;
 
-                switch (item.tag) //カードのタグを判定
+                switch (item.tag) //Judge the Card's Tag
                 {
-                    case "Attack": //カードがアタックの場合
+                    case "Attack":
 
-                        //パッシブを反映
+                        //Active to Passives
                         passiveEffect(item);
 
-                        //ダメージの数値分繰り返す
+                        //Loop to Damage Values
                         for (int i = 0; i < dmg; i++)
                         {
                             if (enemBlock != 0)
@@ -208,7 +209,6 @@ public class Card : MonoBehaviour
                                 //内部も減らす
                                 enemyLife--;
                                 Debug.Log("Enemy's HP:" + enemyLife);
-
                             }
                         }
                         Destroy(item);
@@ -217,7 +217,7 @@ public class Card : MonoBehaviour
                         enemyAction();
                         break;
 
-                    case "Defence": //カードがディフェンスの場合
+                    case "Defence":
                         Debug.Log("防御");
                         passiveEffect(item);
                         block++;
@@ -227,7 +227,7 @@ public class Card : MonoBehaviour
                         enemyAction();
                         break;
 
-                    case "Support": //カードがサポートの場合
+                    case "Support":
                         Debug.Log("補助");
                         passiveEffect(item);
                         Destroy(item);
@@ -242,21 +242,21 @@ public class Card : MonoBehaviour
             }
 
             for (int i = 0; i < selectedCard.Count; i++)
-            { //選択した際の色変更を元に戻す
+            { //Reset Color
                 selectedCard[i].GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
             }
 
-            //各リスト内にあるカード全てを消す
+            //Delete All List's Items
             selectedCard.Clear();
             activeList.Clear();
-            //順序をリセット
+            //Reset Count
             count = 0;
             button.SetActive(true);
         }
     }
 
     /// <summary>
-    /// カードの並び直し処理
+    /// Card Refresh Process
     /// </summary>
     private void cardRefresh()
     {
@@ -289,12 +289,12 @@ public class Card : MonoBehaviour
     }
 
     /// <summary>
-    /// パッシブ効果処理
+    /// Passive's Effect Process
     /// </summary>
     /// <param name="item"></param>
     private void passiveEffect(GameObject item)
     {
-        //パッシブの名前で識別
+        //Select to Passive's name
         switch (passive[passiveCnt].name)
         {
             case "spike":
@@ -317,7 +317,7 @@ public class Card : MonoBehaviour
     }
 
     /// <summary>
-    /// 敵の行動
+    /// Enemy's Action Process
     /// </summary>
     async void enemyAction()
     {

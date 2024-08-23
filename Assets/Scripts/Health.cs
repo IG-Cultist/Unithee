@@ -1,6 +1,6 @@
 /*
  * HealthScript
- * Creator:¼‰YW‘¾ Update:2024/07/25
+ * Creator:¼‰YW‘¾ Update:2024/08/22
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -34,7 +34,7 @@ public class Health : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        enemHealth = 3;
+        enemHealth = 3*2;
         playerHealth = 5;
         EnemyLife();
         PlayerLife();
