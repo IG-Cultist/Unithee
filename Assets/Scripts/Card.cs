@@ -65,7 +65,7 @@ public class Card : MonoBehaviour
         button.SetActive(false);
         //Get for Enemy Life from tag
         enemyHP = GameObject.FindGameObjectsWithTag("EnemyHP");
-        //取得したHPの個数を代入
+        // Add Health Value from got one
         healthScript = FindObjectOfType<Health>();
         enemyLife = healthScript.EnemHealth;
 
@@ -92,7 +92,7 @@ public class Card : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //カード選択
+        //Select Card
         if (Input.GetMouseButtonUp(0))
         {
             CardClick();
@@ -104,7 +104,7 @@ public class Card : MonoBehaviour
     /// </summary>
     void CardClick()
     {
-        //タッチした位置にレイを飛ばす
+        // Shot Ray from Touch Point
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //第二引数 レイはどの方向に進むか(zero=指定点)
         RaycastHit2D hit2d = Physics2D.Raycast(worldPosition, Vector2.zero);
@@ -115,11 +115,11 @@ public class Card : MonoBehaviour
             //ヒットしたオブジェクト取得
             GameObject hitCard = hit2d.collider.gameObject;
 
-            if (!selectedCard.Contains(hitCard)) //何も選択していなかった場合
+            if (!selectedCard.Contains(hitCard)) //Select yet
             {
-                //Change the Card's Color
+                // Change the Card's Color
                 hitCard.GetComponent<Renderer>().material.color = new Color32(127, 127, 127, 255);
-                //Add List for Selected Card
+                // Add to List Selected Card
                 selectedCard.Add(hitCard);
 
                 foreach (var item in card)
@@ -128,35 +128,35 @@ public class Card : MonoBehaviour
                     {
                         // Create Instance from Now Turn's Cards
                         GameObject obj = Instantiate(item, new Vector2(-8.0f + (2.0f * count), -3.5f), Quaternion.identity);
-                        //オブジェクトの色を訂正
+                        // Reset Object's Color
                         obj.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
-                        //Rename Item
+                        // Rename Item
                         obj.name = item.name;
-                        //Add Tag for Clone Items
+                        // Add Tag for Clone Items
                         obj.tag = item.tag;
-                        //Add ActiveList
+                        // Add ActiveList
                         activeList.Add(obj);
-                        //順序を加算
+                        // Add count
                         count++;
                     }
                 }
             }
-            else //すでにカードを選択していた場合
+            else //Already Selected
             {
-                //選択カードの色を戻す
+                // Reset Selected Card's Color
                 hitCard.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
-                //Remove Selected Card from Lists
+                // Remove Selected Card from Lists
                 selectedCard.Remove(hitCard);
 
                 foreach (var item in activeList)
                 {
                     if (item.name == hitCard.name)
                     {
-                        //Delete Card
+                        // Delete Card
                         Destroy(item);
-                        //Remove from List
+                        // Remove from List
                         activeList.Remove(item);
-                        //Refresh
+                        // Refresh
                         cardRefresh();
                         break;
                     }
@@ -246,10 +246,10 @@ public class Card : MonoBehaviour
                 selectedCard[i].GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
             }
 
-            //Delete All List's Items
+            // Delete All List's Items
             selectedCard.Clear();
             activeList.Clear();
-            //Reset Count
+            // Reset Count
             count = 0;
             button.SetActive(true);
         }

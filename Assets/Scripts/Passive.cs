@@ -9,19 +9,20 @@ using UnityEngine;
 
 public class Passive : MonoBehaviour
 {
-    //PassiveList
+    // PassiveList
     [SerializeField] List<string> passiveList;
 
-    //セットされたパッシブを入れるリスト
+    // List for Settd Passives
     List<GameObject> activePassives;
 
     /// <summary>
-    /// アクティブなパッシブのプロパティ
+    /// ActivePassive's Property
     /// </summary>
     public List<GameObject> ActivePassives
     {
         get { return activePassives; }
     }
+
     // Start is called before the first frame update
     void Start()
     {

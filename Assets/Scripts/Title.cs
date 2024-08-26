@@ -2,6 +2,7 @@
  * TitleScript
  * Creator:西浦晃太 Update:2024/07/24
 */
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -23,7 +24,21 @@ public class Title : MonoBehaviour
         //クリック
         if (Input.GetMouseButtonUp(0))
         {
-            SceneManager.LoadScene("SelectScene");
+            bool isSuccess = NetworkManager.Instance.LoadUserData();
+
+            if (!isSuccess)
+            { //ユーザデータが保存されていなかった場合
+                StartCoroutine(NetworkManager.Instance.StoreUser(
+                    Guid.NewGuid().ToString(),  //Set Random Name
+                    result => //After Set's Process
+                    {
+                        SceneManager.LoadScene("SelectScene");
+                    }));
+            }
+            else
+            {
+                SceneManager.LoadScene("SelectScene");
+            }
         }
 
         if (cnt == 0)

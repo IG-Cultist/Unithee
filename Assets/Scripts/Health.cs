@@ -1,6 +1,6 @@
 /*
  * HealthScript
- * Creator:西浦晃太 Update:2024/08/22
+ * Creator:西浦晃太 Update:2024/08/23
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -8,15 +8,15 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    //ハートのゲームオブジェクト
+    // Heart's GameObject
     [SerializeField] GameObject heart;
-    //敵の体力値
+    // Enemy's Health Value
     int enemHealth;
-    //プレイヤーの体力値
+    // Player's Health Value
     int playerHealth;
 
     /// <summary>
-    /// エネミーHPのプロパティ
+    /// EnemyHealth's Property
     /// </summary>
     public int EnemHealth
     {
@@ -24,14 +24,13 @@ public class Health : MonoBehaviour
     }
 
     /// <summary>
-    /// プレイヤーHPのプロパティ
+    /// PlayerHealth's Property
     /// </summary>
     public int PlayerHealth
     {
         get { return playerHealth; }
     }
 
-    // Start is called before the first frame update
     void Awake()
     {
         enemHealth = 3*2;
@@ -47,30 +46,30 @@ public class Health : MonoBehaviour
     }
 
     /// <summary>
-    /// 敵HP設定
+    /// Set Enemy's Health
     /// </summary>
     public void EnemyLife()
     {
         Vector2 pos = this.transform.position;
-        for (int i = 0; i < enemHealth; i++) //設定health分繰り返し
+        for (int i = 0; i < enemHealth; i++) // Loop for Enemy's Life Value
         {
-            //プレハブのタグをエネミーのものに変更
+            // Add Tag for Items
             heart.tag = "EnemyHP";
-            // Heartプレハブを元に、インスタンスを生成、
+            // Create Instance from Heart Prefabs
             Instantiate(heart, new Vector2(pos.x + (0.8f * i), pos.y), Quaternion.identity);
         }
     }
 
     /// <summary>
-    /// プレイヤーHP設定
+    /// Set Player's Health
     /// </summary>
     public void PlayerLife()
     {
-        for (int i = 0; i < playerHealth; i++) //設定health分繰り返し
+        for (int i = 0; i < playerHealth; i++) // Loop for Enemy's Life Value
         {
-            //プレハブのタグをプレイヤーのものに変更
-            heart.tag = "PlayerHP"; 
-            // Heartプレハブを元に、インスタンスを生成、
+            // Add Tag for Items
+            heart.tag = "PlayerHP";
+            // Create Instance from Heart Prefabs
             Instantiate(heart, new Vector2(-8.5f + (0.8f * i), 0.7f), Quaternion.identity);
         }
     }
