@@ -12,7 +12,7 @@ public class NetworkManager : MonoBehaviour
     /// <summary>
     /// シングルトン
     /// </summary>
-    const string API_BASE_URL = "http://localhost:8000/api/";
+    const string API_BASE_URL = "https://api-deadlydraw.japaneast.cloudapp.azure.com/api/";
     private int userID = 0;
     private string userName = "";
     private static NetworkManager instance;
@@ -87,6 +87,7 @@ public class NetworkManager : MonoBehaviour
     /// <returns></returns>
     public bool LoadUserData()
     {
+        string path = Application.persistentDataPath;
         if(!File.Exists(Application.persistentDataPath + "/saveData.json"))
         {
             return false;
@@ -99,5 +100,59 @@ public class NetworkManager : MonoBehaviour
         this.userID = saveData.UserID;
         this.userName = saveData.Name;
         return true;
+    }
+
+    /// <summary>
+    /// ステージ一覧取得処理
+    /// </summary>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public IEnumerator GetStage(Action<StageResponse[]> result)
+    {
+        // ステージ一覧取得APIを実行
+        UnityWebRequest request = UnityWebRequest.Get(
+            API_BASE_URL + "stages");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success
+             && request.responseCode == 200)
+        {
+            //通信が成功した場合、返ってきたJsonをオブジェクトに変換
+            string resultJson = request.downloadHandler.text;
+            StageResponse[] response =
+                JsonConvert.DeserializeObject<StageResponse[]>(resultJson);
+            result?.Invoke(response);//ここで呼び出し元のresult処理を呼ぶ
+        }
+        else
+        {
+            result?.Invoke(null);
+        }     
+    }
+
+    /// </summary>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public IEnumerator GetItem(Action<ItemResponse[]> result)
+    {
+        // ステージ一覧取得APIを実行
+        UnityWebRequest request = UnityWebRequest.Get(
+            API_BASE_URL + "items");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success
+             && request.responseCode == 200)
+        {
+            //通信が成功した場合、返ってきたJsonをオブジェクトに変換
+            string resultJson = request.downloadHandler.text;
+            ItemResponse[] response =
+                JsonConvert.DeserializeObject<ItemResponse[]>(resultJson);
+            result?.Invoke(response);//ここで呼び出し元のresult処理を呼ぶ
+        }
+        else
+        {
+            result?.Invoke(null);
+        }
     }
 }

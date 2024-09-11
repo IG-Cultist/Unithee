@@ -6,33 +6,76 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Passive : MonoBehaviour
 {
     // PassiveList
-    [SerializeField] List<string> passiveList;
+    List<string> passiveList;
+
+    //
+    Dictionary<string, ItemResponse> passiveDictionary = new Dictionary<string, ItemResponse>();
+
+    // Deck Panel
+    public Text infoText;
 
     // List for Settd Passives
-    List<GameObject> activePassives;
+    List<string> activePassives;
+
+    enum passive : int
+    {
+        Spike = 0,
+        ArmorChip,
+        Slime,
+        Hone,
+        CleanStone,
+        WonderfulReplica,
+        HandGun
+    }
+
+    [SerializeField] int[] passiveID;
 
     /// <summary>
     /// ActivePassive's Property
     /// </summary>
-    public List<GameObject> ActivePassives
+    public List<string> ActivePassives
     {
         get { return activePassives; }
+    }
+
+    void Awake()
+    {
+        // Set Passives
+        passiveList = new List<string>();
+
+        StartCoroutine(NetworkManager.Instance.GetItem(items =>
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                Debug.Log(items[passiveID[i]].Name);
+                passiveList.Add(items[passiveID[i]].Name.ToString());
+            } 
+            
+            foreach (var item in items)
+            {
+                passiveDictionary.Add(item.Name, item);
+            }
+
+            activePassives = new List<string>();
+            // Set Passives
+            SetPassives();
+
+            Card card = GameObject.Find("Manager").GetComponent<Card>();
+            card.SetPassives(activePassives, passiveDictionary);
+        }));
+
+  
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        // Get and Set Passives
-        passiveList = new List<string>() {"Spike","Spike","Spike","ArmorChip" };
 
-        activePassives = new List<GameObject>();
-
-        // Set Passives
-        SetPassives();
     }
 
     // Update is called once per frame
@@ -57,9 +100,17 @@ public class Passive : MonoBehaviour
             GameObject item = Instantiate(obj, new Vector2(pos.x + (2.0f * cnt),pos.y), Quaternion.identity);
             // Rename
             item.name = passive;
+
+            item.AddComponent<BoxCollider2D>();
+            item.GetComponent<BoxCollider2D>().isTrigger = true;
             // Add ActiveList
-            activePassives.Add(item);
+            activePassives.Add(item.name);
             cnt++;
+        }
+
+        foreach (var items in activePassives)
+        {
+            Debug.Log(items);
         }
     }
 }

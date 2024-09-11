@@ -1,0 +1,138 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 468a46d0ae32c3544b7d98094e6448a9, type: 3}
+  m_Name: AddressableAssetSettings
+  m_EditorClassIdentifier: 
+  m_DefaultGroup: fb158416953241e4ea01248056a4ded4
+  m_currentHash:
+    serializedVersion: 2
+    Hash: c8a275fe0b7bd2a6bc6b3eb85d2360b1
+  m_OptimizeCatalogSize: 0
+  m_BuildRemoteCatalog: 1
+  m_BundleLocalCatalog: 0
+  m_CatalogRequestsTimeout: 0
+  m_DisableCatalogUpdateOnStart: 1
+  m_IgnoreUnsupportedFilesInBuild: 0
+  m_UniqueBundleIds: 0
+  m_NonRecursiveBuilding: 1
+  m_CCDEnabled: 0
+  m_maxConcurrentWebRequests: 3
+  m_ContiguousBundles: 1
+  m_StripUnityVersionFromBundleBuild: 0
+  m_DisableVisibleSubAssetRepresentations: 0
+  m_ShaderBundleNaming: 0
+  m_ShaderBundleCustomNaming: 
+  m_MonoScriptBundleNaming: 0
+  m_CheckForContentUpdateRestrictionsOption: 0
+  m_MonoScriptBundleCustomNaming: 
+  m_RemoteCatalogBuildPath:
+    m_Id: 93bac37925b674b4683c1cfce43b6164
+  m_RemoteCatalogLoadPath:
+    m_Id: 3c961c1cd64e6544c9a50c74f06fc01e
+  m_ContentStateBuildPathProfileVariableName: <default settings path>
+  m_CustomContentStateBuildPath: 
+  m_ContentStateBuildPath: 
+  m_BuildAddressablesWithPlayerBuild: 0
+  m_overridePlayerVersion: 1
+  m_GroupAssets:
+  - {fileID: 11400000, guid: de44629352253dc42b6c8ba6af4da82b, type: 2}
+  - {fileID: 11400000, guid: b1815a9bbade15d499f7bfe7de937d70, type: 2}
+  - {fileID: 11400000, guid: e119cd71ae4fc8843b509cb45b09523f, type: 2}
+  m_BuildSettings:
+    m_CompileScriptsInVirtualMode: 0
+    m_CleanupStreamingAssetsAfterBuilds: 1
+    m_LogResourceManagerExceptions: 1
+    m_BundleBuildPath: Temp/com.unity.addressables/AssetBundles
+  m_ProfileSettings:
+    m_Profiles:
+    - m_InheritedParent: 
+      m_Id: 18e56706302c6484689d82a3d88f5bde
+      m_ProfileName: Default
+      m_Values:
+      - m_Id: f25d416051a7e5246b7127936e36c690
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: e88ec325be2fefb4b81f242c54a0a098
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: c006529812622634093ec60b872f9ac4
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 93bac37925b674b4683c1cfce43b6164
+        m_Value: ServerData/[BuildTarget]
+      - m_Id: 3c961c1cd64e6544c9a50c74f06fc01e
+        m_Value: https://stdeadlydraw.blob.core.windows.net/puzzle-data/Windows/
+    - m_InheritedParent: 
+      m_Id: 012e05b845bcf3143a99b01b2f6116ec
+      m_ProfileName: iOS
+      m_Values:
+      - m_Id: f25d416051a7e5246b7127936e36c690
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: e88ec325be2fefb4b81f242c54a0a098
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: c006529812622634093ec60b872f9ac4
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 93bac37925b674b4683c1cfce43b6164
+        m_Value: ServerData/[BuildTarget]
+      - m_Id: 3c961c1cd64e6544c9a50c74f06fc01e
+        m_Value: https://stdeadlydraw.blob.core.windows.net/puzzle-data/iOS/
+    - m_InheritedParent: 
+      m_Id: b5dc53ad6de366f4db8dd917cd8df328
+      m_ProfileName: Android
+      m_Values:
+      - m_Id: f25d416051a7e5246b7127936e36c690
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: e88ec325be2fefb4b81f242c54a0a098
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: c006529812622634093ec60b872f9ac4
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 93bac37925b674b4683c1cfce43b6164
+        m_Value: ServerData/[BuildTarget]
+      - m_Id: 3c961c1cd64e6544c9a50c74f06fc01e
+        m_Value: https://stdeadlydraw.blob.core.windows.net/puzzle-data/Android/
+    m_ProfileEntryNames:
+    - m_Id: f25d416051a7e5246b7127936e36c690
+      m_Name: BuildTarget
+      m_InlineUsage: 0
+    - m_Id: e88ec325be2fefb4b81f242c54a0a098
+      m_Name: Local.BuildPath
+      m_InlineUsage: 0
+    - m_Id: c006529812622634093ec60b872f9ac4
+      m_Name: Local.LoadPath
+      m_InlineUsage: 0
+    - m_Id: 93bac37925b674b4683c1cfce43b6164
+      m_Name: Remote.BuildPath
+      m_InlineUsage: 0
+    - m_Id: 3c961c1cd64e6544c9a50c74f06fc01e
+      m_Name: Remote.LoadPath
+      m_InlineUsage: 0
+    m_ProfileVersion: 1
+  m_LabelTable:
+    m_LabelNames:
+    - default
+  m_SchemaTemplates: []
+  m_GroupTemplateObjects:
+  - {fileID: 11400000, guid: 39e4d0b5326f5a6408e820d9939c49b8, type: 2}
+  m_InitializationObjects: []
+  m_CertificateHandlerType:
+    m_AssemblyName: 
+    m_ClassName: 
+  m_ActivePlayerDataBuilderIndex: 3
+  m_DataBuilders:
+  - {fileID: 11400000, guid: 5092beaf8b6e472459a5c0aae4d8fa1e, type: 2}
+  - {fileID: 11400000, guid: 3f9176579a849bd4fbfcfffe9daf7644, type: 2}
+  - {fileID: 11400000, guid: ad131639875894a47a0a5548d0bc0e3a, type: 2}
+  - {fileID: 11400000, guid: 3b994da1c17e8374186aa41356a696dc, type: 2}
+  m_ActiveProfileId: 18e56706302c6484689d82a3d88f5bde
+  m_HostingServicesManager:
+    m_HostingServiceInfos: []
+    m_Settings: {fileID: 11400000}
+    m_NextInstanceId: 0
+    m_RegisteredServiceTypeRefs: []
+    m_PingTimeoutInMilliseconds: 5000

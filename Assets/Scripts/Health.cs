@@ -1,6 +1,6 @@
 /*
  * HealthScript
- * Creator:êºâYçWëæ Update:2024/08/23
+ * Creator:êºâYçWëæ Update:2024/09/02
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -11,9 +11,9 @@ public class Health : MonoBehaviour
     // Heart's GameObject
     [SerializeField] GameObject heart;
     // Enemy's Health Value
-    int enemHealth;
+    [SerializeField] int enemHealth;
     // Player's Health Value
-    int playerHealth;
+    [SerializeField] int playerHealth;
 
     /// <summary>
     /// EnemyHealth's Property
@@ -33,8 +33,6 @@ public class Health : MonoBehaviour
 
     void Awake()
     {
-        enemHealth = 3*2;
-        playerHealth = 5;
         EnemyLife();
         PlayerLife();
     }
@@ -70,7 +68,7 @@ public class Health : MonoBehaviour
             // Add Tag for Items
             heart.tag = "PlayerHP";
             // Create Instance from Heart Prefabs
-            Instantiate(heart, new Vector2(-8.5f + (0.8f * i), 0.7f), Quaternion.identity);
+            Instantiate(heart, new Vector2(-8.5f + (0.8f * i), -1.2f), Quaternion.identity);
         }
     }
 }

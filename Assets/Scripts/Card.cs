@@ -1,69 +1,156 @@
 /*
  * CardScript
- * Creator:西浦晃太 Update:2024/07/25
-*/
+ * Creator:西浦晃太 Update:2024/09/02
+ */
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.SocialPlatforms.Impl;
-using UnityEngine.UI;
 using System.Threading.Tasks;
+using UnityEngine.UI;
+using Unity.VisualScripting;
+using System;
 
 public class Card : MonoBehaviour
 {
-    //Active Cards
-    [SerializeField] List<GameObject> card;
+    // カード配置の親
+    [SerializeField] GameObject parentCard;
 
-    //TurnEnd Button
+    // GameEnd Button
     [SerializeField] GameObject button;
 
-    //Passive's GameObject
-    GameObject spike;
-    GameObject armorChip;
+    // TurnEnd Button
+    [SerializeField] GameObject turnEndButton;
 
-    //Passives
-    List<GameObject> passive;
+    // Retry Button
+    [SerializeField] GameObject retryButton;
 
-    //HealthScript
-    Health healthScript;
+    // Pause Button
+    [SerializeField] GameObject pauseButton;
 
-    //EnemyScript
-    Enemy enemyScript;
+    // Pause Parent
+    [SerializeField] GameObject pauseParent;
 
-    //Selected Cards
-    List<GameObject> selectedCard;
+    // Pause Panel
+    [SerializeField] GameObject pausePanel;
 
-    //Active Card's List
+    // Option Panel
+    [SerializeField] GameObject optionPanel;
+
+    // Deck Panel
+    [SerializeField] GameObject deckPanel;
+
+    // Deck Card's Parent
+    [SerializeField] GameObject deckCardParent;
+
+     // Hand's Cards
+    [SerializeField] List<GameObject> card;
+    
+    // Deck's Cards
+    [SerializeField] List<GameObject> deckCard;
+
+    // Active Card's List
     [SerializeField] List<GameObject> activeList;
 
-    //Card Turn's Count
-    int count;
+    // Discard's CountText
+    [SerializeField] Text discardText;
 
-    //Passive Turn's Count
-    int passiveCnt;
+    // Deck Panel
+    [SerializeField] Text infoText;
 
-    //Enemy's HP
+    // GameSpeed Slider
+    [SerializeField] Slider gameSpeedSlider;
+
+    // Block Icon
+    GameObject protectIcon;
+
+    // Discard Target's GameObject
+    GameObject discardTarget;
+
+    // Enemy's Texture
+    GameObject enemyTexture;
+
+    // Enemy's HP
     GameObject[] enemyHP;
 
-    //HP Count
+    // Passives
+    List<string> passive;
+
+    // 手札
+    List<GameObject> handCard;
+
+    //Passive Dictionary
+    Dictionary<string, ItemResponse> passiveDictionary; 
+
+    // HealthScript
+    Health healthScript;
+
+    // PassiveScript
+    Passive passiveScript;
+
+    // EnemyScript
+    Enemy enemyScript;
+
+    // Selected Cards
+    List<GameObject> selectedCard;
+
+    // Defence Value
+    public int block;
+
+    // Card Turn's Count
+    int count;
+
+    // Passive Turn's Count
+    int passiveCnt;
+
+    //Battle's Speed
+    int battleSpeed;
+
+    // HP Count
     int enemyLife;
 
     //Damage Value
     int dmg;
 
-    //Defence Value
-    int block = 1;
+    // Discard's Count
+    [SerializeField] int discardCnt;
 
-    //Enemy's Defence Value
-    int enemBlock;
+    // Enemy's Dead
+    bool isDead;
+
+    // Pause Check
+    bool isPause;
+
+    // Panel's Active Check
+    bool panelActive;
+
+
+    [SerializeField] string[] deckCardName;
 
     // Start is called before the first frame update
     void Start()
     {
+        handCard = new List<GameObject>();
+        SetCard();
+
+        // Set Battle Speed
+        battleSpeed = (int)Math.Ceiling(gameSpeedSlider.value);
+
+        // Set GameState
+        isDead = false;
+        isPause = false;
+
+        // Set Buttons
+        retryButton.SetActive(false);
+        turnEndButton.SetActive(false);
         button.SetActive(false);
-        //Get for Enemy Life from tag
+
+        // Set Panels
+        panelActive = false;
+
+        // Get for Enemy Object from tag
+        enemyTexture = GameObject.FindGameObjectWithTag("Enemy");
+        // Get for Enemy Life from tag
         enemyHP = GameObject.FindGameObjectsWithTag("EnemyHP");
         // Add Health Value from got one
         healthScript = FindObjectOfType<Health>();
@@ -71,28 +158,82 @@ public class Card : MonoBehaviour
 
         enemyScript = FindObjectOfType<Enemy>();
 
-        //Set Lists
+        // Set Lists
         activeList = new List<GameObject>();
         selectedCard = new List<GameObject>();
-        //Set Counts
+        deckCard = new List<GameObject>();
+        passive = new List<string>();
+        // Set Counts
         count = 0;
         passiveCnt = 0;
-        enemBlock = 0;
+        block = 0;
 
-        //各パッシブの設定(仮)
-        spike = new GameObject();
-        spike.name = "spike";
-        armorChip = new GameObject();
-        armorChip.name = "armorChip";
-        passive = new List<GameObject>();
-        for (int i = 1; i < 3; i++) passive.Add(spike);
-        passive.Add(armorChip);
+        // Add Passive Value from got one
+        passiveScript = FindObjectOfType<Passive>();
+
+
+        // Set Deck's Cards From DeckPanel
+        for (int i = 0; i < deckCardName.Length; i++)
+        {
+            // Get Card's GameObjects from Resources Folder
+            GameObject prefab = (GameObject)Resources.Load("Cards/Card/" + deckCardName[i]);
+
+            // Create Instance from Now Turn's Cards
+            GameObject obj = Instantiate(prefab, new Vector2(-0.38f + (0.25f * i ), 0.14f), Quaternion.identity);
+            obj.transform.localScale = new Vector2(0.035f,0.08f);
+            obj.name = prefab.name;
+
+            // Add Tag 
+            if (prefab.tag == "Attack") obj.tag = "DeckAttack";
+            else if (prefab.tag == "Defence") obj.tag = "DeckDefence";
+            obj.transform.SetParent(deckCardParent.transform, false);
+            deckCard.Add(obj);
+            deckCard[i].GetComponent<BoxCollider2D>().enabled = false;
+        }
+
+        deckPanel.SetActive(false);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Select Card
+        battleSpeed = (int)Math.Ceiling(gameSpeedSlider.value);
+        discardText.text = "" + discardCnt;
+
+        if (enemyScript.isDead == true)
+        {
+            button.SetActive(true);
+            retryButton.SetActive(true);
+        }
+
+        if(enemyLife <= 0)
+        {
+            isDead = true;
+
+            for (int i = 0; i < selectedCard.Count; i++)
+            { // Reset Color
+                selectedCard[i].GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
+            }
+
+            retryButton.SetActive(true);
+            turnEndButton.SetActive(false);
+            button.SetActive(true);
+
+            enemyTexture.SetActive(false);
+        }
+        // If Selected Card's Value Will 4
+        if (activeList.Count == 4)
+        {
+            // Can Use TurnEnd Button
+            turnEndButton.SetActive(true);
+        }
+        else
+        {
+            turnEndButton.SetActive(false);
+        }
+
+        // Select Card
         if (Input.GetMouseButtonUp(0))
         {
             CardClick();
@@ -104,62 +245,126 @@ public class Card : MonoBehaviour
     /// </summary>
     void CardClick()
     {
+        if (isDead == true || isPause == true || enemyScript.isDead == true) return;
+
         // Shot Ray from Touch Point
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //第二引数 レイはどの方向に進むか(zero=指定点)
+        // 第二引数 レイはどの方向に進むか(zero=指定点)
         RaycastHit2D hit2d = Physics2D.Raycast(worldPosition, Vector2.zero);
 
-        //当たり判定
+        // Hit Process
         if (hit2d)
         {
             //ヒットしたオブジェクト取得
-            GameObject hitCard = hit2d.collider.gameObject;
+            GameObject hitObj = hit2d.collider.gameObject;
 
-            if (!selectedCard.Contains(hitCard)) //Select yet
+            if (panelActive == true)
             {
-                // Change the Card's Color
-                hitCard.GetComponent<Renderer>().material.color = new Color32(127, 127, 127, 255);
-                // Add to List Selected Card
-                selectedCard.Add(hitCard);
-
-                foreach (var item in card)
+                foreach (var item in handCard)
                 {
-                    if (item.name == hitCard.name) //選択カードと現在のカードの名前が一致した場合
+                    item.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
+                }
+                discardTarget = null;
+
+                if (!selectedCard.Contains(hitObj)) //Select yet
+                {
+                    // Change the Card's Color
+                    hitObj.GetComponent<Renderer>().material.color = new Color32(127, 127, 127, 255);
+                    discardTarget = hitObj;
+                }
+            }
+            else if (panelActive != true && hitObj.tag != "passive")
+            {
+                if (!selectedCard.Contains(hitObj)) //Select yet
+                {
+                    // Change the Card's Color
+                    hitObj.GetComponent<Renderer>().material.color = new Color32(127, 127, 127, 255);
+                    // Add to List Selected Card
+                    selectedCard.Add(hitObj);
+
+
+                    // Get Card's GameObjects from Resources Folder
+                    GameObject prefab = (GameObject)Resources.Load("Cards/" + hitObj.name);
+
+                    // Create Instance from Now Turn's Cards
+                    GameObject obj = Instantiate(prefab, new Vector2(-8.2f + (2.0f * count), -4.1f), Quaternion.identity);
+                    // Reset Object's Color
+                    obj.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
+
+                    // Rename Item
+                    obj.name = hitObj.name;
+                    // Add Tag for Clone Items
+                    obj.tag = hitObj.tag;
+                    // Add ActiveList
+                    activeList.Add(obj);
+
+                    // Add count
+                    count++;
+
+                    // Update Info 
+                    switch (hitObj.name)
                     {
-                        // Create Instance from Now Turn's Cards
-                        GameObject obj = Instantiate(item, new Vector2(-8.0f + (2.0f * count), -3.5f), Quaternion.identity);
-                        // Reset Object's Color
-                        obj.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
-                        // Rename Item
-                        obj.name = item.name;
-                        // Add Tag for Clone Items
-                        obj.tag = item.tag;
-                        // Add ActiveList
-                        activeList.Add(obj);
-                        // Add count
-                        count++;
+                        case "Sword":
+                            infoText.text = "Sword:1ダメージを与える";
+                            infoText.color = Color.red;
+                            break;
+
+                        case "A.X.E":
+                            infoText.text = "A.X.E:1ダメージを与える\nブロックを無視＆破壊";
+                            infoText.color = Color.red;
+                            break;
+
+                        case "M.A.C.E":
+                            infoText.text = "M.A.C.E:1+ブロックの値分ダメージを与える";
+                            infoText.color = Color.red;
+                            break;
+
+                        case "Shield":
+                            infoText.text = "Shield:1ブロックを受ける";
+                            infoText.color = Color.blue;
+                            break;
+                    }
+                }
+                else //Already Selected
+                {
+                    // Reset Selected Card's Color
+                    hitObj.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
+                    // Remove Selected Card from Lists
+                    selectedCard.Remove(hitObj);
+
+                    foreach (var item in activeList)
+                    {
+                        if (item.name == hitObj.name)
+                        {
+                            // Delete Card
+                            Destroy(item);
+                            // Remove from List
+                            activeList.Remove(item);
+                            // Refresh
+                            cardRefresh(activeList);
+                            break;
+                        }
                     }
                 }
             }
-            else //Already Selected
+            else if (panelActive != true && hitObj.tag == "passive")
             {
-                // Reset Selected Card's Color
-                hitCard.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
-                // Remove Selected Card from Lists
-                selectedCard.Remove(hitCard);
-
-                foreach (var item in activeList)
+                switch (hitObj.name)
                 {
-                    if (item.name == hitCard.name)
-                    {
-                        // Delete Card
-                        Destroy(item);
-                        // Remove from List
-                        activeList.Remove(item);
-                        // Refresh
-                        cardRefresh();
+                    case "Spike":
+                        infoText.text = passiveDictionary["Spike"].Explain;
+                        infoText.color = Color.red;
                         break;
-                    }
+
+                    case "ArmorChip":
+                        infoText.text = passiveDictionary["ArmorChip"].Explain;
+                        infoText.color = Color.blue;
+                        break;
+
+                    case "Slime":
+                        infoText.text = passiveDictionary["Slime"].Explain;
+                        infoText.color = Color.red;
+                        break;
                 }
             }
         }
@@ -170,119 +375,190 @@ public class Card : MonoBehaviour
     /// </summary>
     public async void TurnEnd()
     {
-        if (activeList.Count != 4)
+        if(isDead == true || isPause == true) return;
+        // Reset Info
+        infoText.text = "";
+
+        foreach (var item in activeList)
         {
-            Debug.Log("Should Use 4 Cards");
-        }
-        else
-        {
-            foreach (var item in activeList)
+            if (isDead == true || enemyScript.isDead == true) return;
+            bool isBlock = false;
+            dmg = 1;
+
+            switch (item.tag) //Judge the Card's Tag
             {
-                dmg = 1;
+                case "Attack":
+                    //Active to Passives
+                    passiveEffect(item);
 
-                switch (item.tag) //Judge the Card's Tag
-                {
-                    case "Attack":
+                    switch (item.name)
+                    {
+                        case "Sword":
+                            infoText.text = "You:" + dmg + "ダメージを与える";
+                            break;
 
-                        //Active to Passives
-                        passiveEffect(item);
+                        case "A.X.E":
+                            enemyScript.block = 0;
+                            infoText.text = "You:シールド破壊！\n" + dmg + "ダメージを与える";
+                            break;
 
+                        case "M.A.C.E":
+                            dmg += block;
+                            if (dmg < 3)
+                            {
+                                infoText.text = "You:" + dmg + "ダメージを与える";
+                            }else infoText.text = "You:渾身の一撃!\n" + dmg + "ダメージを与える!";
+
+                            break;
+
+                        case "T.N.T":
+                            dmg =999;
+                            infoText.text = "You:ドカーン!\n" + dmg + "ダメージを与える!";
+                            break;
+                    }
+
+                    // If Enemy has Block
+                    if (enemyScript.block != 0 && item.name != "A.X.E")
+                    {
+                        enemyScript.block--;
+                        if (enemyScript.block <= 0) if (enemyScript.protectIcon != null) Destroy(enemyScript.protectIcon);
+                        blockEffect();
+                        isBlock = true;
+
+                        infoText.text = "Enemy:攻撃をブロック";
+                    }
+                    else
+                    {
                         //Loop to Damage Values
                         for (int i = 0; i < dmg; i++)
                         {
-                            if (enemBlock != 0)
+                            //HP残量が0の場合、処理を行わない
+                            if (enemyLife <= 0)
                             {
-                                Debug.Log("防がれた！");
-                                enemBlock--;
+                                break;
                             }
-                            else
-                            {
-                                //HP残量が0の場合、処理を行わない
-                                if (enemyLife <= 0)
-                                {
-                                    Debug.Log("敵死んだ！");
-                                    break;
-                                }
-                                //表示を減らす
-                                Destroy(enemyHP[(enemyLife - 1)]);
+                            //表示を減らす
+                            Destroy(enemyHP[(enemyLife - 1)]);
 
-                                //内部も減らす
-                                enemyLife--;
-                                Debug.Log("Enemy's HP:" + enemyLife);
-                            }
+                            //内部も減らす
+                            enemyLife--;
+                            Debug.Log("Enemy's HP:" + enemyLife);
                         }
-                        Destroy(item);
+                        // if Enemy Dead
+                        if (enemyLife <= 0) isDead = true;
+                    }
+                    attackEffect(isBlock);
+                    item.SetActive(false);
+                    break;
 
-                        await Task.Delay(1000);
-                        enemyAction();
-                        break;
+                case "Defence":
+                    passiveEffect(item);
+                    switch (item.name)
+                    {
+                        case "Shield":
+                            block++;
+                            infoText.text = "You:" + block + "ブロックを受ける";
+                            break;
 
-                    case "Defence":
-                        Debug.Log("防御");
-                        passiveEffect(item);
-                        block++;
-                        Destroy(item);
+                        case "SpikeShield":
+                            block++;
+                            infoText.text = "You:" + block +"ブロックを受ける\nシールドバッシュをかました！" + dmg + "ダメージを与える";
 
-                        await Task.Delay(1000);
-                        enemyAction();
-                        break;
+                            //HP残量が0の場合、処理を行わない
+                            if (enemyLife <= 0)
+                            {
+                                break;
+                            }
+                            //表示を減らす
+                            Destroy(enemyHP[(enemyLife - 1)]);
 
-                    case "Support":
-                        Debug.Log("補助");
-                        passiveEffect(item);
-                        Destroy(item);
+                            //内部も減らす
+                            enemyLife--;
+                            Debug.Log("Enemy's HP:" + enemyLife);
 
-                        await Task.Delay(1000);
-                        enemyAction();
-                        break;
+                            // if Enemy Dead
+                            if (enemyLife <= 0) isDead = true;
 
-                    default:
-                        break;
-                }
+                            attackEffect(isBlock);
+                            break;
+                    }
+
+                    // ブロック値が0以下かつアイコンが生成されていない場合
+                    if (block > 0 && protectIcon == null)
+                    {
+                        //Get Card's GameObjects from Resources Folder
+                        GameObject prefab = (GameObject)Resources.Load("ProtectIcon");
+
+                        // Create Instance from Now Turn's Cards
+                        protectIcon = Instantiate(prefab, new Vector2(-4.35f, -1.2f), Quaternion.identity);
+                    }
+                    break;
+
+                case "Support":
+                    Debug.Log("補助");
+                    passiveEffect(item);
+                    break;
+
+                default:
+                    break;
             }
 
-            for (int i = 0; i < selectedCard.Count; i++)
-            { //Reset Color
-                selectedCard[i].GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
-            }
+            item.SetActive(false);
+            await Task.Delay(battleSpeed);
 
-            // Delete All List's Items
-            selectedCard.Clear();
-            activeList.Clear();
-            // Reset Count
-            count = 0;
-            button.SetActive(true);
+            if (isDead == true)
+            {
+                infoText.text = "敵を倒した！";
+                return;
+            }
+            // Enemy's Action
+            enemyScript.Attack();
+            if (block <= 0) if (protectIcon != null) Destroy(protectIcon);
+            await Task.Delay(battleSpeed);
         }
+
+        // Reset Color
+        for (int i = 0; i < selectedCard.Count; i++) selectedCard[i].GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
+        // Delete All Item from ActiveList
+        for (int i = 0; i < activeList.Count; i++) Destroy(activeList[i]);
+
+        // Delete All List's Items
+        selectedCard.Clear();
+        activeList.Clear();
+        // Reset Count
+        count = 0;
+        button.SetActive(true);
+        retryButton.SetActive(true);
     }
 
     /// <summary>
     /// Card Refresh Process
     /// </summary>
-    private void cardRefresh()
+    void cardRefresh(List<GameObject> refreshTarget)
     {
-        //一時的に現在アクティブなカードを代入するリスト
+        // 一時的に現在アクティブなカードを代入するリスト
         List<GameObject> keepList = new List<GameObject>();
-        foreach (var item in activeList) //アクティブなカードを破壊し、仮リストに追加
+        foreach (var item in refreshTarget) //Drstroy All Active Card & Add Assumed List
         {
             Destroy(item);
             keepList.Add(item);
         }
-        //リスト内にあるカード全てを消す
-        activeList.Clear();
-        //順序をリセット
+        // Delete All List's Item
+        refreshTarget.Clear();
+        // Reset Count
         count = 0;
 
         foreach (var item in keepList) //並べなおす
         {
             //現在のカードプレハブを元に、インスタンスを生成、
-            GameObject obj = Instantiate(item, new Vector2(-8.0f + (2.0f * count), -3.5f), Quaternion.identity);
+            GameObject obj = Instantiate(item, new Vector2(-8.2f + (2.0f * count), -4.1f), Quaternion.identity);
             //オブジェクトの色を訂正
             obj.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
             //クローンしたオブジェクトの名前を訂正
             obj.name = item.name;
             //カードのタグをクローンオブジェクトにも追加
             obj.tag = item.tag;
-            activeList.Add(obj);
+            refreshTarget.Add(obj);
             //順序を加算
             count++;
         }
@@ -292,22 +568,40 @@ public class Card : MonoBehaviour
     /// Passive's Effect Process
     /// </summary>
     /// <param name="item"></param>
-    private void passiveEffect(GameObject item)
+    void passiveEffect(GameObject item)
     {
         //Select to Passive's name
-        switch (passive[passiveCnt].name)
+        switch (item.tag)
         {
-            case "spike":
-                if (item.tag == "Attack")
+            case "Attack":
+                if (passive[passiveCnt] == "Spike")
                 {
-                    Debug.Log("とげ発動 DMG+1");
                     dmg++;
                 }
+                else if (passive[passiveCnt] == "Slime")
+                {
+                    enemyScript.dmg--;
+                }
                 break;
-            case "armorChip":
-                if (item.tag == "Defence")
+            case "Defence":
+
+                if (passive[passiveCnt] == "Spike" && item.name =="Shield")
+                {
+                    dmg++;
+                }
+                if (passive[passiveCnt] == "ArmorChip")
                 {
                     Debug.Log("アーマーチップ発動 DEF+1");
+
+                    if (block <= 0)
+                    {
+                        //Get Card's GameObjects from Resources Folder
+                        GameObject prefab = (GameObject)Resources.Load("ProtectIcon");
+
+                        // Create Instance from Now Turn's Cards
+                        protectIcon = Instantiate(prefab, new Vector2(-4.35f, -1.2f), Quaternion.identity);
+                    }
+
                     block++;
                 }
                 break;
@@ -316,30 +610,266 @@ public class Card : MonoBehaviour
         if (passiveCnt < (passive.Count - 1)) passiveCnt++;
     }
 
-    /// <summary>
-    /// Enemy's Action Process
-    /// </summary>
-    async void enemyAction()
-    {
-        if (enemyLife <= 0)
-        {
-            return;
-        }
-        //enemyScript.Attack();
-
-        if (enemyScript.Attack() == "defence")
-        {
-            enemBlock++;
-        }
-        await Task.Delay(1000);
-    }
     public void endGame()
     {
         SceneManager.LoadScene("SelectScene");
     }
-
-    void cardType()
+    public void retryGame()
     {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 
+    /// <summary>
+    /// Attack's Effect Progress
+    /// </summary>
+    async void attackEffect(bool isBlock)
+    {
+        //Get Card's GameObjects from Resources Folder
+        GameObject prefab = (GameObject)Resources.Load("AttackEffect");
+
+        // Create Instance from Now Turn's Cards
+        GameObject obj = Instantiate(prefab, new Vector2(0.0f, 1.4f), Quaternion.identity);
+        await Task.Delay(100);
+        Destroy(obj);
+
+        if (isBlock != true)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                enemyTexture.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 0);
+                await Task.Delay(10);
+                enemyTexture.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
+                await Task.Delay(10);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Block's Effect Progress
+    /// </summary>
+    async void blockEffect()
+    {
+        //Get Card's GameObjects from Resources Folder
+        GameObject prefab = (GameObject)Resources.Load("BlockEffect");
+
+        // Create Instance from Now Turn's Cards
+        GameObject obj = Instantiate(prefab, new Vector2(0.0f, 1.0f), Quaternion.identity);
+        await Task.Delay(100);
+        Destroy(obj);
+    }
+
+
+    /// <summary>
+    /// ShowDeck Progress
+    /// </summary>
+    public void showDeck()
+    {
+        if (isDead == true || isPause == true) return;
+        // Reset Info
+        infoText.text = "";
+
+        // Panel Active yet
+        if (panelActive == false)
+        {
+            deckPanel.SetActive(true);
+            panelActive = true;
+
+            // Reset Selected Card
+            for (int i = 0; i < selectedCard.Count; i++)
+            { //Reset Color
+                selectedCard[i].GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
+            }
+
+            for (int i = 0; i < activeList.Count; i++)
+            { //Delete All Item from ActiveList
+                Destroy(activeList[i]);
+            }
+
+            // Delete All List's Items
+            selectedCard.Clear();
+            activeList.Clear();
+            count = 0;
+        }
+        else
+        { //Panel is Already Active 
+            deckPanel.SetActive(false);
+            panelActive = false;
+
+            // Reset Selected Card's Color
+            foreach (var item in handCard)
+            {
+                item.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
+            }
+            discardTarget = null;
+        }
+    }
+
+    /// <summary>
+    /// Discard Progress
+    /// </summary>
+    public void discard()
+    {
+        if (discardCnt > 0 && discardTarget != null)
+        {
+            int cnt = 0;
+            foreach (var item in handCard)
+            {
+                if (item.name == discardTarget.name) //選択カードと現在のカードの名前が一致した場合
+                {
+                    // 各必要なオブジェクトのTransformを取得
+                    Vector2 pos = item.transform.position;
+                    Vector2 scale = item.transform.localScale;
+                    // 山札の左端のカードを生成
+                    GameObject obj = Instantiate(deckCard[0], new Vector2(pos.x, pos.y), Quaternion.identity);
+                    // コライダーを設定
+                    obj.AddComponent<BoxCollider2D>();
+                    obj.GetComponent<BoxCollider2D>().isTrigger = true;
+                    // スケールを調整
+                    obj.transform.localScale = scale;
+                    // 親に入れる
+                    obj.transform.SetParent(parentCard.transform, false);
+                    // 名前を修正
+                    obj.name = deckCard[0].name;
+
+                    // タグに応じた新たなタグを付与
+                    switch (deckCard[0].tag)
+                    {
+                        case "DeckAttack": //攻撃タグの場合
+
+                            obj.tag = "Attack";
+                            break;
+
+                        case "DeckDefence": //防御タグの場合
+
+                            obj.tag = "Defence";
+                            break;
+
+                        default:
+                            break;
+                    }
+                    obj.GetComponent<BoxCollider2D>().enabled = true;
+
+                    // 交換先のカードの後ろへ追加し、交換先のカードを消す
+                    handCard.Insert(cnt,obj);
+                    handCard.Remove(item);
+                    item.SetActive(false);
+
+                    // Reset Selected Card's Color
+                    foreach (var items in handCard)
+                    {
+                        items.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
+                    }
+
+                    // Delete Card
+                    Destroy(deckCard[0]);
+                    // Remove from List
+                    deckCard.Remove(deckCard[0]);
+
+                    // 一時的に現在アクティブなカードを代入するリスト
+                    List<GameObject> keepList = new List<GameObject>();
+                    foreach (var card in deckCard) //Drstroy All Active Card & Add Assumed List
+                    {
+                        Destroy(card);
+                        keepList.Add(card);
+                    }
+                    // Delete All List's Item
+                    deckCard.Clear();
+
+                    int refreshCnt = 0;
+                    foreach (var card in keepList) //並べなおす
+                    {
+                        // 現在のカードプレハブを元に、インスタンスを生成、
+                        GameObject objKeep = Instantiate(card, new Vector2(-0.38f + (0.25f * refreshCnt), 0.14f), Quaternion.identity);
+
+                        // スケールを修正
+                        objKeep.transform.localScale = new Vector2(0.035f, 0.08f);
+                        // クローンしたオブジェクトの名前を訂正
+                        objKeep.name = card.name;
+                        // カードのタグをクローンオブジェクトにも追加
+                        objKeep.tag = card.tag;
+                        // 親に突っ込む
+                        objKeep.transform.SetParent(deckCardParent.transform, false);
+
+                        deckCard.Add(objKeep);
+                        // 順序を加算
+                        refreshCnt++;
+                    }
+
+                    deckPanel.SetActive(false);
+                    panelActive = false;
+                    discardTarget = null;
+                    break;
+                }
+                cnt++;
+            }
+            // 交換可能回数を減らす
+            discardCnt--;
+        }
+        else return;
+    }
+
+    /// <summary>
+    /// Pause Button Progress
+    /// </summary>
+    public void pause()
+    {
+        pauseParent.SetActive(true);
+        Time.timeScale = 0.0f;
+        isPause = true;
+        pausePanel.SetActive(true);
+    }
+
+    /// <summary>
+    /// Close Pause Panel Progress
+    /// </summary>
+    public void closePause()
+    {
+        pauseParent.SetActive(false);
+        Time.timeScale = 1.0f;
+        isPause = false;
+        pausePanel.SetActive(false);
+    }
+
+    /// <summary>
+    /// Option Panel Progress
+    /// </summary>
+    public void openOption()
+    {
+        pausePanel.SetActive(false);
+        optionPanel.SetActive(true);
+    }
+
+    /// <summary>
+    /// Close Option Panel Progress
+    /// </summary>
+    public void closeOption()
+    {
+        pausePanel.SetActive(true);
+        optionPanel.SetActive(false);
+    }
+
+    public void SetPassives(List<string> passiveList, Dictionary<string, ItemResponse> dictionary)
+    {
+        passive = passiveList;
+        passiveDictionary = dictionary;
+    }
+
+    void SetCard()
+    {
+        int cnt = 0;
+
+        foreach (var cards in card)
+        {
+            //  Get Prefabs from List
+            GameObject obj = (GameObject)Resources.Load("Cards/Card/" + cards.name);
+            // Create Action Objects
+            GameObject item = Instantiate(obj, new Vector2(1.17f + (2.2f * cnt), -3.4f), Quaternion.identity);
+            // Rename
+            item.name = cards.name;
+
+            item.transform.SetParent(parentCard.transform, false);
+            handCard.Add(item);
+            cnt++;
+        }
     }
 }
