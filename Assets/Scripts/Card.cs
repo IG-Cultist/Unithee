@@ -211,7 +211,7 @@ public class Card : MonoBehaviour
         activeList = new List<GameObject>();
         selectedCard = new List<GameObject>();
         deckCard = new List<GameObject>();
-        passive = new List<string>();
+        //passive = new List<string>();
         // Set Counts
         count = 0;
         passiveCnt = 0;
