@@ -15,6 +15,7 @@ public class NetworkManager : MonoBehaviour
     const string API_BASE_URL = "https://api-deadlydraw.japaneast.cloudapp.azure.com/api/";
     private int userID = 0;
     private string userName = "";
+    private List<int> stageList = new List<int>();
     private static NetworkManager instance;
     public static NetworkManager Instance
     {
@@ -73,6 +74,7 @@ public class NetworkManager : MonoBehaviour
         SaveData saveData = new SaveData();
         saveData.Name = this.userName;
         saveData.UserID = this.userID;
+        saveData.StageList = this.stageList;
         string json = JsonConvert.SerializeObject(saveData);
         var writer =
             new StreamWriter(Application.persistentDataPath + "/saveData.json");
@@ -99,6 +101,7 @@ public class NetworkManager : MonoBehaviour
         SaveData saveData = JsonConvert.DeserializeObject<SaveData>(json);
         this.userID = saveData.UserID;
         this.userName = saveData.Name;
+        this.stageList = saveData.StageList;
         return true;
     }
 
@@ -154,5 +157,22 @@ public class NetworkManager : MonoBehaviour
         {
             result?.Invoke(null);
         }
+    }
+
+    public void ClearStage(int stageID)
+    {
+        if (stageList == null ) stageList = new List<int>();
+
+        if (stageList.Contains(stageID))
+        {
+            return;
+        }
+        this.stageList.Add(stageID);
+        SaveUserData();
+    }
+
+    public List<int> GetID()
+    {
+        return this.stageList;
     }
 }

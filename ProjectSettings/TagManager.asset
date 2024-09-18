@@ -19,6 +19,10 @@ TagManager:
   - DeckAttack
   - DeckDefence
   - Option
+  - DiscardUI
+  - ProtectIcon(P)
+  - ProtectIcon(E)
+  - EnemyAction
   layers:
   - Default
   - TransparentFX

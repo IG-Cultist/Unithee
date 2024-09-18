@@ -38,6 +38,6 @@ public class AssetLoader : MonoBehaviour
         loadingSlider.value = 100;
         Addressables.Release(downloadHandle);
 
-        Addressables.LoadScene("Stage 1",LoadSceneMode.Additive);
+        Addressables.LoadScene("1",LoadSceneMode.Additive);
     }
 }

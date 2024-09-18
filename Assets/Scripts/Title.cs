@@ -26,7 +26,7 @@ public class Title : MonoBehaviour
         //ƒNƒŠƒbƒN
         if (Input.GetMouseButtonUp(0))
         {
-            StartCoroutine(checkCatalog());
+            //StartCoroutine(checkCatalog());
             bool isSuccess = NetworkManager.Instance.LoadUserData();
 
             if (!isSuccess)
