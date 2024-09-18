@@ -1,6 +1,6 @@
 /*
  * EnemyScript
- * Creator:¼‰YW‘¾ Update:2024/09/02
+ * Creator:è¥¿æµ¦æ™ƒå¤ª Update:2024/09/02
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -15,17 +15,17 @@ public class Enemy : MonoBehaviour
     // Parent
     [SerializeField] GameObject parent;
 
-    //“GHP
+    //æ•µHP
     public GameObject[] playerHP;
-    //HPc—Ê
+    //HPæ®‹é‡
     public int playerLife;
-    //–hŒä’l
+    //é˜²å¾¡å€¤
     public int block;
 
-    //”½Ë‚·‚é‚©
+    //åå°„ã™ã‚‹ã‹
     public bool isReflect;
 
-    //UŒ‚’l
+    //æ”»æ’ƒå€¤
     public int dmg;
 
     int count;
@@ -85,7 +85,7 @@ public class Enemy : MonoBehaviour
     }
     // Start is called before the first frame update
     void Start()
-    {        //ƒvƒŒƒCƒ„[HP‚ğƒ^ƒO‚Åæ“¾
+    {        //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼HPã‚’ã‚¿ã‚°ã§å–å¾—
         playerHP = GameObject.FindGameObjectsWithTag("PlayerHP");
         healthScript = FindObjectOfType<Health>();
         playerLife = healthScript.PlayerHealth;
@@ -120,7 +120,7 @@ public class Enemy : MonoBehaviour
         dmg = 0;
         count = 0;
 
-        // s“®ƒAƒCƒRƒ“‚ğ¶¬
+        // è¡Œå‹•ã‚¢ã‚¤ã‚³ãƒ³ã‚’ç”Ÿæˆ
         SetActions();
     }
 
@@ -134,7 +134,7 @@ public class Enemy : MonoBehaviour
     }
 
     /// <summary>
-    /// s“®ˆ—
+    /// è¡Œå‹•å‡¦ç†
     /// </summary>
     public string Attack()
     {
@@ -147,7 +147,7 @@ public class Enemy : MonoBehaviour
         {
             case "Wait":
                 dmg = 0;
-                infoText.text = "Enemy:—lq‚ğ‚¤‚©‚ª‚Á‚Ä‚¢‚é";
+                infoText.text = "Enemy:æ§˜å­ã‚’ã†ã‹ãŒã£ã¦ã„ã‚‹";
                 SEType = "wait";
                 break;
 
@@ -179,19 +179,19 @@ public class Enemy : MonoBehaviour
                     iconTxt.gameObject.GetComponent<Text>().text = block.ToString();
                 }
 
-                infoText.text = "Enemy:“G‚ÍƒvƒŒƒCƒ„[‚Ìs“®‚ğƒRƒs[‚µ‚½I";
+                infoText.text = "Enemy:æ•µã¯ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¡Œå‹•ã‚’ã‚³ãƒ”ãƒ¼ã—ãŸï¼";
                 break;
 
             case "Sword":
                 dmg += 1;
-                infoText.text = "Enemy:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                infoText.text = "Enemy:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                 SEType = "light";
                 break;
 
             case "Poison":
                 dmg = 0;
                 cardScript.dmg -= 1;
-                infoText.text = "Enemy:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é\nPlayer‚Í“Å‚É‚æ‚èDMG-1";
+                infoText.text = "Enemy:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹\nPlayerã¯æ¯’ã«ã‚ˆã‚ŠDMG-1";
                 SEType = "poison";
                 break;
 
@@ -200,38 +200,38 @@ public class Enemy : MonoBehaviour
                 audioSource.PlayOneShot(boomAttackSE);
                 cardScript.isDead = true;
                 cardScript.enemyLife = 0;
-                infoText.text = "Enemy:©”š‚µ‚½I";
+                infoText.text = "Enemy:è‡ªçˆ†ã—ãŸï¼";
 
                 break;
 
             case "M.A.C.E":
                 dmg += block;
-                infoText.text = "Enemy:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                infoText.text = "Enemy:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                 SEType = "heavy";
                 break;
 
             case "DeathS.Y.T.H":
                 dmg += 3;
-                infoText.text = "Enemy:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                infoText.text = "Enemy:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                 SEType = "heavy";
                 break;
 
             case "S.Y.T.H":
                 dmg += 2;
-                infoText.text = "Enemy:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                infoText.text = "Enemy:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                 SEType = "heavy";
                 break;
 
             case "T.N.T":
                 dmg = 999;
-                infoText.text = "Enemy:ƒhƒJ[ƒ“!" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                infoText.text = "Enemy:ãƒ‰ã‚«ãƒ¼ãƒ³!" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                 SEType = "boom";
                 break;
 
             case "A.X.E":
                 dmg += 1;
                 cardScript.block = 0;
-                infoText.text = "Enemy:ƒV[ƒ‹ƒh”j‰óI" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                infoText.text = "Enemy:ã‚·ãƒ¼ãƒ«ãƒ‰ç ´å£Šï¼" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                 SEType = "heavy";
                 break;
 
@@ -244,7 +244,7 @@ public class Enemy : MonoBehaviour
                 audioSource.PlayOneShot(defenceSE);
                 block++;
                 iconTxt.gameObject.GetComponent<Text>().text = block.ToString();
-                infoText.text = "Enemy:" + 1 + "ƒuƒƒbƒN‚ğó‚¯‚é";
+                infoText.text = "Enemy:" + 1 + "ãƒ–ãƒ­ãƒƒã‚¯ã‚’å—ã‘ã‚‹";
                 break;
 
             case "Reflection":
@@ -254,7 +254,7 @@ public class Enemy : MonoBehaviour
                 {
                     this.gameObject.GetComponent<Renderer>().material.color = new Color32(0, 255, 0, 255);
                 }
-                infoText.text = "Enemy:”½ËƒoƒŠƒA‚ğ“WŠJ";
+                infoText.text = "Enemy:åå°„ãƒãƒªã‚¢ã‚’å±•é–‹";
                 audioSource.PlayOneShot(defenceSE);
                 break;
         }
@@ -264,12 +264,12 @@ public class Enemy : MonoBehaviour
             audioSource.PlayOneShot(parrySE);
             blockEffect();
             cardScript.block--;
-            infoText.text += "\nYou:UŒ‚‚ğƒuƒƒbƒN";
+            infoText.text += "\nYou:æ”»æ’ƒã‚’ãƒ–ãƒ­ãƒƒã‚¯";
             infoText.color = Color.white;
         }
         else
         {
-            // •Ší•ÊSE
+            // æ­¦å™¨åˆ¥SE
             switch (SEType)
             {
                 case "wait":
@@ -302,14 +302,14 @@ public class Enemy : MonoBehaviour
 
             for (int i = 0; i < dmg; i++)
             {
-                //•\¦HP‚ğŒ¸‚ç‚·
+                //è¡¨ç¤ºHPã‚’æ¸›ã‚‰ã™
                 Destroy(playerHP[(playerLife - 1)]);
 
-                //“à•”‚àŒ¸‚ç‚·
+                //å†…éƒ¨ã‚‚æ¸›ã‚‰ã™
                 playerLife--;
                 damageEffect();
 
-                //HPc—Ê‚ª0‚Ìê‡Aˆ—‚ğs‚í‚È‚¢
+                //HPæ®‹é‡ãŒ0ã®å ´åˆã€å‡¦ç†ã‚’è¡Œã‚ãªã„
                 if (playerLife <= 0)
                 {
                     isDead = true;
@@ -388,39 +388,39 @@ public class Enemy : MonoBehaviour
         switch (enemy.GetComponent<SpriteRenderer>().sprite.name)
         {        
             case "OffensiveSlime":
-                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":‚±‚¤Œ©‚¦‚Ä‰½l‚àE‚µ‚Ä‚¢‚é‹¥–\‚ÈƒXƒ‰ƒCƒ€";
+                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":ã“ã†è¦‹ãˆã¦ä½•äººã‚‚æ®ºã—ã¦ã„ã‚‹å‡¶æš´ãªã‚¹ãƒ©ã‚¤ãƒ ";
                 break;
             case "SwatSlime":
-                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":‚½‚Ü‚½‚ÜE‚Á‚½æi“I‚È‘•”õ‚Åg‚ğŒÅ‚ß‚½ƒXƒ‰ƒCƒ€";
+                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":ãŸã¾ãŸã¾æ‹¾ã£ãŸå…ˆé€²çš„ãªè£…å‚™ã§èº«ã‚’å›ºã‚ãŸã‚¹ãƒ©ã‚¤ãƒ ";
                 break;
             case "Lich":
-                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":‰½ŒÌ‚©Š™‚Å‚Í‚È‚­ƒ_ƒCƒiƒ}ƒCƒg‚Å€‚Ìé‚ğs‚¤•Ï‚ÈƒŠƒbƒ`";
+                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":ä½•æ•…ã‹éŒã§ã¯ãªããƒ€ã‚¤ãƒŠãƒã‚¤ãƒˆã§æ­»ã®å®£å‘Šã‚’è¡Œã†å¤‰ãªãƒªãƒƒãƒ";
                 break;
             case "Knight":
-                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":‘½Ê‚ÈŒ•‹Z‚ğg‚¤ã‹‰•ºm\n–³‘Ê‚É‚‹‹æ‚è";
+                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":å¤šå½©ãªå‰£æŠ€ã‚’ä½¿ã†ä¸Šç´šå…µå£«\nç„¡é§„ã«é«˜çµ¦å–ã‚Š";
                 break;
             case "Spider":
-                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":_Œo“Å‚Å’E—Í”­ì‚ğ‹N‚±‚»‚¤‚Æ‚·‚é×ˆ«‚È’wå";
+                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":ç¥çµŒæ¯’ã§è„±åŠ›ç™ºä½œã‚’èµ·ã“ãã†ã¨ã™ã‚‹é‚ªæ‚ªãªèœ˜è››";
                 break;
             case "Sn@il":
-                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":‰½‚Ì•Ï“N‚à‚È‚¢–³ŠQ‚ÈƒJƒ^ƒcƒ€ƒŠ";
+                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":ä½•ã®å¤‰å“²ã‚‚ãªã„ç„¡å®³ãªã‚«ã‚¿ãƒ„ãƒ ãƒª";
                 break;
             case "CopyBot":
-                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":‚±‚¿‚ç‚Ìs“®‚ğ‚Ù‚ÚŠ®‚Ø‚«‚ÉƒRƒs[‚µ‚Ä‚­‚é–À˜f‚Èƒ{ƒbƒg";
+                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":ã“ã¡ã‚‰ã®è¡Œå‹•ã‚’ã»ã¼å®Œãºãã«ã‚³ãƒ”ãƒ¼ã—ã¦ãã‚‹è¿·æƒ‘ãªãƒœãƒƒãƒˆ";
                 break;
             case "MirrorBot":
-                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":ƒoƒŠƒA“WŠJ‚É“Á‰»‚µ‚½ƒoƒŠƒAƒtƒŠ[‚¶‚á‚È‚¢ƒ{ƒbƒg";
+                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":ãƒãƒªã‚¢å±•é–‹ã«ç‰¹åŒ–ã—ãŸãƒãƒªã‚¢ãƒ•ãƒªãƒ¼ã˜ã‚ƒãªã„ãƒœãƒƒãƒˆ";
                 break;
             case "Mine":
-                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":‹C«‚Ìr‚¢’n—‹\n”ñí‚ÉƒfƒŠƒP[ƒg";
+                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":æ°—æ€§ã®è’ã„åœ°é›·\néå¸¸ã«ãƒ‡ãƒªã‚±ãƒ¼ãƒˆ";
                 break;
             case "Ghost":
-                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":ƒŠƒbƒ`ˆÈã‚Ì’nˆÊ‚ğ•Û—L‚µ‚Ä‚¢‚éŠçF‚Ìˆ«‚¢ƒS[ƒXƒg";
+                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":ãƒªãƒƒãƒä»¥ä¸Šã®åœ°ä½ã‚’ä¿æœ‰ã—ã¦ã„ã‚‹é¡”è‰²ã®æ‚ªã„ã‚´ãƒ¼ã‚¹ãƒˆ";
                 break;
             case "KingSlime":
-                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":–³‘Ê‚É’nˆÊ‚Ì‚ ‚é‚½‚¾‚Ì˜V‚¢‚Ú‚êƒXƒ‰ƒCƒ€";
+                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":ç„¡é§„ã«åœ°ä½ã®ã‚ã‚‹ãŸã ã®è€ã„ã¼ã‚Œã‚¹ãƒ©ã‚¤ãƒ ";
                 break;
         }
-        if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text += "\n‰E‚Ìƒn[ƒg‚ğUŒ‚‚ÅŒ¸‚ç‚¹‚ÎƒvƒŒƒCƒ„[‚ÌŸ—˜‚Æ‚È‚é";
+        if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text += "\nå³ã®ãƒãƒ¼ãƒˆã‚’æ”»æ’ƒã§æ¸›ã‚‰ã›ã°ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å‹åˆ©ã¨ãªã‚‹";
     }
 }

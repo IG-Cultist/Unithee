@@ -1,6 +1,6 @@
 /*
  * CardScript
- * Creator:¼‰YW‘¾ Update:2024/09/02
+ * Creator:è¥¿æµ¦æ™ƒå¤ª Update:2024/09/02
  */
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using Unity.Collections.LowLevel.Unsafe;
 
 public class Card : MonoBehaviour
 {
-    // ƒJ[ƒh”z’u‚Ìe
+    // ã‚«ãƒ¼ãƒ‰é…ç½®ã®è¦ª
     [SerializeField] GameObject parentCard;
 
     // GameEnd Button
@@ -162,7 +162,7 @@ public class Card : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text += "ƒ`ƒ…[ƒgƒŠƒAƒ‹‚Ö‚æ‚¤‚±‚»I‹C‚É‚È‚éƒAƒCƒRƒ“‚ğƒ^ƒbƒv‚µ‚ÄÚ×‚ğŠm”F‚µ‚æ‚¤";
+        if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text += "ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«ã¸ã‚ˆã†ã“ãï¼æ°—ã«ãªã‚‹ã‚¢ã‚¤ã‚³ãƒ³ã‚’ã‚¿ãƒƒãƒ—ã—ã¦è©³ç´°ã‚’ç¢ºèªã—ã‚ˆã†";
         iconTxt = protectIcon.transform.Find("Text");
         // SetSE
         this.gameObject.AddComponent<AudioSource>();
@@ -300,13 +300,13 @@ public class Card : MonoBehaviour
 
         // Shot Ray from Touch Point
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        // ‘æ“ñˆø” ƒŒƒC‚Í‚Ç‚Ì•ûŒü‚Éi‚Ş‚©(zero=w’è“_)
+        // ç¬¬äºŒå¼•æ•° ãƒ¬ã‚¤ã¯ã©ã®æ–¹å‘ã«é€²ã‚€ã‹(zero=æŒ‡å®šç‚¹)
         RaycastHit2D hit2d = Physics2D.Raycast(worldPosition, Vector2.zero);
 
         // Hit Process
         if (hit2d)
         {
-            //ƒqƒbƒg‚µ‚½ƒIƒuƒWƒFƒNƒgæ“¾
+            //ãƒ’ãƒƒãƒˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå–å¾—
             GameObject hitObj = hit2d.collider.gameObject;
 
             if (panelActive == true)
@@ -334,54 +334,54 @@ public class Card : MonoBehaviour
                 switch (hitObj.name)
                 {
                     case "Wait":
-                        infoText.text = "Wait:‘Ò‹@‚·‚é";
+                        infoText.text = "Wait:å¾…æ©Ÿã™ã‚‹";
                         break;
 
                     case "Destruction":
-                        infoText.text = "Destruction:ƒvƒŒƒCƒ„[‚à‚ë‚Æ‚à”š”­‚·‚é";
+                        infoText.text = "Destruction:ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚‚ã‚ã¨ã‚‚çˆ†ç™ºã™ã‚‹";
                         break;
 
                     case "Copy":
-                        infoText.text = "Copy:ƒvƒŒƒCƒ„[‚Ìs“®‚ğƒRƒs[‚·‚é";
+                        infoText.text = "Copy:ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¡Œå‹•ã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹";
                         break;
 
                     case "Sword":
-                        infoText.text = "Sword:1ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                        infoText.text = "Sword:1ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                         break;
 
                     case "DeathS.Y.T.H":
-                        infoText.text = "DeathS.Y.T.H:3ƒ_ƒ[ƒW‚ğ—^‚¦‚éŠçFH‚Ìˆ«‚¢‘åŠ™";
+                        infoText.text = "DeathS.Y.T.H:3ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹é¡”è‰²ï¼Ÿã®æ‚ªã„å¤§éŒ";
                         break;
 
                     case "S.Y.T.H":
-                        infoText.text = "S.Y.T.H:2ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                        infoText.text = "S.Y.T.H:2ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                         break;
 
                     case "A.X.E":
-                        infoText.text = "A.X.E:1ƒ_ƒ[ƒW‚ğ—^‚¦‚é\nƒuƒƒbƒN‚ğ–³‹•”j‰ó";
+                        infoText.text = "A.X.E:1ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹\nãƒ–ãƒ­ãƒƒã‚¯ã‚’ç„¡è¦–ï¼†ç ´å£Š";
                         break;
 
                     case "M.A.C.E":
-                        infoText.text = "M.A.C.E:1+ƒuƒƒbƒN‚Ì’l•ªƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                        infoText.text = "M.A.C.E:1+ãƒ–ãƒ­ãƒƒã‚¯ã®å€¤åˆ†ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                         break;
 
                     case "T.N.T":
-                        infoText.text = "T.N.T:‰ó–Å“I‚Èƒ_ƒ[ƒW‚ğ—^‚¦‚é...";
+                        infoText.text = "T.N.T:å£Šæ»…çš„ãªãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹...";
                         break;
 
                     case "Poison":
-                        infoText.text = "Poison:‘Šè‚Ìƒ_ƒ[ƒW‚ğ1Œ¸‚ç‚·";
+                        infoText.text = "Poison:ç›¸æ‰‹ã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’1æ¸›ã‚‰ã™";
                         break;
 
                     case "Shield":
-                        infoText.text = "Shield:1ƒuƒƒbƒN‚ğó‚¯‚é";
+                        infoText.text = "Shield:1ãƒ–ãƒ­ãƒƒã‚¯ã‚’å—ã‘ã‚‹";
                         break;
 
                     case "Reflection":
-                        infoText.text = "Reflection:UŒ‚‚ğ”½Ë‚·‚éƒoƒŠƒA‚ğ“WŠJ";
+                        infoText.text = "Reflection:æ”»æ’ƒã‚’åå°„ã™ã‚‹ãƒãƒªã‚¢ã‚’å±•é–‹";
                         break;
                 }
-                if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text += "\nƒvƒŒƒCƒ„[“¯—l“G‚à¶‚©‚ç‡‚És“®‚·‚é";
+                if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text += "\nãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼åŒæ§˜æ•µã‚‚å·¦ã‹ã‚‰é †ã«è¡Œå‹•ã™ã‚‹";
             }
             else if (panelActive != true && hitObj.tag != "passive")
             {
@@ -414,31 +414,31 @@ public class Card : MonoBehaviour
                     switch (hitObj.name)
                     {
                         case "Sword":
-                            infoText.text = "Sword:1ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                            infoText.text = "Sword:1ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                             break;
 
                         case "S.Y.T.H":
-                            infoText.text = "S.Y.T.H:2ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                            infoText.text = "S.Y.T.H:2ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                             break;
 
                         case "A.X.E":
-                            infoText.text = "A.X.E:1ƒ_ƒ[ƒW‚ğ—^‚¦‚é\nƒuƒƒbƒN‚ğ–³‹•”j‰ó";
+                            infoText.text = "A.X.E:1ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹\nãƒ–ãƒ­ãƒƒã‚¯ã‚’ç„¡è¦–ï¼†ç ´å£Š";
                             break;
 
                         case "M.A.C.E":
-                            infoText.text = "M.A.C.E:1+ƒuƒƒbƒN‚Ì’l•ªƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                            infoText.text = "M.A.C.E:1+ãƒ–ãƒ­ãƒƒã‚¯ã®å€¤åˆ†ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                             break;
 
                         case "T.N.T":
-                            infoText.text = "T.N.T:‰ó–Å“I‚Èƒ_ƒ[ƒW‚ğ—^‚¦‚é...";
+                            infoText.text = "T.N.T:å£Šæ»…çš„ãªãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹...";
                             break;
 
                         case "Shield":
-                            infoText.text = "Shield:1ƒuƒƒbƒN‚ğó‚¯‚é";
+                            infoText.text = "Shield:1ãƒ–ãƒ­ãƒƒã‚¯ã‚’å—ã‘ã‚‹";
                             break;
                     }
-                    if (activeList.Count ==4 && SceneManager.GetActiveScene().name == "Tutorial") infoText.text += "\nl–‡‘I‘ğ‚µ‚½ó‘Ô‚¾‚Æí“¬ŠJnƒ{ƒ^ƒ“‚ª‰Ÿ‚¹‚é\nUŒ‚‚Í•K‚¸ƒvƒŒƒCƒ„[‚ªæ‚¾‚ÆŠo‚¦‚Ä‚¨‚±‚¤";
-                    else if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text += "\nèD‚Í¶‚©‚ç‡‚Ég—p‚³‚ê‚é\n‚à‚¤ˆê“xƒ^ƒbƒv‚·‚é‚±‚Æ‚Å‘I‘ğ‚ğ‰ğœ‚Å‚«‚é";
+                    if (activeList.Count ==4 && SceneManager.GetActiveScene().name == "Tutorial") infoText.text += "\nå››æšé¸æŠã—ãŸçŠ¶æ…‹ã ã¨æˆ¦é—˜é–‹å§‹ãƒœã‚¿ãƒ³ãŒæŠ¼ã›ã‚‹\næ”»æ’ƒã¯å¿…ãšãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå…ˆã ã¨è¦šãˆã¦ãŠã“ã†";
+                    else if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text += "\næ‰‹æœ­ã¯å·¦ã‹ã‚‰é †ã«ä½¿ç”¨ã•ã‚Œã‚‹\nã‚‚ã†ä¸€åº¦ã‚¿ãƒƒãƒ—ã™ã‚‹ã“ã¨ã§é¸æŠã‚’è§£é™¤ã§ãã‚‹";
                 }
                 else //Already Selected
                 {
@@ -483,7 +483,7 @@ public class Card : MonoBehaviour
                         infoText.text = passiveDictionary["HandGun"].Explain;
                         break;
                 }
-                if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text += "\n‚±‚ê‚ç‚ÍƒpƒbƒVƒu‚Æ‚¢‚¢\nƒJ[ƒh‚Éã‹L‚ÌŒø‰Ê‚ğ•t—^‚·‚é";
+                if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text += "\nã“ã‚Œã‚‰ã¯ãƒ‘ãƒƒã‚·ãƒ–ã¨ã„ã„\nã‚«ãƒ¼ãƒ‰ã«ä¸Šè¨˜ã®åŠ¹æœã‚’ä»˜ä¸ã™ã‚‹";
             }
         }
     }
@@ -512,20 +512,20 @@ public class Card : MonoBehaviour
                     {
                         case "Sword":
                             dmg += 1;
-                            infoText.text = "You:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                            infoText.text = "You:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                             SEType = "light";
                             break;
 
                         case "A.X.E":
                             dmg += 1;
                             enemyScript.block = 0;
-                            infoText.text = "You:ƒV[ƒ‹ƒh”j‰óI\n" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                            infoText.text = "You:ã‚·ãƒ¼ãƒ«ãƒ‰ç ´å£Šï¼\n" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                             SEType = "heavy";
                             break;
 
                         case "S.Y.T.H":
                             dmg += 2;
-                            infoText.text = "You:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                            infoText.text = "You:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                             SEType = "heavy";
                             break;
 
@@ -533,15 +533,15 @@ public class Card : MonoBehaviour
                             dmg += block;
                             if (dmg < 3)
                             {
-                                infoText.text = "You:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
-                            }else infoText.text = "You:ŸÓg‚ÌˆêŒ‚!\n" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é!";
+                                infoText.text = "You:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
+                            }else infoText.text = "You:æ¸¾èº«ã®ä¸€æ’ƒ!\n" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹!";
                             SEType = "heavy";
 
                             break;
 
                         case "T.N.T":
                             dmg += 999;
-                            infoText.text = "You:ƒhƒJ[ƒ“!\n" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é!";
+                            infoText.text = "You:ãƒ‰ã‚«ãƒ¼ãƒ³!\n" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹!";
                             SEType = "boom";
                             break;
                     }
@@ -555,26 +555,26 @@ public class Card : MonoBehaviour
                         isBlock = true;
 
                         audioSource.PlayOneShot(parrySE);
-                        infoText.text = "Enemy:UŒ‚‚ğƒuƒƒbƒN";
+                        infoText.text = "Enemy:æ”»æ’ƒã‚’ãƒ–ãƒ­ãƒƒã‚¯";
                     }
                     else
                     {
                         if (enemyScript.isReflect == true)
                         {
                             audioSource.PlayOneShot(reflectSE);
-                            infoText.text += "\n‚µ‚©‚µAUŒ‚‚Í”½Ë‚³‚ê‚½";
+                            infoText.text += "\nã—ã‹ã—ã€æ”»æ’ƒã¯åå°„ã•ã‚ŒãŸ";
                             for (int i = 0; i < dmg; i++)
                             {
-                                //HPc—Ê‚ª0‚Ìê‡Aˆ—‚ğs‚í‚È‚¢
+                                //HPæ®‹é‡ãŒ0ã®å ´åˆã€å‡¦ç†ã‚’è¡Œã‚ãªã„
                                 if (enemyScript.playerLife <= 0)
                                 {
                                     enemyScript.isDead = true;
                                     break;
                                 }
-                                //•\¦‚ğŒ¸‚ç‚·
+                                //è¡¨ç¤ºã‚’æ¸›ã‚‰ã™
                                 Destroy(enemyScript.playerHP[(enemyScript.playerLife - 1)]);
 
-                                //“à•”‚àŒ¸‚ç‚·
+                                //å†…éƒ¨ã‚‚æ¸›ã‚‰ã™
                                 enemyScript.playerLife--;
                             }
                             dmg = 0;
@@ -585,15 +585,15 @@ public class Card : MonoBehaviour
                             //Loop to Damage Values
                             for (int i = 0; i < dmg; i++)
                             {
-                                //HPc—Ê‚ª0‚Ìê‡Aˆ—‚ğs‚í‚È‚¢
+                                //HPæ®‹é‡ãŒ0ã®å ´åˆã€å‡¦ç†ã‚’è¡Œã‚ãªã„
                                 if (enemyLife <= 0)
                                 {
                                     break;
                                 }
-                                //•\¦‚ğŒ¸‚ç‚·
+                                //è¡¨ç¤ºã‚’æ¸›ã‚‰ã™
                                 Destroy(enemyHP[(enemyLife - 1)]);
 
-                                //“à•”‚àŒ¸‚ç‚·
+                                //å†…éƒ¨ã‚‚æ¸›ã‚‰ã™
                                 enemyLife--;
                                 Debug.Log("Enemy's HP:" + enemyLife);
                             }
@@ -604,7 +604,7 @@ public class Card : MonoBehaviour
                         // if Enemy Dead
                         if (enemyLife <= 0) isDead = true;
                     }
-                    // •Ší•ÊSE
+                    // æ­¦å™¨åˆ¥SE
                     switch (SEType)
                     {
                         case "light":
@@ -631,22 +631,22 @@ public class Card : MonoBehaviour
                     {
                         case "Shield":
                             block++;
-                            infoText.text = "You:" + block + "ƒuƒƒbƒN‚ğó‚¯‚é";
+                            infoText.text = "You:" + block + "ãƒ–ãƒ­ãƒƒã‚¯ã‚’å—ã‘ã‚‹";
                             break;
 
                         case "SpikeShield":
                             block++;
-                            infoText.text = "You:" + block +"ƒuƒƒbƒN‚ğó‚¯‚é\nƒV[ƒ‹ƒhƒoƒbƒVƒ…‚ğ‚©‚Ü‚µ‚½I" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                            infoText.text = "You:" + block +"ãƒ–ãƒ­ãƒƒã‚¯ã‚’å—ã‘ã‚‹\nã‚·ãƒ¼ãƒ«ãƒ‰ãƒãƒƒã‚·ãƒ¥ã‚’ã‹ã¾ã—ãŸï¼" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
 
-                            //HPc—Ê‚ª0‚Ìê‡Aˆ—‚ğs‚í‚È‚¢
+                            //HPæ®‹é‡ãŒ0ã®å ´åˆã€å‡¦ç†ã‚’è¡Œã‚ãªã„
                             if (enemyLife <= 0)
                             {
                                 break;
                             }
-                            //•\¦‚ğŒ¸‚ç‚·
+                            //è¡¨ç¤ºã‚’æ¸›ã‚‰ã™
                             Destroy(enemyHP[(enemyLife - 1)]);
 
-                            //“à•”‚àŒ¸‚ç‚·
+                            //å†…éƒ¨ã‚‚æ¸›ã‚‰ã™
                             enemyLife--;
                             Debug.Log("Enemy's HP:" + enemyLife);
 
@@ -657,7 +657,7 @@ public class Card : MonoBehaviour
                             break;
                     }
 
-                    // ƒuƒƒbƒN’l‚ª0ˆÈã‚©‚ÂƒAƒCƒRƒ“‚ª¶¬‚³‚ê‚Ä‚¢‚È‚¢ê‡
+                    // ãƒ–ãƒ­ãƒƒã‚¯å€¤ãŒ0ä»¥ä¸Šã‹ã¤ã‚¢ã‚¤ã‚³ãƒ³ãŒç”Ÿæˆã•ã‚Œã¦ã„ãªã„å ´åˆ
                     if (block > 0)
                     {
                         protectIcon.SetActive(true);
@@ -666,7 +666,7 @@ public class Card : MonoBehaviour
                     break;
 
                 case "Support":
-                    Debug.Log("•â•");
+                    Debug.Log("è£œåŠ©");
                     passiveEffect(item);
                     break;
 
@@ -685,20 +685,20 @@ public class Card : MonoBehaviour
                     networkManager.ClearStage(int.Parse(SceneManager.GetActiveScene().name));
                 }
 
-                infoText.text = "“G‚ğ“|‚µ‚½I";
+                infoText.text = "æ•µã‚’å€’ã—ãŸï¼";
                 audioSource.PlayOneShot(clearSE);
                 return;
             } 
             if (enemyScript.isDead == true)
             {
-                infoText.text += "\n€‚ñ‚Å‚µ‚Ü‚Á‚½...";
+                infoText.text += "\næ­»ã‚“ã§ã—ã¾ã£ãŸ...";
                 return;
             }
             // Enemy's Action
             enemyScript.Attack();
             if (enemyScript.isDead == true)
             {
-                infoText.text += "\n€‚ñ‚Å‚µ‚Ü‚Á‚½...";
+                infoText.text += "\næ­»ã‚“ã§ã—ã¾ã£ãŸ...";
                 return;
             }
 
@@ -717,7 +717,7 @@ public class Card : MonoBehaviour
         activeList.Clear();
         // Reset Count
         count = 0;
-        if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text += "¸”s‚µ‚½H‰E‚É•\¦‚³‚ê‚½–îˆóƒ{ƒ^ƒ“‚Å‚â‚è’¼‚»‚¤";
+        if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text += "å¤±æ•—ã—ãŸï¼Ÿå³ã«è¡¨ç¤ºã•ã‚ŒãŸçŸ¢å°ãƒœã‚¿ãƒ³ã§ã‚„ã‚Šç›´ãã†";
         button.SetActive(true);
         retryButton.SetActive(true);
     }
@@ -727,7 +727,7 @@ public class Card : MonoBehaviour
     /// </summary>
     void cardRefresh(List<GameObject> refreshTarget)
     {
-        // ˆê“I‚ÉŒ»İƒAƒNƒeƒBƒu‚ÈƒJ[ƒh‚ğ‘ã“ü‚·‚éƒŠƒXƒg
+        // ä¸€æ™‚çš„ã«ç¾åœ¨ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªã‚«ãƒ¼ãƒ‰ã‚’ä»£å…¥ã™ã‚‹ãƒªã‚¹ãƒˆ
         List<GameObject> keepList = new List<GameObject>();
         foreach (var item in refreshTarget) //Drstroy All Active Card & Add Assumed List
         {
@@ -739,18 +739,18 @@ public class Card : MonoBehaviour
         // Reset Count
         count = 0;
 
-        foreach (var item in keepList) //•À‚×‚È‚¨‚·
+        foreach (var item in keepList) //ä¸¦ã¹ãªãŠã™
         {
-            //Œ»İ‚ÌƒJ[ƒhƒvƒŒƒnƒu‚ğŒ³‚ÉAƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬A
+            //ç¾åœ¨ã®ã‚«ãƒ¼ãƒ‰ãƒ—ãƒ¬ãƒãƒ–ã‚’å…ƒã«ã€ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆã€
             GameObject obj = Instantiate(item, new Vector2(-8.2f + (2.0f * count), -4.1f), Quaternion.identity);
-            //ƒIƒuƒWƒFƒNƒg‚ÌF‚ğ’ù³
+            //ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è‰²ã‚’è¨‚æ­£
             obj.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
-            //ƒNƒ[ƒ“‚µ‚½ƒIƒuƒWƒFƒNƒg‚Ì–¼‘O‚ğ’ù³
+            //ã‚¯ãƒ­ãƒ¼ãƒ³ã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åå‰ã‚’è¨‚æ­£
             obj.name = item.name;
-            //ƒJ[ƒh‚Ìƒ^ƒO‚ğƒNƒ[ƒ“ƒIƒuƒWƒFƒNƒg‚É‚à’Ç‰Á
+            //ã‚«ãƒ¼ãƒ‰ã®ã‚¿ã‚°ã‚’ã‚¯ãƒ­ãƒ¼ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã‚‚è¿½åŠ 
             obj.tag = item.tag;
             refreshTarget.Add(obj);
-            //‡˜‚ğ‰ÁZ
+            //é †åºã‚’åŠ ç®—
             count++;
         }
     }
@@ -782,7 +782,7 @@ public class Card : MonoBehaviour
                 }
                 if (passive[passiveCnt] == "ArmorChip")
                 {
-                    Debug.Log("ƒA[ƒ}[ƒ`ƒbƒv”­“® DEF+1");
+                    Debug.Log("ã‚¢ãƒ¼ãƒãƒ¼ãƒãƒƒãƒ—ç™ºå‹• DEF+1");
 
                     if (block <= 0)
                     {
@@ -859,7 +859,7 @@ public class Card : MonoBehaviour
         if (isDead == true || isPause == true) return;
         // Reset Info
 
-        if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text = "‚±‚Ìƒpƒlƒ‹‚ÍRD‚ğQÆ‚Å‚«‚é\n‰E‰º‚ÌƒAƒCƒRƒ“‚ğƒ^ƒbƒv‚·‚é‚±‚Æ‚ÅèD‚ÆŒğŠ·‚ª‚Å‚«‚é";
+        if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text = "ã“ã®ãƒ‘ãƒãƒ«ã¯å±±æœ­ã‚’å‚ç…§ã§ãã‚‹\nå³ä¸‹ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’ã‚¿ãƒƒãƒ—ã™ã‚‹ã“ã¨ã§æ‰‹æœ­ã¨äº¤æ›ãŒã§ãã‚‹";
         else infoText.text = "";
         // Panel Active yet
         if (panelActive == false)
@@ -907,32 +907,32 @@ public class Card : MonoBehaviour
             int cnt = 0;
             foreach (var item in handCard)
             {
-                if (item== discardTarget) //‘I‘ğƒJ[ƒh‚ÆŒ»İ‚ÌƒJ[ƒh‚Ì–¼‘O‚ªˆê’v‚µ‚½ê‡
+                if (item== discardTarget) //é¸æŠã‚«ãƒ¼ãƒ‰ã¨ç¾åœ¨ã®ã‚«ãƒ¼ãƒ‰ã®åå‰ãŒä¸€è‡´ã—ãŸå ´åˆ
                 {
-                    // Še•K—v‚ÈƒIƒuƒWƒFƒNƒg‚ÌTransform‚ğæ“¾
+                    // å„å¿…è¦ãªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®Transformã‚’å–å¾—
                     Vector2 pos = item.transform.position;
                     Vector2 scale = item.transform.localScale;
-                    // RD‚Ì¶’[‚ÌƒJ[ƒh‚ğ¶¬
+                    // å±±æœ­ã®å·¦ç«¯ã®ã‚«ãƒ¼ãƒ‰ã‚’ç”Ÿæˆ
                     GameObject obj = Instantiate(deckCard[0], new Vector2(pos.x, pos.y), Quaternion.identity);
-                    // ƒRƒ‰ƒCƒ_[‚ğİ’è
+                    // ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’è¨­å®š
                     obj.AddComponent<BoxCollider2D>();
                     obj.GetComponent<BoxCollider2D>().isTrigger = true;
-                    // ƒXƒP[ƒ‹‚ğ’²®
+                    // ã‚¹ã‚±ãƒ¼ãƒ«ã‚’èª¿æ•´
                     obj.transform.localScale = scale;
-                    // e‚É“ü‚ê‚é
+                    // è¦ªã«å…¥ã‚Œã‚‹
                     obj.transform.SetParent(parentCard.transform, false);
-                    // –¼‘O‚ğC³
+                    // åå‰ã‚’ä¿®æ­£
                     obj.name = deckCard[0].name;
 
-                    // ƒ^ƒO‚É‰‚¶‚½V‚½‚Èƒ^ƒO‚ğ•t—^
+                    // ã‚¿ã‚°ã«å¿œã˜ãŸæ–°ãŸãªã‚¿ã‚°ã‚’ä»˜ä¸
                     switch (deckCard[0].tag)
                     {
-                        case "DeckAttack": //UŒ‚ƒ^ƒO‚Ìê‡
+                        case "DeckAttack": //æ”»æ’ƒã‚¿ã‚°ã®å ´åˆ
 
                             obj.tag = "Attack";
                             break;
 
-                        case "DeckDefence": //–hŒäƒ^ƒO‚Ìê‡
+                        case "DeckDefence": //é˜²å¾¡ã‚¿ã‚°ã®å ´åˆ
 
                             obj.tag = "Defence";
                             break;
@@ -942,7 +942,7 @@ public class Card : MonoBehaviour
                     }
                     obj.GetComponent<BoxCollider2D>().enabled = true;
 
-                    // ŒğŠ·æ‚ÌƒJ[ƒh‚ÌŒã‚ë‚Ö’Ç‰Á‚µAŒğŠ·æ‚ÌƒJ[ƒh‚ğÁ‚·
+                    // äº¤æ›å…ˆã®ã‚«ãƒ¼ãƒ‰ã®å¾Œã‚ã¸è¿½åŠ ã—ã€äº¤æ›å…ˆã®ã‚«ãƒ¼ãƒ‰ã‚’æ¶ˆã™
                     handCard.Insert(cnt,obj);
                     handCard.Remove(item);
                     item.SetActive(false);
@@ -958,7 +958,7 @@ public class Card : MonoBehaviour
                     // Remove from List
                     deckCard.Remove(deckCard[0]);
 
-                    // ˆê“I‚ÉŒ»İƒAƒNƒeƒBƒu‚ÈƒJ[ƒh‚ğ‘ã“ü‚·‚éƒŠƒXƒg
+                    // ä¸€æ™‚çš„ã«ç¾åœ¨ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªã‚«ãƒ¼ãƒ‰ã‚’ä»£å…¥ã™ã‚‹ãƒªã‚¹ãƒˆ
                     List<GameObject> keepList = new List<GameObject>();
                     foreach (var card in deckCard) //Drstroy All Active Card & Add Assumed List
                     {
@@ -969,22 +969,22 @@ public class Card : MonoBehaviour
                     deckCard.Clear();
 
                     int refreshCnt = 0;
-                    foreach (var card in keepList) //•À‚×‚È‚¨‚·
+                    foreach (var card in keepList) //ä¸¦ã¹ãªãŠã™
                     {
-                        // Œ»İ‚ÌƒJ[ƒhƒvƒŒƒnƒu‚ğŒ³‚ÉAƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬A
+                        // ç¾åœ¨ã®ã‚«ãƒ¼ãƒ‰ãƒ—ãƒ¬ãƒãƒ–ã‚’å…ƒã«ã€ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆã€
                         GameObject objKeep = Instantiate(card, new Vector2(-0.38f + (0.25f * refreshCnt), 0.14f), Quaternion.identity);
 
-                        // ƒXƒP[ƒ‹‚ğC³
+                        // ã‚¹ã‚±ãƒ¼ãƒ«ã‚’ä¿®æ­£
                         objKeep.transform.localScale = new Vector2(0.035f, 0.08f);
-                        // ƒNƒ[ƒ“‚µ‚½ƒIƒuƒWƒFƒNƒg‚Ì–¼‘O‚ğ’ù³
+                        // ã‚¯ãƒ­ãƒ¼ãƒ³ã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åå‰ã‚’è¨‚æ­£
                         objKeep.name = card.name;
-                        // ƒJ[ƒh‚Ìƒ^ƒO‚ğƒNƒ[ƒ“ƒIƒuƒWƒFƒNƒg‚É‚à’Ç‰Á
+                        // ã‚«ãƒ¼ãƒ‰ã®ã‚¿ã‚°ã‚’ã‚¯ãƒ­ãƒ¼ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã‚‚è¿½åŠ 
                         objKeep.tag = card.tag;
-                        // e‚É“Ë‚Á‚Ş
+                        // è¦ªã«çªã£è¾¼ã‚€
                         objKeep.transform.SetParent(deckCardParent.transform, false);
 
                         deckCard.Add(objKeep);
-                        // ‡˜‚ğ‰ÁZ
+                        // é †åºã‚’åŠ ç®—
                         refreshCnt++;
                     }
 
@@ -995,7 +995,7 @@ public class Card : MonoBehaviour
                 }
                 cnt++;
             }
-            // ŒğŠ·‰Â”\‰ñ”‚ğŒ¸‚ç‚·
+            // äº¤æ›å¯èƒ½å›æ•°ã‚’æ¸›ã‚‰ã™
             discardCnt--;
         }
         else return;
