@@ -556,6 +556,7 @@ public class Card : MonoBehaviour
 
                         audioSource.PlayOneShot(parrySE);
                         infoText.text = "Enemy:攻撃をブロック";
+                        dmg = 0;
                     }
                     else
                     {
@@ -799,11 +800,8 @@ public class Card : MonoBehaviour
 
                     if (block <= 0)
                     {
-                        //Get Card's GameObjects from Resources Folder
-                        GameObject prefab = (GameObject)Resources.Load("ProtectIcon");
-
-                        // Create Instance from Now Turn's Cards
-                        protectIcon = Instantiate(prefab, new Vector2(-4.35f, -1.2f), Quaternion.identity);
+                        protectIcon.SetActive(true);
+                        iconTxt.gameObject.GetComponent<Text>().text = block.ToString();
                     }
 
                     block++;
