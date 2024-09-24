@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -650,12 +649,12 @@ MonoBehaviour:
   m_RequiresColorTexture: 0
   m_Version: 2
   m_TaaSettings:
-    quality: 3
-    frameInfluence: 0.1
-    jitterScale: 1
-    mipBias: 0
-    varianceClampScale: 0.9
-    contrastAdaptiveSharpening: 0
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!81 &265629673
 AudioListener:
   m_ObjectHideFlags: 0
@@ -691,9 +690,9 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
+    x: 0.090887964
     y: 0
-    width: 1
+    width: 0.8182241
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
@@ -1717,7 +1716,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   infoText: {fileID: 1427263499}
-  passiveID: 02000000020000000200000002000000
+  passiveID: 02000000020000000000000002000000
 --- !u!1 &684275931
 GameObject:
   m_ObjectHideFlags: 0
@@ -2882,12 +2881,12 @@ MonoBehaviour:
   m_RequiresColorTexture: 0
   m_Version: 2
   m_TaaSettings:
-    quality: 3
-    frameInfluence: 0.1
-    jitterScale: 1
-    mipBias: 0
-    varianceClampScale: 0.9
-    contrastAdaptiveSharpening: 0
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!20 &1070368066
 Camera:
   m_ObjectHideFlags: 0
@@ -3942,7 +3941,7 @@ MonoBehaviour:
   deckCardParent: {fileID: 1668254001}
   card:
   - {fileID: 3888425363234300130, guid: 771eba5fd22334f4d8b942dc4afd464a, type: 3}
-  - {fileID: 3888425363234300130, guid: 771eba5fd22334f4d8b942dc4afd464a, type: 3}
+  - {fileID: 2261945988112592858, guid: ed6a15e310394ed4ca9d24e19e0c60a8, type: 3}
   - {fileID: 3888425363234300130, guid: 771eba5fd22334f4d8b942dc4afd464a, type: 3}
   - {fileID: 3888425363234300130, guid: 771eba5fd22334f4d8b942dc4afd464a, type: 3}
   deckCard:
@@ -3952,14 +3951,16 @@ MonoBehaviour:
   - Shield
   - T.N.T
   - T.N.T
-  activeList:
-  - {fileID: 0}
   discardText: {fileID: 141210835}
   infoText: {fileID: 1427263499}
   gameSpeedSlider: {fileID: 1154489196}
   discardCnt: 2
+  activeList:
+  - {fileID: 0}
   block: 1
+  enemyLife: 0
   dmg: 0
+  isDead: 0
 --- !u!4 &1513272483
 Transform:
   m_ObjectHideFlags: 0
@@ -5452,6 +5453,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8468987479401934004, guid: bc82d7ad3b195a24dabab85ce4b632bf, type: 3}
+      propertyPath: block
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8468987479401934004, guid: bc82d7ad3b195a24dabab85ce4b632bf, type: 3}
       propertyPath: action
       value: 
       objectReference: {fileID: 0}
@@ -5473,7 +5478,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8468987479401934004, guid: bc82d7ad3b195a24dabab85ce4b632bf, type: 3}
       propertyPath: actionList.Array.data[0]
-      value: Shield
+      value: T.N.T
       objectReference: {fileID: 0}
     - target: {fileID: 8468987479401934004, guid: bc82d7ad3b195a24dabab85ce4b632bf, type: 3}
       propertyPath: actionList.Array.data[1]
