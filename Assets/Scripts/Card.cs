@@ -696,6 +696,19 @@ public class Card : MonoBehaviour
             }
             // Enemy's Action
             enemyScript.Attack();
+
+            if (isDead == true && enemyScript.isDead != true)
+            {
+                if (SceneManager.GetActiveScene().name != "Tutorial")
+                {
+                    NetworkManager networkManager = NetworkManager.Instance;
+                    networkManager.ClearStage(int.Parse(SceneManager.GetActiveScene().name));
+                }
+
+                infoText.text = "Enemy:自爆した!\nYou:攻撃をブロック\n敵を倒した！";
+                audioSource.PlayOneShot(clearSE);
+                return;
+            }
             if (enemyScript.isDead == true)
             {
                 infoText.text += "\n死んでしまった...";

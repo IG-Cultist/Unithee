@@ -164,9 +164,13 @@ public class Enemy : MonoBehaviour
                     {
                         dmg += block;
                     }
+                    else if (cardScript.activeList[count].name == "S.Y.T.H")
+                    {
+                        dmg = 2;
+                    }
                     else
                     {
-                        dmg = cardScript.dmg;
+                        dmg = 1;
                     }
                 }
                 else
