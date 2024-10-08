@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using UnityEngine.UIElements;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class Enemy : MonoBehaviour
 {
@@ -38,6 +39,9 @@ public class Enemy : MonoBehaviour
     List<GameObject> actionObject;
 
     public bool isDead;
+
+    // 出血判定
+    public bool isBleeding;
 
     //Card Script
     Card cardScript;
@@ -79,13 +83,18 @@ public class Enemy : MonoBehaviour
 
     string SEType;
 
+    bool painted;
+
     private void Awake()
     {
 
     }
     // Start is called before the first frame update
     void Start()
-    {        //プレイヤーHPをタグで取得
+    {   
+        painted = false;
+
+        //プレイヤーHPをタグで取得
         playerHP = GameObject.FindGameObjectsWithTag("PlayerHP");
         healthScript = FindObjectOfType<Health>();
         playerLife = healthScript.PlayerHealth;
@@ -116,6 +125,7 @@ public class Enemy : MonoBehaviour
         actionObject = new List<GameObject>();
         cardScript = FindObjectOfType<Card>();
 
+        isBleeding = false;
         isDead = false;
         dmg = 0;
         count = 0;
@@ -127,6 +137,15 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(isBleeding ==true && painted ==false)
+        {
+            for (int i = 0; i < cardScript.enemyHP.Length; i++)
+            {
+                cardScript.enemyHP[i].GetComponent<Renderer>().material.color = new Color32(255, 127, 127, 255);
+            }
+            painted = true;
+
+        }
         if (protectIcon != null) iconTxt.gameObject.GetComponent<Text>().text = block.ToString();
 
         if (isReflect == false) this.gameObject.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
@@ -138,11 +157,30 @@ public class Enemy : MonoBehaviour
     /// </summary>
     public string Attack()
     {
-        if(count > 0) actionObject[count-1].GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
+        if (count > 0) actionObject[count - 1].GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
 
         isReflect = false;
         actionObject[count].GetComponent<Renderer>().material.color = new Color32(255, 0, 0, 255);
         SEType = "";
+
+        if (isBleeding == true)
+        {
+            if (cardScript.enemyLife > 0)
+            {
+                cardScript.enemyLife--;
+                Destroy(cardScript.enemyHP[(cardScript.enemyLife)]);
+            }
+        }
+
+        if (cardScript.enemyLife <= 0)
+        {
+            cardScript.isDead = true;
+
+            if (count < (actionList.Count - 1)) count++;
+            dmg = 0;
+            return actionList[count];
+        }
+
         switch (actionList[count])
         {
             case "Wait":
@@ -195,7 +233,7 @@ public class Enemy : MonoBehaviour
             case "Poison":
                 dmg = 0;
                 cardScript.dmg -= 1;
-                infoText.text = "Enemy:" + dmg + "ダメージを与える\nPlayerは毒によりDMG-1";
+                infoText.text = "Enemy:" + dmg + "ダメージを与える\nPlayerは毒により攻撃力-1";
                 SEType = "poison";
                 break;
 
@@ -237,6 +275,30 @@ public class Enemy : MonoBehaviour
                 cardScript.block = 0;
                 infoText.text = "Enemy:シールド破壊！" + dmg + "ダメージを与える";
                 SEType = "heavy";
+                break;
+
+            case "ForgeHammer":
+                dmg += 1;
+                infoText.text = "Enemy:" + dmg + "ダメージを与える\n次の行動で攻撃力+1";
+                SEType = "heavy";
+                break;
+
+            case "Injector":
+                dmg += 1;
+                infoText.text = "Enemy:" + dmg + "ダメージを与える\nPlayerに出血を付与!";
+                SEType = "light";
+                break;
+
+            case "PoisonKnife":
+                dmg += 1;
+                infoText.text = "Enemy:" + dmg + "ダメージを与える\nPlayerは毒により攻撃力-1";
+                SEType = "light";
+                break;
+
+            case "6mmBullet":
+                dmg = 0;
+                infoText.text = "Enemy:...弾丸を眺めた";
+                SEType = "light";
                 break;
 
             case "Shield":
@@ -300,7 +362,7 @@ public class Enemy : MonoBehaviour
                     audioSource.PlayOneShot(poisonSE);
                     break;
 
-                    default:
+                default:
                     break;
             }
 
@@ -322,7 +384,10 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        infoText.color = Color.white;
+        if (cardScript.enemyLife <= 0)
+        {
+            cardScript.isDead = true;
+        }
 
         if (count < (actionList.Count - 1)) count++;
         dmg = 0;
@@ -334,7 +399,7 @@ public class Enemy : MonoBehaviour
     /// </summary>
     async void damageEffect()
     {
-        //Get Card's GameObjects from Resources Folder
+        // Get Card's GameObjects from Resources Folder
         GameObject prefab = (GameObject)Resources.Load("AttackFlash");
 
         // Create Instance from Now Turn's Cards
@@ -348,7 +413,7 @@ public class Enemy : MonoBehaviour
     /// </summary>
     async void blockEffect()
     {
-        //Get Card's GameObjects from Resources Folder
+        // Get Card's GameObjects from Resources Folder
         GameObject prefab = (GameObject)Resources.Load("BlockFlash");
 
         // Create Instance from Now Turn's Cards
@@ -394,33 +459,43 @@ public class Enemy : MonoBehaviour
             case "OffensiveSlime":
                 infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":こう見えて何人も殺している凶暴なスライム";
                 break;
+
             case "SwatSlime":
                 infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":たまたま拾った先進的な装備で身を固めたスライム";
                 break;
+
             case "Lich":
                 infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":何故か鎌ではなくダイナマイトで死の宣告を行う変なリッチ";
                 break;
+
             case "Knight":
                 infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":多彩な剣技を使う上級兵士\n無駄に高給取り";
                 break;
+
             case "Spider":
                 infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":神経毒で脱力発作を起こそうとする邪悪な蜘蛛";
                 break;
+
             case "Sn@il":
                 infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":何の変哲もない無害なカタツムリ";
                 break;
+
             case "CopyBot":
                 infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":こちらの行動をほぼ完ぺきにコピーしてくる迷惑なボット";
                 break;
+
             case "MirrorBot":
                 infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":バリア展開に特化したバリアフリーじゃないボット";
                 break;
+
             case "Mine":
                 infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":気性の荒い地雷\n非常にデリケート";
                 break;
+
             case "Ghost":
                 infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":リッチ以上の地位を保有している顔色の悪いゴースト";
                 break;
+
             case "KingSlime":
                 infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":無駄に地位のあるただの老いぼれスライム";
                 break;

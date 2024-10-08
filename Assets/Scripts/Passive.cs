@@ -27,9 +27,9 @@ public class Passive : MonoBehaviour
         Spike = 0,
         ArmorChip,
         Slime,
-        Hone,
-        CleanStone,
-        WonderfulReplica,
+        JOKER,
+        HandyDrill,
+        VampireWrench,
         HandGun
     }
 

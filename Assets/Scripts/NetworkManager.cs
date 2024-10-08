@@ -133,6 +133,34 @@ public class NetworkManager : MonoBehaviour
         }     
     }
 
+    /// <summary>
+    /// 使用可能カード一覧取得
+    /// </summary>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public IEnumerator GetUsableCard(Action<UsableCardResponse[]> result)
+    {
+        // ステージ一覧取得APIを実行
+        UnityWebRequest request = UnityWebRequest.Get(
+            API_BASE_URL + "battleMode/usableCards");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success
+             && request.responseCode == 200)
+        {
+            //通信が成功した場合、返ってきたJsonをオブジェクトに変換
+            string resultJson = request.downloadHandler.text;
+            UsableCardResponse[] response =
+                JsonConvert.DeserializeObject<UsableCardResponse[]>(resultJson);
+            result?.Invoke(response);//ここで呼び出し元のresult処理を呼ぶ
+        }
+        else
+        {
+            result?.Invoke(null);
+        }
+    }
+
     /// </summary>
     /// <param name="result"></param>
     /// <returns></returns>

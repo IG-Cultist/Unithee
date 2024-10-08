@@ -20,8 +20,15 @@ public class SelectScene : MonoBehaviour
 
     // 親
     [SerializeField] GameObject stageParent;
+
     // ステージ解説パネル
     [SerializeField] GameObject infoPanel;
+
+    // デッキ構築パネル
+    [SerializeField] GameObject deckBuildPanel;
+
+    // カード参照パネル
+    [SerializeField] GameObject showCardPanel;
 
     //Clear's SoundEffect
     AudioClip clickSE;
@@ -29,7 +36,8 @@ public class SelectScene : MonoBehaviour
     AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
-    {        // SetSE
+    {      
+        // SetSE
         this.gameObject.AddComponent<AudioSource>();
         audioSource = GetComponent<AudioSource>();
 
@@ -38,8 +46,11 @@ public class SelectScene : MonoBehaviour
         NetworkManager networkManager = NetworkManager.Instance;
         List<int> stageIDs = networkManager.GetID();
         
+        // 全てのパネルを閉じる
         infoPanel.SetActive(false);
         info.SetActive(false);
+        deckBuildPanel.SetActive(false);
+        showCardPanel.SetActive(false);
         StartCoroutine(NetworkManager.Instance.GetStage(stages =>
         {
             int cnt = 0;
@@ -87,8 +98,12 @@ public class SelectScene : MonoBehaviour
         // Change Info's StageID
         Transform infoText = info.transform.Find("Text");
         infoText.gameObject.GetComponent<Text>().text = btnName;
+
+        // Infoパネルのみを開き、それ以外を閉じる
         info.SetActive(true);
+        deckBuildPanel.SetActive(false);
         infoPanel.SetActive(false);
+        showCardPanel.SetActive(false);
     }
 
     public void exitInfo()
@@ -109,6 +124,7 @@ public class SelectScene : MonoBehaviour
 
     public void stageInfo()
     {
+        deckBuildPanel.SetActive(false);
         infoPanel.SetActive(true);
         Transform stageInfo = info.transform.Find("Text");
 
@@ -159,5 +175,41 @@ public class SelectScene : MonoBehaviour
     public void exitExplain()
     {
         infoPanel.SetActive(false);
+    }
+
+    /// <summary>
+    /// Open Deck Build Panel Progress
+    /// </summary>
+    public void openBuildPanel()
+    {
+        deckBuildPanel.SetActive(true);
+        infoPanel.SetActive(false);
+        showCardPanel.SetActive(false);
+    }
+
+    /// <summary>
+    /// Close Deck Build Panel Progress
+    /// </summary>
+    public void closeBuildPanel()
+    {
+        deckBuildPanel.SetActive(false);
+    }
+
+    /// <summary>
+    /// Open Show Card Panel Progress
+    /// </summary>
+    public void openShowCardPanel()
+    {
+        showCardPanel.SetActive(true);
+        deckBuildPanel.SetActive(false);
+        infoPanel.SetActive(false);
+    }
+
+    /// <summary>
+    /// Close Deck Build Panel Progress
+    /// </summary>
+    public void closeCardPanel()
+    {
+        showCardPanel.SetActive(false);
     }
 }
