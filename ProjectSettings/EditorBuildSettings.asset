@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Stage/Tutorial.unity
     guid: b976242357f4ad645940db7a0a6b0635
   - enabled: 1
+    path: Assets/Scenes/Battle.unity
+    guid: 8c38ca6c2d6a84944bd444b564f234b6
+  - enabled: 1
     path: Assets/Scenes/Stage/1.unity
     guid: a970417ce20f12a4f9fefcac39a78cc4
   - enabled: 1
@@ -44,8 +47,5 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SelectScene.unity
     guid: fb21508f26711004ebe0623a1da65e76
-  - enabled: 0
-    path: Assets/Scenes/Result.unity
-    guid: b74ee59eda5520a4bb830090d8ff5cff
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 84e73c8e3f98ead4682d87439f7e4789, type: 2}

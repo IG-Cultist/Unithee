@@ -1,6 +1,12 @@
+/*
+ * BattleModeScript
+ * Creator:êºâYçWëæ Update:2024/10/10
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class BattleMode : MonoBehaviour
 {
@@ -14,5 +20,10 @@ public class BattleMode : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void exitBattleScene()
+    {
+        SceneManager.LoadScene("SelectScene");
     }
 }

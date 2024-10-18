@@ -1,3 +1,7 @@
+/*
+ * NetworkManagerScript
+ * Creator:西浦晃太 Update:2024/10/11
+*/
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -29,6 +33,29 @@ public class NetworkManager : MonoBehaviour
             }
             return instance;
         }
+    }
+
+    /// <summary>
+    /// デッキ登録処理
+    /// </summary>
+    /// <param name="cardID"></param>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public IEnumerator StoreCard(int cardID, Action<bool> result)
+    {
+        //Create Object Send for Server
+        StoreDeckRequest requestData = new StoreDeckRequest();
+        requestData.CardID = cardID;
+        //サーバに送信するオブジェクトをJAONに変換response
+        string json = JsonConvert.SerializeObject(requestData);
+        //Send
+        UnityWebRequest request = UnityWebRequest.Post(
+            API_BASE_URL + "battleMode/deck/update", json, "application/json");
+
+        yield return request.SendWebRequest();
+        bool isSuccess = false;
+
+        result?.Invoke(isSuccess);//ここで呼び出し元のresult処理を呼ぶ
     }
 
     /// <summary>
@@ -142,7 +169,7 @@ public class NetworkManager : MonoBehaviour
     {
         // ステージ一覧取得APIを実行
         UnityWebRequest request = UnityWebRequest.Get(
-            API_BASE_URL + "battleMode/usableCards");
+            API_BASE_URL + "battleMode/usableCard");
 
         yield return request.SendWebRequest();
 
@@ -161,6 +188,8 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
+    /// </summary>
+    /// パッシブアイテム一覧取得
     /// </summary>
     /// <param name="result"></param>
     /// <returns></returns>
@@ -187,6 +216,10 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// ステージクリアプロセス
+    /// </summary>
+    /// <param name="stageID"></param>
     public void ClearStage(int stageID)
     {
         if (stageList == null ) stageList = new List<int>();

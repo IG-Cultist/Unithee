@@ -141,7 +141,10 @@ public class Enemy : MonoBehaviour
         {
             for (int i = 0; i < cardScript.enemyHP.Length; i++)
             {
-                cardScript.enemyHP[i].GetComponent<Renderer>().material.color = new Color32(255, 127, 127, 255);
+                if (cardScript.enemyHP[i] != null)
+                {
+                    cardScript.enemyHP[i].GetComponent<Renderer>().material.color = new Color32(255, 127, 127, 255);
+                }
             }
             painted = true;
 
@@ -477,7 +480,7 @@ public class Enemy : MonoBehaviour
                 break;
 
             case "Sn@il":
-                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":何の変哲もない無害なカタツムリ";
+                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":何の変哲もないほぼ無害なカタツムリ";
                 break;
 
             case "CopyBot":
@@ -485,7 +488,7 @@ public class Enemy : MonoBehaviour
                 break;
 
             case "MirrorBot":
-                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":バリア展開に特化したバリアフリーじゃないボット";
+                infoText.text = enemy.GetComponent<SpriteRenderer>().sprite.name + ":バリア展開に特化したバリアフリーじゃないボット\nCopyBotの親戚";
                 break;
 
             case "Mine":

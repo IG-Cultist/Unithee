@@ -1639,7 +1639,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   infoText: {fileID: 1427263499}
-  passiveID: 06000000030000000400000005000000
+  passiveID: 03000000060000000400000005000000
 --- !u!1 &684275931
 GameObject:
   m_ObjectHideFlags: 0
@@ -1988,6 +1988,50 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &725491117
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 725491119}
+  - component: {fileID: 725491118}
+  m_Layer: 0
+  m_Name: NetworkManger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &725491118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725491117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e49d97699334941b527c8aaae184b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &725491119
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725491117}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &822845348
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2002,7 +2046,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 280267117385036009, guid: f6455b4f83123644d9d169632a2fdfc9, type: 3}
       propertyPath: playerHealth
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 582026321671613733, guid: f6455b4f83123644d9d169632a2fdfc9, type: 3}
       propertyPath: m_Name
@@ -3862,20 +3906,20 @@ MonoBehaviour:
   deckCardParent: {fileID: 1668254001}
   card:
   - {fileID: 3619144461908166212, guid: b4d0e1fea578bc34ba78098baf665a32, type: 3}
-  - {fileID: 8145947547476387315, guid: 496cf07fa5f81154883e111dc507c597, type: 3}
-  - {fileID: 1270239735703333157, guid: 8a10e418d8eeb4c4db5355249b0151cd, type: 3}
+  - {fileID: 8145947547476387315, guid: a26d54f6fec626041bb0244d4b33b93b, type: 3}
+  - {fileID: 1270239735703333157, guid: a0cba2540de820c4bac9afc7967c7395, type: 3}
   - {fileID: 750390184863162270, guid: db89752555644c7489270c671943ebba, type: 3}
   deckCard:
   - {fileID: 0}
   deckCardName:
+  - 6mmBullet
   - SwatShield
-  - SwatShield
-  - SwatShield
+  - 6mmBullet
   - SwatShield
   discardText: {fileID: 141210835}
   infoText: {fileID: 1427263499}
   gameSpeedSlider: {fileID: 1154489196}
-  discardCnt: 3
+  discardCnt: 4
   enemyHP: []
   activeList:
   - {fileID: 0}
@@ -5455,6 +5499,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8468987479401934004, guid: bc82d7ad3b195a24dabab85ce4b632bf, type: 3}
+      propertyPath: block
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8468987479401934004, guid: bc82d7ad3b195a24dabab85ce4b632bf, type: 3}
       propertyPath: action
       value: 
       objectReference: {fileID: 0}
@@ -5556,3 +5604,4 @@ SceneRoots:
   - {fileID: 1368862232}
   - {fileID: 255163776}
   - {fileID: 1236594130}
+  - {fileID: 725491119}

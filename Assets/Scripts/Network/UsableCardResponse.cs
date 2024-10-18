@@ -19,4 +19,10 @@ public class UsableCardResponse
     /// </summary>
     [JsonProperty("stack")]
     public string Stack { get; set; }
+
+    /// <summary>
+    /// 使用可能カードの種別のプロパティ
+    /// </summary>
+    [JsonProperty("type")]
+    public string Type { get; set; }
 }

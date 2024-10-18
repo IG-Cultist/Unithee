@@ -6,7 +6,6 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.Networking;
 using System.Collections;
 using UnityEngine.AddressableAssets;
 
@@ -14,15 +13,30 @@ public class Title : MonoBehaviour
 {
     [SerializeField] Text txt;
     [SerializeField] GameObject title;
+    int count;
     // Start is called before the first frame update
     void Start()
     {
-        
+        count = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (count < 150)
+        {
+            txt.color = new Color32(255, 255, 255, 255);
+        }
+        else if (count >= 150 && count < 350)
+        {
+            txt.color = new Color32(255, 255, 255, 0);
+        }
+        else 
+        {
+            count = 0;
+        }
+        count++;
+
         //ƒNƒŠƒbƒN
         if (Input.GetMouseButtonUp(0))
         {

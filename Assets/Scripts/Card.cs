@@ -1,6 +1,6 @@
 /*
  * CardScript
- * Creator:西浦晃太 Update:2024/09/02
+ * Creator:西浦晃太 Update:2024/10/10
  */
 using System.Collections;
 using System.Collections.Generic;
@@ -44,7 +44,6 @@ public class Card : MonoBehaviour
     //Protect Icon
     [SerializeField] GameObject protectIcon;
 
-
     // Deck Card's Parent
     [SerializeField] GameObject deckCardParent;
 
@@ -78,16 +77,16 @@ public class Card : MonoBehaviour
     //Parry's SoundEffect
     AudioClip parrySE;
 
-    //Defence's SoundEffect
+    // Defence's SoundEffect
     AudioClip defenceSE;
 
-    //Clear's SoundEffect
+    // Clear's SoundEffect
     AudioClip clearSE;
 
-    //Clear's SoundEffect
+    // Clear's SoundEffect
     AudioClip clickSE;
 
-    //Defence's SoundEffect
+    // Defence's SoundEffect
     AudioClip reflectSE;
 
     // Discard's Count
@@ -108,7 +107,7 @@ public class Card : MonoBehaviour
     // Hand
     List<GameObject> handCard;
 
-    //Passive Dictionary
+    // Passive Dictionary
     Dictionary<string, ItemResponse> passiveDictionary; 
 
     // HealthScript
@@ -136,7 +135,7 @@ public class Card : MonoBehaviour
     // Passive Turn's Count
     int passiveCnt;
 
-    //Battle's Speed
+    // Battle's Speed
     static int battleSpeed = 1000;
 
     // HP Count
@@ -157,6 +156,12 @@ public class Card : MonoBehaviour
     // Pause Check
     bool isPause;
 
+    // 武器強化フラグ
+    bool isForge;
+
+    // ピストル使用可能フラグ
+    bool isReload;
+
     bool isFight;
     // Panel's Active Check
     bool panelActive;
@@ -166,6 +171,7 @@ public class Card : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // シーンがチュートリアルの場合、専用テキストを表示
         if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text += "チュートリアルへようこそ！気になるアイコンをタップして詳細を確認しよう";
         iconTxt = protectIcon.transform.Find("Text");
         // SetSE
@@ -181,6 +187,7 @@ public class Card : MonoBehaviour
         reflectSE = (AudioClip)Resources.Load("SE/Reflect");
         clickSE = (AudioClip)Resources.Load("SE/Click");
 
+        // 手札カードを設定
         handCard = new List<GameObject>();
         SetCard();
 
@@ -193,6 +200,8 @@ public class Card : MonoBehaviour
         isPause = false;
         isBleeding = false;
         isFight = false;
+        isForge = false;
+        isReload = false;
 
         // Set Buttons
         retryButton.SetActive(false);
@@ -217,7 +226,7 @@ public class Card : MonoBehaviour
         activeList = new List<GameObject>();
         selectedCard = new List<GameObject>();
         deckCard = new List<GameObject>();
-        //passive = new List<string>();
+
         // Set Counts
         count = 0;
         passiveCnt = 0;
@@ -534,10 +543,11 @@ public class Card : MonoBehaviour
             bool isBlock = false;
             switch (item.tag) //Judge the Card's Tag
             {
-                case "Attack":
+                case "Attack": //カードタイプが攻撃の場合
                     //Active to Passives
                     passiveEffect(item);
 
+                    // カード名別処理
                     switch (item.name)
                     {
                         case "Sword":
@@ -579,6 +589,7 @@ public class Card : MonoBehaviour
                             dmg += 1;
                             infoText.text = "You:" + dmg + "ダメージを与える\n次の行動で攻撃力+1";
                             SEType = "heavy";
+                            isForge = true;
                             break;
 
                         case "Injector":
@@ -596,30 +607,46 @@ public class Card : MonoBehaviour
                             break;
 
                         case "6mmBullet":
-                            dmg = 0;
-                            infoText.text = "You:...弾丸を眺めた";
+                            if (isReload == true)
+                            {
+                                dmg += 3;
+                                infoText.text = "You:素早く弾丸を込め、トリガーを引いた！\n" + dmg + "ダメージを与える";
+                                isReload = false;
+                            }
+                            else
+                            {
+                                dmg = 0;
+                                infoText.text = "You:仕方なく弾丸を投げた！\n意味がない！" + dmg + "ダメージを与える";
+                            }
+
                             SEType = "light";
                             break;
                     }
 
-                    // If Enemy has Block
+                    // 敵がブロックを持っているかつ現カードがA.X.Eではない場合
                     if (enemyScript.block != 0 && item.name != "A.X.E")
                     {
+                        // ブロック値を減らす
                         enemyScript.block--;
                         if (enemyScript.block <= 0) if (enemyScript.protectIcon != false) enemyScript.protectIcon.SetActive(false);
                         blockEffect();
                         isBlock = true;
 
+                        // 対応した音声とUIを出す
                         audioSource.PlayOneShot(parrySE);
                         infoText.text = "Enemy:攻撃をブロック";
                         dmg = 0;
                     }
                     else
                     {
+                        // 敵が反射バリアを持っていた場合
                         if (enemyScript.isReflect == true)
                         {
+                            // 対応した音声とUIを出す
                             audioSource.PlayOneShot(reflectSE);
                             infoText.text += "\nしかし、攻撃は反射された";
+
+                            // 現攻撃値を自身に与える
                             for (int i = 0; i < dmg; i++)
                             {
                                 //HP残量が0の場合、処理を行わない
@@ -635,11 +662,13 @@ public class Card : MonoBehaviour
                                 enemyScript.playerLife--;
                             }
                             dmg = 0;
+
+                            // 反射バリアを無効化
                             enemyScript.isReflect = false;
                         }
                         else
                         {
-                            // Loop to Damage Values
+                            // 現攻撃値分繰り返す
                             for (int i = 0; i < dmg; i++)
                             {
                                 //HP残量が0の場合、処理を行わない
@@ -657,7 +686,7 @@ public class Card : MonoBehaviour
                         }
                         if (enemyScript.playerLife <= 0) enemyScript.isDead = true;
 
-                        // if Enemy Dead
+                        // 敵が死んだ場合
                         if (enemyLife <= 0) isDead = true;
                     }
                     // 武器別SE
@@ -680,7 +709,7 @@ public class Card : MonoBehaviour
                     item.SetActive(false);
                     break;
 
-                case "Defence":
+                case "Defence":　//カードタイプが防御の場合
                     audioSource.PlayOneShot(defenceSE);
                     passiveEffect(item);
                     switch (item.name)
@@ -709,7 +738,6 @@ public class Card : MonoBehaviour
 
                             //内部も減らす
                             enemyLife--;
-                            Debug.Log("Enemy's HP:" + enemyLife);
 
                             // if Enemy Dead
                             if (enemyLife <= 0) isDead = true;
@@ -727,7 +755,6 @@ public class Card : MonoBehaviour
                     break;
 
                 case "Support":
-                    Debug.Log("補助");
                     passiveEffect(item);
                     break;
 
@@ -742,13 +769,14 @@ public class Card : MonoBehaviour
             if (isDead == true)
             {
                 // シーン名がチュートリアルでない場合、クリア判定
-                if (SceneManager.GetActiveScene().name != "Tutorial")
+                if (SceneManager.GetActiveScene().name != "Tutorial" && SceneManager.GetActiveScene().name != "Test")
                 {
                     NetworkManager networkManager = NetworkManager.Instance;
                     networkManager.ClearStage(int.Parse(SceneManager.GetActiveScene().name));
                 }
                 // テキストを表示し、クリアサウンドを再生
                 infoText.text = "敵を倒した！";
+                if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text += "\n討伐おめでとう！まだわからない点があるのであれば右下の矢印ボタンからゲームをやり直そう";
                 audioSource.PlayOneShot(clearSE);
                 return;
             } 
@@ -789,7 +817,13 @@ public class Card : MonoBehaviour
                 return;
             }
 
-            dmg = 0;
+            // フォージハンマーを使用した場合DMG+1
+            if (isForge == true)
+            {
+                dmg = 1;
+                isForge = false;
+            }else dmg = 0;
+
             if (block <= 0) if (protectIcon != null) protectIcon.SetActive(false);
             await Task.Delay(battleSpeed);
         }
@@ -804,8 +838,8 @@ public class Card : MonoBehaviour
         activeList.Clear();
         // Reset Count
         count = 0;
-        if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text += "失敗した？右に表示された矢印ボタンでやり直そう";
-        else infoText.text = "\n討伐失敗...";
+        infoText.text = "討伐失敗...";
+        if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text += "\nDeadlyDrawは1ターンのみで勝利を勝ち取るゲームだ\n右下の矢印ボタンからゲームをやり直そう";
         button.SetActive(true);
         retryButton.SetActive(true);
     }
@@ -863,10 +897,16 @@ public class Card : MonoBehaviour
                         break;
                     case "VampireWrench":
                         enemyScript.playerLife++;
-                        dmg++;
                         break;
                     case "HandyDrill":
                         enemyScript.block = 0;
+                        break;
+
+                    case "HandGun":
+                        if(item.name == "6mmBullet")
+                        {
+                            isReload = true;
+                        }
                         break;
                     default:
                         break;
@@ -958,7 +998,7 @@ public class Card : MonoBehaviour
         if (isDead == true || isPause == true || enemyScript.isDead == true || isFight == true) return;
         // Reset Info
 
-        if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text = "このパネルは山札を参照できる\n手札からいらないカードをえらび、山札パネルの右下のボタンを押そう";
+        if (SceneManager.GetActiveScene().name == "Tutorial") infoText.text = "このパネルは山札を参照できる\n手札からいらないカードをえらび、山札パネルの右下のボタンを押してカードを交換しよう";
         else infoText.text = "";
         // Panel Active yet
         if (panelActive == false)

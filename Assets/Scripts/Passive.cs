@@ -52,7 +52,6 @@ public class Passive : MonoBehaviour
         {
             for (int i = 0; i < 4; i++)
             {
-                Debug.Log(items[passiveID[i]].Name);
                 passiveList.Add(items[passiveID[i]].Name.ToString());
             } 
             
@@ -110,7 +109,6 @@ public class Passive : MonoBehaviour
 
         foreach (var items in activePassives)
         {
-            Debug.Log(items);
         }
     }
 }
