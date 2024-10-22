@@ -46,7 +46,6 @@ public class Title : MonoBehaviour
             if (!isSuccess)
             { //ユーザデータが保存されていなかった場合
                 StartCoroutine(NetworkManager.Instance.StoreUser(
-                    Guid.NewGuid().ToString(),  //Set Random Name
                     result => //After Set's Process
                     {
                         SceneManager.LoadScene("SelectScene");

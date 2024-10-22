@@ -5,6 +5,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class Health : MonoBehaviour
     [SerializeField] int enemHealth;
     // Player's Health Value
     [SerializeField] int playerHealth;
+    // Player's Health Value
+    [SerializeField] int battleModeHealth;
 
     /// <summary>
     /// EnemyHealth's Property
@@ -29,6 +32,14 @@ public class Health : MonoBehaviour
     public int PlayerHealth
     {
         get { return playerHealth; }
+    }
+
+    /// <summary>
+    /// PlayerHealth's Property
+    /// </summary>
+    public int BattleModeHealth
+    {
+        get { return battleModeHealth; }
     }
 
     void Awake()
@@ -49,13 +60,27 @@ public class Health : MonoBehaviour
     public void EnemyLife()
     {
         Vector2 pos = this.transform.position;
-        for (int i = 0; i < enemHealth; i++) // Loop for Enemy's Life Value
+        if (SceneManager.GetActiveScene().name == "Fight")
         {
-            // Add Tag for Items
-            heart.tag = "EnemyHP";
-            // Create Instance from Heart Prefabs
-            Instantiate(heart, new Vector2(pos.x + (0.8f * i), pos.y), Quaternion.identity);
+            for (int i = 0; i < battleModeHealth; i++) // Loop for Enemy's Life Value
+            {
+                // Add Tag for Items
+                heart.tag = "EnemyHP";
+                // Create Instance from Heart Prefabs
+                Instantiate(heart, new Vector2(pos.x + (0.8f * i), pos.y), Quaternion.identity);
+            }
         }
+        else
+        {
+            for (int i = 0; i < enemHealth; i++) // Loop for Enemy's Life Value
+            {
+                // Add Tag for Items
+                heart.tag = "EnemyHP";
+                // Create Instance from Heart Prefabs
+                Instantiate(heart, new Vector2(pos.x + (0.8f * i), pos.y), Quaternion.identity);
+            }
+        }
+
     }
 
     /// <summary>
@@ -63,12 +88,25 @@ public class Health : MonoBehaviour
     /// </summary>
     public void PlayerLife()
     {
-        for (int i = 0; i < playerHealth; i++) // Loop for Enemy's Life Value
+        if (SceneManager.GetActiveScene().name == "Fight")
         {
-            // Add Tag for Items
-            heart.tag = "PlayerHP";
-            // Create Instance from Heart Prefabs
-            Instantiate(heart, new Vector2(-8.5f + (0.8f * i), -1.2f), Quaternion.identity);
+            for (int i = 0; i < battleModeHealth; i++) // Loop for BattleModeHealth's Life Value
+            {
+                // Add Tag for Items
+                heart.tag = "PlayerHP";
+                // Create Instance from Heart Prefabs
+                Instantiate(heart, new Vector2(-8.5f + (0.8f * i), -1.2f), Quaternion.identity);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < playerHealth; i++) // Loop for Player's Life Value
+            {
+                // Add Tag for Items
+                heart.tag = "PlayerHP";
+                // Create Instance from Heart Prefabs
+                Instantiate(heart, new Vector2(-8.5f + (0.8f * i), -1.2f), Quaternion.identity);
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Passive : MonoBehaviour
@@ -64,8 +65,18 @@ public class Passive : MonoBehaviour
             // Set Passives
             SetPassives();
 
-            Card card = GameObject.Find("Manager").GetComponent<Card>();
-            card.SetPassives(activePassives, passiveDictionary);
+            if (SceneManager.GetActiveScene().name == "Fight")
+            {
+                BattleModePlayer card = GameObject.Find("Manager").GetComponent<BattleModePlayer>();
+                card.SetPassives(activePassives, passiveDictionary);
+            }
+            else
+            {
+                Card card = GameObject.Find("Manager").GetComponent<Card>(); 
+                card.SetPassives(activePassives, passiveDictionary);
+            }
+
+
         }));
 
   

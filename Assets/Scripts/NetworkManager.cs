@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -21,6 +22,7 @@ public class NetworkManager : MonoBehaviour
     private string userName = "";
     private List<int> stageList = new List<int>();
     private static NetworkManager instance;
+    private string authToken;
     public static NetworkManager Instance
     {
         get {
@@ -34,6 +36,30 @@ public class NetworkManager : MonoBehaviour
             return instance;
         }
     }
+
+    /// <summary>
+    /// トークン生成処理
+    /// </summary>
+    /// <param name="response"></param>
+    /// <returns></returns>
+    public IEnumerator CreateToken(Action<bool> response)
+    {
+        var requsetData = new
+        {
+            user_id = this.userID,
+        };
+        string json = JsonConvert.SerializeObject(requsetData);
+        UnityWebRequest request = UnityWebRequest.Post(
+            API_BASE_URL + "personal_access_token", json, "application/json");
+        yield return request.SendWebRequest();
+        if(request.result == UnityWebRequest.Result.Success ) 
+        {
+            // jsonをデシリアライズ
+            // フィールドとローカルファイルにidとトークンを保存
+        }
+        response?.Invoke(request.result == UnityWebRequest.Result.Success);
+    }
+
 
     /// <summary>
     /// デッキ登録処理
@@ -51,7 +77,7 @@ public class NetworkManager : MonoBehaviour
         //Send
         UnityWebRequest request = UnityWebRequest.Post(
             API_BASE_URL + "battleMode/deck/update", json, "application/json");
-
+        request.SetRequestHeader("Authorization", "Bearer" + authToken);
         yield return request.SendWebRequest();
         bool isSuccess = false;
 
@@ -64,11 +90,11 @@ public class NetworkManager : MonoBehaviour
     /// <param name="name"></param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public IEnumerator StoreUser(string name,Action<bool> result)
+    public IEnumerator StoreUser(/*string name,*/Action<bool> result)
     {
         //Create Object Send for Server
         StoreUserRequest requestData = new StoreUserRequest();
-        requestData.Name = name;
+        requestData.Name = randomName(name);
         //サーバに送信するオブジェクトをJAONに変換response
         string json = JsonConvert.SerializeObject(requestData);
         //Send
@@ -85,7 +111,7 @@ public class NetworkManager : MonoBehaviour
             StoreUserresponse response =
                 JsonConvert.DeserializeObject<StoreUserresponse>(resultJson);
             //ファイルにユーザIDを保存
-            this.userName = name;
+            this.userName = requestData.Name;
             this.userID = response.UserID;
             SaveUserData();
             isSuccess = true;
@@ -235,5 +261,37 @@ public class NetworkManager : MonoBehaviour
     public List<int> GetID()
     {
         return this.stageList;
+    }
+
+    /// <summary>
+    /// ランダムネームコンバート処理
+    /// </summary>
+    public string randomName(string name)
+    {
+        System.Random rand = new System.Random();
+        // ファストネーム定義
+        string[] firstName = new string[]{
+            "Nice","Abnormal","Delicious","Difficulty","Mr",
+            "Mrs","Master","Huge","Tiny","Clever",
+            "Wetty","Pretty","Golden","Brave","Godly",
+            "Kidly","Burning","Creepy","Fishy","Metallic",
+            "Oriental","Muscly","Mudly","More","Strong",
+            "Shiny","Sparkle","Legal","Hardest","Dancing"
+        };
+        // セカンドネーム定義
+        string[] secondtName = new string[]{
+            "Cake","Rock","Slime","Clover","Animal",
+            "Fish","Earth","Throat","City","Dwarf",
+            "Ghost","Tank","Knight","Candy","Worm",
+            "Tree","Dice","Baby","Machine","Dog",
+            "Thief","Bird","Cat","Water","CowBoy",
+            "Skelton","Boots","Game","Card","Data"
+        };
+        // 1～30までの乱数を代入
+        int num = rand.Next(1, 30);
+        int num2 = rand.Next(1, 30);
+
+        // 各乱数に応じた名前を代入
+        return name = firstName[num] + secondtName[num2];
     }
 }
