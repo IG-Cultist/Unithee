@@ -14,30 +14,30 @@ public class AssetLoader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(loading());
+        //StartCoroutine(loading());
     }
     
-    IEnumerator loading()
-    {
-        //カタログ更新
-        var handle = Addressables.UpdateCatalogs();
+    //IEnumerator loading()
+    //{
+    //    //カタログ更新
+    //    var handle = Addressables.UpdateCatalogs();
 
-        yield return handle;
+    //    yield return handle;
 
-        //ダウンロード実行
-        AsyncOperationHandle downloadHandle =
-            Addressables.DownloadDependenciesAsync("default", false);
+    //    //ダウンロード実行
+    //    AsyncOperationHandle downloadHandle =
+    //        Addressables.DownloadDependenciesAsync("default", false);
 
-        //ダウンロード完了までのスライダーUIを更新
-        while (downloadHandle.Status == AsyncOperationStatus.None)
-        {
-            loadingSlider.value = downloadHandle.GetDownloadStatus().Percent * 100;
-            yield return null;
-        }
+    //    //ダウンロード完了までのスライダーUIを更新
+    //    while (downloadHandle.Status == AsyncOperationStatus.None)
+    //    {
+    //        loadingSlider.value = downloadHandle.GetDownloadStatus().Percent * 100;
+    //        yield return null;
+    //    }
 
-        loadingSlider.value = 100;
-        Addressables.Release(downloadHandle);
+    //    loadingSlider.value = 100;
+    //    Addressables.Release(downloadHandle);
 
-        Addressables.LoadScene("1",LoadSceneMode.Additive);
-    }
+    //    Addressables.LoadScene("1",LoadSceneMode.Additive);
+    //}
 }

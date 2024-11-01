@@ -2,16 +2,10 @@
  * SelectSceneScript
  * Creator:西浦晃太 Update:2024/10/10
 */
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
-
 public class SelectScene : MonoBehaviour
 {
     // ステージ情報
@@ -28,6 +22,9 @@ public class SelectScene : MonoBehaviour
 
     // デッキ種別テキスト
     [SerializeField] Text deckTxt;
+
+    // 警告テキスト
+    [SerializeField] Text warning;
 
     // ステージの親
     [SerializeField] GameObject stageParent;
@@ -56,6 +53,12 @@ public class SelectScene : MonoBehaviour
     // 現在のデッキの親
     [SerializeField] GameObject activeDeckParent;
 
+    // 現在の防衛デッキの親
+    [SerializeField] GameObject activeDefenceDeckParent;
+
+    //メインデッキの親
+    [SerializeField] GameObject mainDeckPanel;
+
     // 防衛デッキの親
     [SerializeField] GameObject defenceDeckPanel;
 
@@ -65,35 +68,30 @@ public class SelectScene : MonoBehaviour
     // プレイヤー名
     [SerializeField] Text playerName;
 
-    // デッキカードリスト
-    public List<GameObject> deckCards = new List<GameObject>();
-
     // Clear's SoundEffect
     AudioClip clickSE;
 
-    // 使用可能カードのディクショナリー
-    Dictionary<string, UsableCardResponse> cardDictionary = new Dictionary<string, UsableCardResponse>();
+    public bool isClick = false;
+    bool isSet;
 
-    GameObject mainDeck;
-
-    int deckCount = 0;
-    bool isSet = false;
-    bool isClick = false;
-
+    // デッキデータ用スクリプト
+    DeckData deckData;
 
     AudioSource audioSource;
+
+    List<string> mainDeckNameList = new List<string>();
+    List<string> defenceDeckNameList = new List<string>();
+
     // Start is called before the first frame update
     void Start()
     {
+        isSet = false;
+
         // SetSE
         this.gameObject.AddComponent<AudioSource>();
         audioSource = GetComponent<AudioSource>();
-        mainDeck = GameObject.Find("MainDeckFrame");
 
         clickSE = (AudioClip)Resources.Load("SE/Click");
-
-        NetworkManager networkManager = NetworkManager.Instance;
-        List<int> stageIDs = networkManager.GetID();
 
         // 全てのパネルを閉じる
         infoPanel.SetActive(false);
@@ -101,6 +99,13 @@ public class SelectScene : MonoBehaviour
         deckBuildPanel.SetActive(false);
         showCardPanel.SetActive(false);
         defenceDeckPanel.SetActive(false);
+
+        // デッキデータスクリプトを取得
+        deckData = FindObjectOfType<DeckData>();
+
+        // ステージ情報取得
+        NetworkManager networkManager = NetworkManager.Instance;
+        List<int> stageIDs = networkManager.GetID();
         StartCoroutine(NetworkManager.Instance.GetStage(stages =>
         {
             int cnt = 0;
@@ -128,59 +133,12 @@ public class SelectScene : MonoBehaviour
                 // Add Button in Canvas
                 string btnName = btn.name;
                 btn.transform.SetParent(this.stageParent.transform, false);
-                btn.GetComponent<Button>().onClick.AddListener(() => selectStage(btnName));
+                btn.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => selectStage(btnName));
 
                 if (stageIDs != null && stageIDs.Contains(stage.StageID))
                 {
                     btn.GetComponent<Image>().color = Color.yellow;
                 }
-                cnt++;
-            }
-        }));
-
-        StartCoroutine(NetworkManager.Instance.GetUsableCard(cards =>
-        {
-            int cnt = 0;
-            // Create Stage Button from Server
-            GameObject cardObj = new GameObject();
-            foreach (var card in cards)
-            {
-                // 名前を取得
-                string cardName = card.Name.ToString();
-                string cardStack = card.Stack.ToString();
-                // 取得した名前に一致するプレハブを取得
-                GameObject obj = (GameObject)Resources.Load("UI/" + cardName);
-                // 取得したプレハブを生成
-                if (cnt < 5)
-                {
-                    cardObj = Instantiate(obj, new Vector2(-400 + (200 * cnt), 100), Quaternion.identity);
-                }
-                else
-                {
-                    cardObj = Instantiate(obj, new Vector2(-300 + (200 * (cnt - 5)), -130), Quaternion.identity);
-                }
-
-                // 生成したプレハブをリネーム
-                cardObj.name = cardName;
-                // 各種別に応じたタグを付与
-                switch (card.Type.ToString())
-                {
-                    case "Attack":
-                        cardObj.tag = "Attack";
-                        break;
-                    case "Defence":
-                        cardObj.tag = "Defence";
-                        break;
-                    default:
-                        break;
-                }
-                // 生成したプレハブを親に入れる
-                cardObj.transform.SetParent(this.cardParent.transform, false);
-                cardObj.GetComponent<Button>().onClick.AddListener(() => CardClick(cardName, cardStack));
-
-                // カード情報をディクショナリーにまとめる
-                cardDictionary.Add(card.Name, card);
-
                 cnt++;
             }
         }));
@@ -190,7 +148,7 @@ public class SelectScene : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0)) audioSource.PlayOneShot(clickSE);
 
-        if(Input.GetMouseButtonUp(1)) CheckSomething();
+        if (Input.GetMouseButtonUp(1)) CheckSomething();
     }
 
     /// <summary>
@@ -208,6 +166,251 @@ public class SelectScene : MonoBehaviour
         deckBuildPanel.SetActive(false);
         infoPanel.SetActive(false);
         showCardPanel.SetActive(false);
+    }
+
+    /// <summary>
+    /// デッキ追加処理
+    /// </summary>
+    void AddDeck(GameObject obj)
+    {
+        warning.text = "";
+        List<int> activeList;
+        List<int> otherList;
+        int requestValue;
+        if (isClick == false)
+        {
+            activeList = deckData.GetDeck();
+            otherList = deckData.GetDefenceDeck();
+            requestValue = 1;
+        }
+        else
+        {
+            activeList = deckData.GetDefenceDeck();
+            otherList = deckData.GetDeck();
+            requestValue = 2;
+        }
+
+        // 選択されたオブジェクト番号をintにする
+        int cardID = deckData.ConvertName(obj.name);
+        
+        // 対象オブジェクトの状態を確認
+        bool isSelected = deckData.CheckUsable(obj.name);
+
+        if (otherList.Contains(cardID))
+        {
+            warning.text = "そのカードは別のデッキに含まれている！";
+        }
+        else if (isSelected == true)
+        { // 選択されていた場合
+            // 状態を未選択にする
+            deckData.UpdateUsable(obj.name, 0);
+            // 選択カードIDリストから除去
+            activeList.Remove(cardID);
+        }
+        else if(isSelected == false && activeList.Count < 4) 
+        { // 対象オブジェクトが未選択かつ現在のデッキ数が4未満の場合
+            // 選択状態にする
+            deckData.UpdateUsable(obj.name, requestValue);
+            // 選択カードIDリストに追加
+            activeList.Add(cardID);
+        }
+        else if (activeList.Count == 4)
+        {
+            warning.text = "これ以上は追加できない！";
+        }
+        // スクロールビューを更新
+        UpdaetView(obj);
+    }
+
+    /// <summary>
+    /// カード一覧更新処理
+    /// </summary>
+    void UpdaetView(GameObject obj)
+    {
+        List<List<int>> usableCards = deckData.GetUsable();
+        for (int i = 1; i <= 9; i++)
+        {
+            // 4回ループ
+            for (int j = 1; j <= 4; j++)
+            {
+                // 文字列判定
+                if (obj.name == i.ToString() + "," + j.ToString())
+                {
+                    // 選択されているなら色を変更
+                    if (usableCards[i - 1][j - 1] == 1)
+                    {
+                        obj.GetComponent<Image>().color = Color.gray;
+                    }
+                    else if (usableCards[i - 1][j - 1] == 2)
+                    {
+                        obj.GetComponent<Image>().color =Color.blue;
+                    }
+                    else
+                    { //色をリセット
+                        obj.GetComponent<Image>().color = Color.white;
+                    }
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// デッキ表示処理
+    /// </summary>
+    public void UpdateDeck(List<int> id)
+    {
+        GameObject parent;
+        if (isClick == false)
+        {
+            parent = activeDeckParent;
+        }
+        else
+        {
+            parent = activeDefenceDeckParent;
+        }
+
+        foreach (Transform n in parent.transform)
+        {
+            GameObject.Destroy(n.gameObject);
+        }
+
+        // 各カードのスタック数分ループ
+        for (int i = 0; i < id.Count; i++)
+        {
+            if (id[i] == 0) continue;
+            // 同名のカードをリソースファイルから取得
+            GameObject obj = (GameObject)Resources.Load("Cards(ID)/" + id[i]);
+            // 取得したカードを生成
+            GameObject cards = Instantiate(obj, new Vector2(-430f + (280f * i), 0f), Quaternion.identity);
+            cards.transform.localScale = new Vector2(1.7f,2.4f);
+            // メインデッキパネルに生成
+            cards.transform.SetParent(parent.transform, false);
+        }
+    }
+
+    /// <summary>
+    /// ランダムネームコンバート処理
+    /// </summary>
+    public void randomName()
+    {   
+        System.Random rand = new System.Random();
+        // ファストネーム定義
+        string[] firstName = new string[]{
+            "Nice","Abnormal","Delicious","Difficulty","Mr",
+            "Mrs","Master","Huge","Tiny","Clever",
+            "Wetty","Pretty","Golden","Brave","Godly",
+            "Kidly","Burning","Creepy","Fishy","Metallic",
+            "Oriental","Muscly","Mudly","More","Strong",
+            "Shiny","Sparkle","Legal","Hardest","Dancing"
+        };
+        // セカンドネーム定義
+        string[] secondtName = new string[]{
+            "Cake","Rock","Slime","Clover","Animal",
+            "Fish","Earth","Throat","City","Dwarf",
+            "Ghost","Tank","Knight","Candy","Worm",
+            "Tree","Dice","Baby","Machine","Dog",
+            "Thief","Bird","Cat","Water","CowBoy",
+            "Skelton","Boots","Game","Card","Data"
+        };
+        // 1～30までの乱数を代入
+        int num = rand.Next(1, 30);
+        int num2 = rand.Next(1, 30);
+
+        // 各乱数に応じた名前を代入
+        playerName.text ="Name:" + firstName[num] + secondtName[num2];
+    }
+
+    void CheckSomething()
+    {
+        List<List<int>> usableCards = deckData.GetUsable();
+
+        Debug.Log(usableCards[1][2]);
+    }
+
+    /// <summary>
+    /// デッキ切り替え処理
+    /// </summary>
+    public void ChangeDeck()
+    {
+        if (isClick == false)
+        {
+            mainDeckPanel.SetActive(false);
+            defenceDeckPanel.SetActive(true);
+            deckTxt.text = "Defence Deck";
+            isClick = true;
+
+            // 防衛デッキを更新し、表示
+            UpdateDeck(deckData.GetDefenceDeck());
+        }
+        else
+        {
+            mainDeckPanel.SetActive(true);
+            defenceDeckPanel.SetActive(false);
+            deckTxt.text = "Main Deck";
+            isClick = false;   
+
+            // メインデッキを更新し、表示
+            UpdateDeck(deckData.GetDeck());
+        }
+    }
+
+    /// <summary>
+    /// カード一覧生成処理
+    /// </summary>
+    void CardSet()
+    {
+        if (isSet == true) return;
+        int cnt = 0;
+        List<List<int>> usableCards =  deckData.GetUsable();
+        // ディクショナリー内のアイテム分ループ
+        foreach (var item in deckData.cardDictionary.Keys)
+        {
+            // キーを文字列に変換
+            string cardName = item.ToString();
+            // スタック数を数字に変換
+            int.TryParse(deckData.cardDictionary[cardName].Stack, out int stack);
+
+            // 各カードのスタック数分ループ
+            for (int i = 0; i < 4; i++)
+            {
+                // ループ数がスタック数未満の場合
+                if (stack > i)
+                {
+                    // 同名のカードをリソースファイルから取得
+                    GameObject obj = (GameObject)Resources.Load("UI/" + cardName);
+                    // 取得したカードを生成
+                    GameObject cards = Instantiate(obj, new Vector2(-400f + (200f * i), 125f - (250f * cnt)), Quaternion.identity);
+                    // Rename
+                    cards.name = (cnt+1) + "," + (i+1);
+                    if (usableCards[cnt][i] == 1)
+                    {
+                        cards.GetComponent<Image>().color = Color.gray;
+                    }
+                    if (usableCards[cnt][i] == 2)
+                    {
+                        cards.GetComponent<Image>().color = Color.blue;
+                    }
+                    cards.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => AddDeck(cards));
+
+                    // 生成カードをスクロールビューに追加
+                    cards.transform.SetParent(cardViewParent.transform, false);
+                }
+                else // ループ数がスタック数を超えた場合、ダミーを生成して整頓する
+                {
+                    // 透明なダミーをリソースファイルから取得
+                    GameObject obj = (GameObject)Resources.Load("UI/Dummy");
+                    // 取得したダミーを生成
+                    GameObject cards = Instantiate(obj, new Vector2(-400f + (200f * i), 125f - (250f * cnt)), Quaternion.identity);
+                    // Rename
+                    cards.name = "dummy";
+
+                    // ダミーをスクロールビューに追加
+                    cards.transform.SetParent(cardViewParent.transform, false);
+                }
+            }
+            cnt++;
+        }
+        isSet = true;
     }
 
     /// <summary>
@@ -304,11 +507,11 @@ public class SelectScene : MonoBehaviour
         deckBuildPanel.SetActive(true);
         buildPanel.SetActive(true);
 
+        UpdateDeck(deckData.GetDeck());
+
         cardViewPanel.SetActive(false);
         infoPanel.SetActive(false);
         showCardPanel.SetActive(false);
-
-        DeckRefresh();
     }
 
     /// <summary>
@@ -326,53 +529,10 @@ public class SelectScene : MonoBehaviour
     {
         cardViewPanel.SetActive(true);
 
+        CardSet();
         buildPanel.SetActive(false);
         infoPanel.SetActive(false);
         showCardPanel.SetActive(false);
-
-        if (isSet == true) return;
-        int cnt = 0;
-        // ディクショナリー内のアイテム分ループ
-        foreach (var item in cardDictionary.Keys)
-        {
-            // キーを文字列に変換
-            string cardName = item.ToString();
-            // スタック数を数字に変換
-            int.TryParse(cardDictionary[cardName].Stack, out int stack);
-
-            // 各カードのスタック数分ループ
-            for (int i = 0; i < 4; i++)
-            {
-                // ループ数がスタック数未満の場合
-                if (stack > i)
-                {
-                    // 同名のカードをリソースファイルから取得
-                    GameObject obj = (GameObject)Resources.Load("UI/" + cardName);
-                    // 取得したカードを生成
-                    GameObject cards = Instantiate(obj, new Vector2(-400f + (200f * i), 125f - (250f * cnt)), Quaternion.identity);
-                    // Rename
-                    cards.name = cardName;
-                    cards.GetComponent<Button>().onClick.AddListener(() => AddDeck(cards));
-
-                    // 生成カードをスクロールビューに追加
-                    cards.transform.SetParent(cardViewParent.transform, false);
-                }
-                else // ループ数がスタック数を超えた場合、ダミーを生成して整頓する
-                {
-                    // 透明なダミーをリソースファイルから取得
-                    GameObject obj = (GameObject)Resources.Load("UI/Dummy");
-                    // 取得したダミーを生成
-                    GameObject cards = Instantiate(obj, new Vector2(-400f + (200f * i), 125f - (250f * cnt)), Quaternion.identity);
-                    // Rename
-                    cards.name = "dummy";
-
-                    // ダミーをスクロールビューに追加
-                    cards.transform.SetParent(cardViewParent.transform, false);
-                }
-            }
-            cnt++;
-        }
-        isSet = true;
     }
 
     /// <summary>
@@ -384,7 +544,14 @@ public class SelectScene : MonoBehaviour
 
         cardViewPanel.SetActive(false);
 
-        DeckRefresh();
+        if (isClick == false)
+        {
+            deckData.SetDeck();
+        }
+        else
+        {
+            deckData.SetDefenceDeck();
+        }
     }
 
     /// <summary>
@@ -412,6 +579,7 @@ public class SelectScene : MonoBehaviour
     {
         SceneManager.LoadScene("Battle");
     }
+
 
     /// <summary>
     /// Check Usable Card
@@ -463,149 +631,6 @@ public class SelectScene : MonoBehaviour
                 break;
             default:
                 break;
-        }
-    }
-
-    /// <summary>
-    /// デッキ追加処理
-    /// </summary>
-    void AddDeck(GameObject obj)
-    {
-        // 選択(デッキに追加)された場合かつ現在のデッキが4枚以下の場合
-        if (!deckCards.Contains(obj) && deckCards.Count < 4)
-        {
-            obj.GetComponent<Image>().color = Color.gray;
-
-            // 同名のカードをリソースファイルから取得
-            GameObject resource = (GameObject)Resources.Load("UI/" + obj.name);
-            // 取得したカードを生成
-            GameObject cards = Instantiate(resource, new Vector2(-450f + (300f * deckCount), 0f), Quaternion.identity);
-            cards.transform.localScale = new Vector2(1.8f, 2.5f);
-            // Rename
-            cards.name = obj.name;
-            // 生成したカードを親に追加
-            cards.transform.SetParent(activeDeckParent.transform, false);
-            // デッキリストに追加
-            deckCards.Add(obj);
-            deckCount++;
-        }
-        else // 再度選択(削除)された場合
-        {
-            // 現在生成されているオブジェクトを削除
-            foreach (Transform n in activeDeckParent.transform)
-            {
-                // タッチしたオブジェクトとリスト内のオブジェクトの名前が一致した場合
-                if (obj.name == n.name)
-                {
-                    // 対象を削除
-                    GameObject.Destroy(n.gameObject);
-                    deckCount--;
-                    break;
-                }
-            }
-
-            // 色を元に戻す
-            obj.GetComponent<Image>().color = Color.white;
-            // デッキリストから削除
-            deckCards.Remove(obj);
-        }
-    }
-
-    /// <summary>
-    /// デッキ読み込み処理
-    /// </summary>
-    void DeckRefresh()
-    {
-        if (deckCards.Count <= 0) return;
-        int cnt = 0;
-        List<GameObject> keepList = new List<GameObject>();
-
-        foreach (GameObject obj in deckCards)
-        {
-            keepList.Add(obj);
-        }
-
-        foreach (Transform n in activeDeckParent.transform)
-        {
-            GameObject.Destroy(n.gameObject);
-        }
-        deckCards.Clear();
-
-        foreach (var item in keepList)
-        {
-            // 同名のカードをリソースファイルから取得
-            GameObject obj = (GameObject)Resources.Load("UI/" + item.name);
-            // 取得したカードを生成
-            GameObject cards = Instantiate(obj, new Vector2(-450f + (300f * cnt), 0f), Quaternion.identity);
-            cards.transform.localScale = new Vector2(1.8f, 2.5f);
-            // Rename
-            cards.name = item.name;
-            // 再度リストに追加
-            deckCards.Add(item);
-            // 生成したカードを親に追加
-            cards.transform.SetParent(activeDeckParent.transform, false);
-            cnt++;
-        }
-    }
-
-    /// <summary>
-    /// ランダムネームコンバート処理
-    /// </summary>
-    public void randomName()
-    {   
-        System.Random rand = new System.Random();
-        // ファストネーム定義
-        string[] firstName = new string[]{
-            "Nice","Abnormal","Delicious","Difficulty","Mr",
-            "Mrs","Master","Huge","Tiny","Clever",
-            "Wetty","Pretty","Golden","Brave","Godly",
-            "Kidly","Burning","Creepy","Fishy","Metallic",
-            "Oriental","Muscly","Mudly","More","Strong",
-            "Shiny","Sparkle","Legal","Hardest","Dancing"
-        };
-        // セカンドネーム定義
-        string[] secondtName = new string[]{
-            "Cake","Rock","Slime","Clover","Animal",
-            "Fish","Earth","Throat","City","Dwarf",
-            "Ghost","Tank","Knight","Candy","Worm",
-            "Tree","Dice","Baby","Machine","Dog",
-            "Thief","Bird","Cat","Water","CowBoy",
-            "Skelton","Boots","Game","Card","Data"
-        };
-        // 1～30までの乱数を代入
-        int num = rand.Next(1, 30);
-        int num2 = rand.Next(1, 30);
-
-        // 各乱数に応じた名前を代入
-        playerName.text ="Name:" + firstName[num] + secondtName[num2];
-    }
-
-    void CheckSomething()
-    {
-        foreach (var deck in deckCards)
-        {
-            Debug.Log(deck);
-        }
-    }
-
-    /// <summary>
-    /// デッキ切り替え処理
-    /// </summary>
-    public void ChangeDeck()
-    {
-        if (isClick == false)
-        {
-            mainDeck.SetActive(false);
-            defenceDeckPanel.SetActive(true);
-            deckTxt.text = "Defence Deck";
-            isClick = true;
-        }
-        else
-        {
-            mainDeck.SetActive(true);
-            defenceDeckPanel.SetActive(false);
-            deckTxt.text = "Main Deck";
-            isClick = false;
         }
     }
 }

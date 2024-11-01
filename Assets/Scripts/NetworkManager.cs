@@ -8,7 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
-using UnityEditor.PackageManager.Requests;
+//using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -23,6 +23,7 @@ public class NetworkManager : MonoBehaviour
     private List<int> stageList = new List<int>();
     private static NetworkManager instance;
     private string authToken;
+    public string AuthToken { get { return authToken; } }
     public static NetworkManager Instance
     {
         get {
@@ -50,38 +51,120 @@ public class NetworkManager : MonoBehaviour
         };
         string json = JsonConvert.SerializeObject(requsetData);
         UnityWebRequest request = UnityWebRequest.Post(
-            API_BASE_URL + "personal_access_token", json, "application/json");
+            API_BASE_URL + "createToken", json, "application/json");
         yield return request.SendWebRequest();
         if(request.result == UnityWebRequest.Result.Success ) 
         {
-            // jsonをデシリアライズ
-            // フィールドとローカルファイルにidとトークンを保存
+            //通信が成功した場合、返ってきたJsonをオブジェクトに変換
+            string resultJson = request.downloadHandler.text;
+            StoreUserresponse resp =
+                JsonConvert.DeserializeObject<StoreUserresponse>(resultJson);
+            //ファイルにIDとトークンを保存
+            this.authToken = resp.Token;
+            this.userID = resp.UserID;
+            SaveUserData();
         }
         response?.Invoke(request.result == UnityWebRequest.Result.Success);
     }
-
 
     /// <summary>
     /// デッキ登録処理
     /// </summary>
     /// <param name="cardID"></param>
-    /// <param name="result"></param>
     /// <returns></returns>
-    public IEnumerator StoreCard(int cardID, Action<bool> result)
+    public IEnumerator StoreCard(int[] cardID)
     {
+
         //Create Object Send for Server
         StoreDeckRequest requestData = new StoreDeckRequest();
-        requestData.CardID = cardID;
+
+        // 取得したIDをリクエストに入れる
+        requestData.CardID_1 = cardID[0];
+        requestData.CardID_2 = cardID[1];
+        requestData.CardID_3 = cardID[2];
+        requestData.CardID_4 = cardID[3];
         //サーバに送信するオブジェクトをJAONに変換response
         string json = JsonConvert.SerializeObject(requestData);
         //Send
         UnityWebRequest request = UnityWebRequest.Post(
             API_BASE_URL + "battleMode/deck/update", json, "application/json");
+        request.SetRequestHeader("Authorization", "Bearer " + authToken);
+        yield return request.SendWebRequest();
+    }
+
+    /// <summary>
+    /// デッキ検索処理
+    /// </summary>
+    public IEnumerator ShowDeck(Action<DeckResponse[]> result)
+    {
+        //Send
+        UnityWebRequest request = UnityWebRequest.Get(
+            API_BASE_URL + "battleMode/deck/show");
+        request.SetRequestHeader("Authorization", "Bearer " + authToken);
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success
+             && request.responseCode == 200)
+        {
+            //通信が成功した場合、返ってきたJsonをオブジェクトに変換
+            string resultJson = request.downloadHandler.text;
+            DeckResponse[] response =
+                JsonConvert.DeserializeObject<DeckResponse[]>(resultJson);
+            result?.Invoke(response);//ここで呼び出し元のresult処理を呼ぶ
+        }
+        else
+        {
+            result?.Invoke(null);
+        }
+    }
+
+    /// <summary>
+    /// 防衛デッキ検索処理
+    /// </summary>
+    public IEnumerator ShowDefenceDeck(Action<DeckResponse[]> result)
+    {
+        //Send
+        UnityWebRequest request = UnityWebRequest.Get(
+            API_BASE_URL + "battleMode/defenceDeck/show");
+        request.SetRequestHeader("Authorization", "Bearer " + authToken);
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success
+             && request.responseCode == 200)
+        {
+            //通信が成功した場合、返ってきたJsonをオブジェクトに変換
+            string resultJson = request.downloadHandler.text;
+            DeckResponse[] response =
+                JsonConvert.DeserializeObject<DeckResponse[]>(resultJson);
+            result?.Invoke(response);//ここで呼び出し元のresult処理を呼ぶ
+        }
+        else
+        {
+            result?.Invoke(null);
+        }
+    }
+
+    /// <summary>
+    /// 防衛デッキ登録処理
+    /// </summary>
+    /// <param name="cardID"></param>
+    /// <returns></returns>
+    public IEnumerator StoreDefenceCard(int[] cardID)
+    {
+        //Create Object Send for Server
+        StoreDeckRequest requestData = new StoreDeckRequest();
+        // 取得したIDをリクエストに入れる
+        requestData.CardID_1 = cardID[0];
+        requestData.CardID_2 = cardID[1];
+        requestData.CardID_3 = cardID[2];
+        requestData.CardID_4 = cardID[3];
+        //サーバに送信するオブジェクトをJAONに変換response
+        string json = JsonConvert.SerializeObject(requestData);
+        //Send
+        UnityWebRequest request = UnityWebRequest.Post(
+            API_BASE_URL + "battleMode/defenceDeck/update", json, "application/json");
         request.SetRequestHeader("Authorization", "Bearer" + authToken);
         yield return request.SendWebRequest();
-        bool isSuccess = false;
-
-        result?.Invoke(isSuccess);//ここで呼び出し元のresult処理を呼ぶ
     }
 
     /// <summary>
@@ -127,6 +210,7 @@ public class NetworkManager : MonoBehaviour
         SaveData saveData = new SaveData();
         saveData.Name = this.userName;
         saveData.UserID = this.userID;
+        saveData.Token = this.authToken;
         saveData.StageList = this.stageList;
         string json = JsonConvert.SerializeObject(saveData);
         var writer =
@@ -154,6 +238,7 @@ public class NetworkManager : MonoBehaviour
         SaveData saveData = JsonConvert.DeserializeObject<SaveData>(json);
         this.userID = saveData.UserID;
         this.userName = saveData.Name;
+        this.authToken = saveData.Token;
         this.stageList = saveData.StageList;
         return true;
     }

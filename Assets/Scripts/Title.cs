@@ -1,12 +1,11 @@
 /*
  * TitleScript
- * Creator:西浦晃太 Update:2024/08/26
+ * Creator:西浦晃太 Update:2024/10/28
 */
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using System.Collections;
 using UnityEngine.AddressableAssets;
 
 public class Title : MonoBehaviour
@@ -53,21 +52,30 @@ public class Title : MonoBehaviour
             }
             else
             {
-                SceneManager.LoadScene("SelectScene");
+                //トークンがない場合、トークンを生成
+                if (NetworkManager.Instance.AuthToken == null)
+                {
+                    StartCoroutine(NetworkManager.Instance.CreateToken(
+                        result => //生成後、シーン遷移
+                        {
+                            SceneManager.LoadScene("SelectScene");
+                        }));
+                }
+                else SceneManager.LoadScene("SelectScene"); //既にトークンを持っている場合、そのままシーン遷移
             }
         }
     }
 
-    IEnumerator checkCatalog()
-    {
-        var checkHandle = Addressables.CheckForCatalogUpdates(false);
-        yield return checkHandle;
-        var updates = checkHandle.Result;
-        Addressables.Release(checkHandle);
-        if(updates.Count >= 1)
-        {
-            //更新がある場合はロード画面へ
-            SceneManager.LoadScene("LoadScene");
-        }
-    }
+    //IEnumerator checkCatalog()
+    //{
+    //    var checkHandle = Addressables.CheckForCatalogUpdates(false);
+    //    yield return checkHandle;
+    //    var updates = checkHandle.Result;
+    //    Addressables.Release(checkHandle);
+    //    if(updates.Count >= 1)
+    //    {
+    //        //更新がある場合はロード画面へ
+    //        SceneManager.LoadScene("LoadScene");
+    //    }
+    //}
 }
