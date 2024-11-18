@@ -68,7 +68,9 @@ public class Passive : MonoBehaviour
             if (SceneManager.GetActiveScene().name == "Fight")
             {
                 BattleModePlayer card = GameObject.Find("Manager").GetComponent<BattleModePlayer>();
+                BattleModeEnemy enemy = GameObject.Find("Enemy").GetComponent<BattleModeEnemy>();
                 card.SetPassives(activePassives, passiveDictionary);
+                enemy.SetPassives(activePassives, passiveDictionary);
             }
             else
             {

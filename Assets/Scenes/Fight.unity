@@ -1127,7 +1127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   infoText: {fileID: 1427263499}
-  passiveID: 03000000060000000400000005000000
+  passiveID: 00000000000000000000000000000000
 --- !u!1 &684275931
 GameObject:
   m_ObjectHideFlags: 0

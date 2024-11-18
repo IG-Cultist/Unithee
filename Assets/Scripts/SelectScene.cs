@@ -1,11 +1,13 @@
 /*
  * SelectSceneScript
- * Creator:西浦晃太 Update:2024/10/10
+ * Creator:西浦晃太 Update:2024/11/07
 */
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Threading.Tasks;
 public class SelectScene : MonoBehaviour
 {
     // ステージ情報
@@ -47,6 +49,9 @@ public class SelectScene : MonoBehaviour
     // カードパネル
     [SerializeField] GameObject cardViewPanel;
 
+    // 詳細パネル
+    [SerializeField] GameObject helpPanel;
+
     // カード親
     [SerializeField] GameObject cardViewParent;
 
@@ -61,6 +66,12 @@ public class SelectScene : MonoBehaviour
 
     // 防衛デッキの親
     [SerializeField] GameObject defenceDeckPanel;
+
+    // ローディングパネル
+    [SerializeField] GameObject loadingPanel;
+
+    // ローディングアイコン
+    [SerializeField] GameObject loadingIcon;
 
     // Deck Panel
     [SerializeField] Text infoText;
@@ -79,12 +90,11 @@ public class SelectScene : MonoBehaviour
 
     AudioSource audioSource;
 
-    List<string> mainDeckNameList = new List<string>();
-    List<string> defenceDeckNameList = new List<string>();
-
     // Start is called before the first frame update
     void Start()
     {
+        // 非同期処理完了まで待機させる
+        Loading();
         isSet = false;
 
         // SetSE
@@ -99,6 +109,7 @@ public class SelectScene : MonoBehaviour
         deckBuildPanel.SetActive(false);
         showCardPanel.SetActive(false);
         defenceDeckPanel.SetActive(false);
+        helpPanel.SetActive(false);
 
         // デッキデータスクリプトを取得
         deckData = FindObjectOfType<DeckData>();
@@ -175,18 +186,18 @@ public class SelectScene : MonoBehaviour
     {
         warning.text = "";
         List<int> activeList;
-        List<int> otherList;
+        List<string> otherList;
         int requestValue;
         if (isClick == false)
         {
             activeList = deckData.GetDeck();
-            otherList = deckData.GetDefenceDeck();
+            otherList = deckData.GetDefenceDeckName();
             requestValue = 1;
         }
         else
         {
             activeList = deckData.GetDefenceDeck();
-            otherList = deckData.GetDeck();
+            otherList = deckData.GetDeckName();
             requestValue = 2;
         }
 
@@ -196,7 +207,7 @@ public class SelectScene : MonoBehaviour
         // 対象オブジェクトの状態を確認
         bool isSelected = deckData.CheckUsable(obj.name);
 
-        if (otherList.Contains(cardID))
+        if (otherList.Contains(obj.name))
         {
             warning.text = "そのカードは別のデッキに含まれている！";
         }
@@ -507,8 +518,15 @@ public class SelectScene : MonoBehaviour
         deckBuildPanel.SetActive(true);
         buildPanel.SetActive(true);
 
-        UpdateDeck(deckData.GetDeck());
-
+        if (isClick == false)
+        {
+            UpdateDeck(deckData.GetDeck());
+        }
+        else
+        {
+            UpdateDeck(deckData.GetDefenceDeck());
+        }
+        helpPanel.SetActive(false);
         cardViewPanel.SetActive(false);
         infoPanel.SetActive(false);
         showCardPanel.SetActive(false);
@@ -525,7 +543,7 @@ public class SelectScene : MonoBehaviour
     /// <summary>
     /// カードビューパネル処理
     /// </summary>
-    public void openAttackCardPanel()
+    public void openViewPanel()
     {
         cardViewPanel.SetActive(true);
 
@@ -533,7 +551,23 @@ public class SelectScene : MonoBehaviour
         buildPanel.SetActive(false);
         infoPanel.SetActive(false);
         showCardPanel.SetActive(false);
+        helpPanel.SetActive(false);
     }
+
+    /// <summary>
+    /// 詳細パネル処理
+    /// </summary>
+    public void openHelpPanel()
+    {    
+        helpPanel.SetActive(true);
+        
+        cardViewPanel.SetActive(false);
+        buildPanel.SetActive(false);
+        infoPanel.SetActive(false);
+        showCardPanel.SetActive(false);
+
+    }
+
 
     /// <summary>
     /// ビルド画面に戻る処理
@@ -543,6 +577,7 @@ public class SelectScene : MonoBehaviour
         buildPanel.SetActive(true);
 
         cardViewPanel.SetActive(false);
+        helpPanel.SetActive(false);
 
         if (isClick == false)
         {
@@ -552,6 +587,7 @@ public class SelectScene : MonoBehaviour
         {
             deckData.SetDefenceDeck();
         }
+        warning.text = "";
     }
 
     /// <summary>
@@ -560,6 +596,7 @@ public class SelectScene : MonoBehaviour
     public void openShowCardPanel()
     {
         showCardPanel.SetActive(true);
+        SetUsableView();
         deckBuildPanel.SetActive(false);
         infoPanel.SetActive(false);
     }
@@ -632,5 +669,59 @@ public class SelectScene : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    void SetUsableView()
+    {
+        int cnt = 0;
+        // Create Stage Button from Server
+        GameObject cardObj = new GameObject();
+
+        foreach (var item in deckData.cardDictionary.Keys)
+        {
+            // キーを文字列に変換
+            string cardName = item.ToString();
+            // スタック数を数字に変換
+            int.TryParse(deckData.cardDictionary[cardName].Stack, out int cardStack);
+
+            GameObject obj = (GameObject)Resources.Load("UI/" + cardName);
+
+            if (cnt < 5)
+            {
+                cardObj = Instantiate(obj, new Vector2(-400 + (200 * cnt), 100), Quaternion.identity);
+            }
+            else
+            {
+                cardObj = Instantiate(obj, new Vector2(-300 + (200 * (cnt - 5)), -130), Quaternion.identity);
+            }
+
+            cardObj.name = cardName;
+
+            cardObj.transform.SetParent(this.cardParent.transform, false);
+            cardObj.GetComponent<Button>().onClick.AddListener(() => CardClick(cardName, deckData.cardDictionary[cardName].Stack));
+            cnt++;
+        }
+    }
+
+    async void Loading()
+    {
+        loadingPanel.SetActive(true);
+
+        float angle = 8;
+        bool rot = true;
+
+        for (int i = 0; i < 80; i++)
+        {
+            if (rot)
+            {
+                loadingIcon.transform.rotation *= Quaternion.AngleAxis(angle, Vector3.back);
+            }
+            else
+            {
+                loadingIcon.transform.rotation *= Quaternion.AngleAxis(angle, Vector3.forward);
+            }
+            await Task.Delay(10);
+        }
+        loadingPanel.SetActive(false);
     }
 }

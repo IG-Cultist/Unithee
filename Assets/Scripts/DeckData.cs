@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class DeckData : MonoBehaviour
 {
@@ -23,6 +24,12 @@ public class DeckData : MonoBehaviour
 
     // ステージ選択画面スクリプト
     SelectScene selectScene;
+
+    // メインデッキ内のカード名リスト
+    List<string> mainDeckNameList = new List<string>();
+
+    // 防衛デッキ内のカード名リスト
+    List<string> defenceDeckNameList = new List<string>();
 
     // Start is called before the first frame update
     void Start()
@@ -88,11 +95,13 @@ public class DeckData : MonoBehaviour
                     foreach (var item in activeCardID)
                     {
                         int cnt = 0;
+                        // デッキ内にあるカード読み込み処理
                         foreach (var id in usableObjList[item - 1])
                         {
                             if (id != 1 && id != 2)
                             {
                                 usableObjList[item - 1][cnt] = 1;
+                                mainDeckNameList.Add(item + "," + (cnt + 1));
                                 break;
                             }
                             cnt++;
@@ -102,11 +111,14 @@ public class DeckData : MonoBehaviour
                     foreach (var item in activeDefenceCardID)
                     {
                         int cnt = 0;
+                        // デッキ内にあるカード読み込み処理
                         foreach (var id in usableObjList[item - 1])
                         {
                             if (id != 1 && id != 2)
                             {
                                 usableObjList[item - 1][cnt] = 2;
+                                defenceDeckNameList.Add(item + "," + (cnt + 1));
+
                                 break;
                             }
                             cnt++;
@@ -120,7 +132,7 @@ public class DeckData : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     /// <summary>
@@ -130,15 +142,19 @@ public class DeckData : MonoBehaviour
     public void SetDeck()
     {
         List<int> list = new List<int>();
+        mainDeckNameList.Clear();
 
-        for (int i = 0; i < 9; i++)
+        // 現在のデッキのカード枚数分ループ
+        foreach (var id in activeCardID)
         {
             // 各スタック数分ループ
-            for (int j = 0; j < usableObjList[i].Count; j++)
+            for (int i = 0; i < usableObjList[id -1].Count; i++)
             {
-                if (usableObjList[i][j] == 1)
+                if (usableObjList[id-1][i] == 1)
                 {
-                    list.Add(i+1);
+                    list.Add(id);
+                    mainDeckNameList.Add(id + "," + (i + 1));
+                    break;
                 }
             }
         }
@@ -151,7 +167,7 @@ public class DeckData : MonoBehaviour
         int[] sendData = { 0, 0, 0, 0 };
 
         // 取得してきたIDを代入
-        foreach(var id in list)
+        foreach (var id in list)
         {
             if (list == null) break;
             // 現在のデッキリストにIDを入れる
@@ -174,15 +190,19 @@ public class DeckData : MonoBehaviour
     public void SetDefenceDeck()
     {
         List<int> list = new List<int>();
+        defenceDeckNameList.Clear();
 
-        for (int i = 0; i < 9; i++)
+        // 現在のデッキのカード枚数分ループ
+        foreach (var id in activeDefenceCardID)
         {
             // 各スタック数分ループ
-            for (int j = 0; j < usableObjList[i].Count; j++)
+            for (int i = 0; i < usableObjList[id - 1].Count; i++)
             {
-                if (usableObjList[i][j] == 2)
+                if (usableObjList[id - 1][i] == 2)
                 {
-                    list.Add(i + 1);
+                    list.Add(id);
+                    defenceDeckNameList.Add(id + "," + (i + 1));
+                    break;
                 }
             }
         }
@@ -220,6 +240,14 @@ public class DeckData : MonoBehaviour
     }
 
     /// <summary>
+    /// 現在のデッキ内カード名取得処理
+    /// </summary>
+    public List<string> GetDeckName()
+    {
+        return mainDeckNameList;
+    }
+
+    /// <summary>
     /// 現在の防衛デッキ内カードID取得処理
     /// </summary>
     public List<int> GetDefenceDeck()
@@ -228,11 +256,28 @@ public class DeckData : MonoBehaviour
     }
 
     /// <summary>
+    /// 現在の防衛デッキ内カード名取得処理
+    /// </summary>
+    public List<string> GetDefenceDeckName()
+    {
+        return defenceDeckNameList;
+    }
+
+    /// <summary>
     /// 選択状態リスト取得処理
     /// </summary>
     public List<List<int>> GetUsable()
     {
         return usableObjList;
+    }
+
+    /// <summary>
+    /// 使用可能カードID取得処理
+    /// </summary>
+    /// <returns></returns>
+    public Dictionary<string, UsableCardResponse> GetCardDictionary()
+    {
+        return cardDictionary;
     }
 
     /// <summary>
@@ -281,7 +326,6 @@ public class DeckData : MonoBehaviour
             }
         }
     }
-
 
     /// <summary>
     /// 名前をIDに変換する処理

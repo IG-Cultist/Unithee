@@ -74,7 +74,6 @@ public class NetworkManager : MonoBehaviour
     /// <returns></returns>
     public IEnumerator StoreCard(int[] cardID)
     {
-
         //Create Object Send for Server
         StoreDeckRequest requestData = new StoreDeckRequest();
 
@@ -88,6 +87,29 @@ public class NetworkManager : MonoBehaviour
         //Send
         UnityWebRequest request = UnityWebRequest.Post(
             API_BASE_URL + "battleMode/deck/update", json, "application/json");
+        request.SetRequestHeader("Authorization", "Bearer " + authToken);
+        yield return request.SendWebRequest();
+    }
+
+    /// <summary>
+    /// 防衛デッキ登録処理
+    /// </summary>
+    /// <param name="cardID"></param>
+    /// <returns></returns>
+    public IEnumerator StoreDefenceCard(int[] cardID)
+    {
+        //Create Object Send for Server
+        StoreDeckRequest requestData = new StoreDeckRequest();
+        // 取得したIDをリクエストに入れる
+        requestData.CardID_1 = cardID[0];
+        requestData.CardID_2 = cardID[1];
+        requestData.CardID_3 = cardID[2];
+        requestData.CardID_4 = cardID[3];
+        //サーバに送信するオブジェクトをJAONに変換response
+        string json = JsonConvert.SerializeObject(requestData);
+        //Send
+        UnityWebRequest request = UnityWebRequest.Post(
+            API_BASE_URL + "battleMode/defenceDeck/update", json, "application/json");
         request.SetRequestHeader("Authorization", "Bearer " + authToken);
         yield return request.SendWebRequest();
     }
@@ -142,29 +164,6 @@ public class NetworkManager : MonoBehaviour
         {
             result?.Invoke(null);
         }
-    }
-
-    /// <summary>
-    /// 防衛デッキ登録処理
-    /// </summary>
-    /// <param name="cardID"></param>
-    /// <returns></returns>
-    public IEnumerator StoreDefenceCard(int[] cardID)
-    {
-        //Create Object Send for Server
-        StoreDeckRequest requestData = new StoreDeckRequest();
-        // 取得したIDをリクエストに入れる
-        requestData.CardID_1 = cardID[0];
-        requestData.CardID_2 = cardID[1];
-        requestData.CardID_3 = cardID[2];
-        requestData.CardID_4 = cardID[3];
-        //サーバに送信するオブジェクトをJAONに変換response
-        string json = JsonConvert.SerializeObject(requestData);
-        //Send
-        UnityWebRequest request = UnityWebRequest.Post(
-            API_BASE_URL + "battleMode/defenceDeck/update", json, "application/json");
-        request.SetRequestHeader("Authorization", "Bearer" + authToken);
-        yield return request.SendWebRequest();
     }
 
     /// <summary>
@@ -241,6 +240,34 @@ public class NetworkManager : MonoBehaviour
         this.authToken = saveData.Token;
         this.stageList = saveData.StageList;
         return true;
+    }
+
+    /// <summary>
+    /// バトルモードプロフィール一覧取得処理
+    /// </summary>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public IEnumerator GetProfile(Action<StageResponse[]> result)
+    {
+        // ステージ一覧取得APIを実行
+        UnityWebRequest request = UnityWebRequest.Get(
+            API_BASE_URL + "battleMode");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success
+             && request.responseCode == 200)
+        {
+            //通信が成功した場合、返ってきたJsonをオブジェクトに変換
+            string resultJson = request.downloadHandler.text;
+            StageResponse[] response =
+                JsonConvert.DeserializeObject<StageResponse[]>(resultJson);
+            result?.Invoke(response);//ここで呼び出し元のresult処理を呼ぶ
+        }
+        else
+        {
+            result?.Invoke(null);
+        }
     }
 
     /// <summary>

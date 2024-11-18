@@ -10,6 +10,7 @@ using UnityEngine.UIElements;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
+using static UnityEditor.Progress;
 
 public class BattleModeEnemy : MonoBehaviour
 {
@@ -70,6 +71,19 @@ public class BattleModeEnemy : MonoBehaviour
 
     bool painted;
 
+    // Passive Turn's Count
+    int passiveCnt = 0;
+
+    // ピストル使用可能フラグ
+    bool isReload;
+
+    // Passives
+    List<string> passive;
+
+    // Passive Dictionary
+    Dictionary<string, ItemResponse> passiveDictionary;
+
+
     private void Awake()
     {
 
@@ -78,6 +92,7 @@ public class BattleModeEnemy : MonoBehaviour
     void Start()
     {
         painted = false;
+        isReload = false;
 
         //プレイヤーHPをタグで取得
         playerHP = GameObject.FindGameObjectsWithTag("PlayerHP");
@@ -110,6 +125,7 @@ public class BattleModeEnemy : MonoBehaviour
         isDead = false;
         dmg = 0;
         count = 0;
+        passiveCnt = 0;
 
         // 行動アイコンを生成
         SetActions();
@@ -166,36 +182,42 @@ public class BattleModeEnemy : MonoBehaviour
         switch (actionList[count])
         {
             case "Sword":
+                passiveEffect("Attack", actionList[count]);
                 dmg += 1;
                 infoText.text = "Rival:" + dmg + "ダメージを与える";
                 SEType = "light";
                 break;
 
             case "M.A.C.E":
+                passiveEffect("Attack", actionList[count]);
                 dmg += block;
                 infoText.text = "Rival:" + dmg + "ダメージを与える";
                 SEType = "heavy";
                 break;
 
             case "DeathS.Y.T.H":
+                passiveEffect("Attack", actionList[count]);
                 dmg += 3;
                 infoText.text = "Rival:" + dmg + "ダメージを与える";
                 SEType = "heavy";
                 break;
 
             case "S.Y.T.H":
+                passiveEffect("Attack", actionList[count]);
                 dmg += 2;
                 infoText.text = "Rival:" + dmg + "ダメージを与える";
                 SEType = "heavy";
                 break;
 
             case "T.N.T":
+                passiveEffect("Attack", actionList[count]);
                 dmg = 999;
                 infoText.text = "Rival:ドカーン!" + dmg + "ダメージを与える";
                 SEType = "boom";
                 break;
 
             case "A.X.E":
+                passiveEffect("Attack", actionList[count]);
                 dmg += 1;
                 playerScript.block = 0;
                 infoText.text = "Rival:シールド破壊！" + dmg + "ダメージを与える";
@@ -203,30 +225,44 @@ public class BattleModeEnemy : MonoBehaviour
                 break;
 
             case "ForgeHammer":
+                passiveEffect("Attack", actionList[count]);
                 dmg += 1;
                 infoText.text = "Rival:" + dmg + "ダメージを与える\n次の行動で攻撃力+1";
                 SEType = "heavy";
                 break;
 
             case "Injector":
+                passiveEffect("Attack", actionList[count]);
                 dmg += 1;
                 infoText.text = "Rival:" + dmg + "ダメージを与える\nPlayerに出血を付与!";
                 SEType = "light";
                 break;
 
             case "PoisonKnife":
+                passiveEffect("Attack", actionList[count]);
                 dmg += 1;
                 infoText.text = "Rival:" + dmg + "ダメージを与える\nPlayerは毒により攻撃力-1";
                 SEType = "light";
                 break;
 
             case "6mmBullet":
-                dmg = 0;
-                infoText.text = "Rival:仕方なく弾丸を投げた！\n意味がない！" + dmg + "ダメージを与える";
+                passiveEffect("Attack", actionList[count]);
+                if (isReload == true)
+                {
+                    dmg += 3;
+                    infoText.text = "Rival:素早く弾丸を込め、トリガーを引いた！\n" + dmg + "ダメージを与える";
+                    isReload = false;
+                }
+                else
+                {
+                    dmg = 0;
+                    infoText.text = "Rival:仕方なく弾丸を投げた！\n意味がない！" + dmg + "ダメージを与える";
+                }
                 SEType = "light";
                 break;
 
             case "Shield":
+                passiveEffect("Defence", actionList[count]);
                 dmg = 0;
                 if (block <= 0)
                 {
@@ -239,6 +275,7 @@ public class BattleModeEnemy : MonoBehaviour
                 break;
 
             case "SwatShield":
+                passiveEffect("Defence", actionList[count]);
                 dmg = 0;
                 if (block <= 0)
                 {
@@ -368,5 +405,75 @@ public class BattleModeEnemy : MonoBehaviour
     public void EnemyExplain(GameObject enemy)
     {
         infoText.text = enemy.name + ":ライバル！";
+    }
+
+    /// <summary>
+    /// Passive's Effect Process
+    /// </summary>
+    /// <param name="item"></param>
+    void passiveEffect(string item,string name)
+    {
+        //Select to Passive's name
+        switch (item)
+        {
+            case "Attack":
+                switch (passive[passiveCnt])
+                {
+                    case "Spike":
+                        dmg++;
+                        break;
+                    case "Slime":
+                        playerScript.dmg--;
+                        break;
+                    case "VampireWrench":
+                        playerScript.enemyLife++;
+                        break;
+                    case "HandyDrill":
+                        playerScript.block = 0;
+                        break;
+
+                    case "HandGun":
+                        if (name == "6mmBullet")
+                        {
+                            isReload = true;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case "Defence":
+                switch (passive[passiveCnt])
+                {
+                    case "Spike":
+                        if (name == "Shield")
+                        {
+                            dmg++;
+                        }
+                        break;
+                    case "ArmorChip":
+
+                        if (block <= 0)
+                        {
+                            protectIcon.SetActive(true);
+                            iconTxt.gameObject.GetComponent<Text>().text = block.ToString();
+                        }
+
+                        block++;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+        if (passiveCnt < (passive.Count - 1)) passiveCnt++;
+    }
+
+    public void SetPassives(List<string> passiveList, Dictionary<string, ItemResponse> dictionary)
+    {
+        passive = passiveList;
+        passiveDictionary = dictionary;
     }
 }

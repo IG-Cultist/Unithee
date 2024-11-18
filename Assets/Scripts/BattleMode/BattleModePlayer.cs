@@ -89,9 +89,6 @@ public class BattleModePlayer : MonoBehaviour
     // HealthScript
     Health healthScript;
 
-    // PassiveScript
-    Passive passiveScript;
-
     // EnemyScript
     BattleModeEnemy enemyScript;
 
@@ -139,6 +136,7 @@ public class BattleModePlayer : MonoBehaviour
     bool isReload;
 
     bool isFight;
+
     // Panel's Active Check
     bool panelActive;
 
@@ -203,9 +201,6 @@ public class BattleModePlayer : MonoBehaviour
         passiveCnt = 0;
         block = 0;
         dmg = 0;
-
-        // Add Passive Value from got one
-        passiveScript = FindObjectOfType<Passive>();
     }
 
     // Update is called once per frame
