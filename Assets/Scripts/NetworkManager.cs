@@ -243,15 +243,15 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
-    /// バトルモードプロフィール一覧取得処理
+    /// ライバルランダム取得処理
     /// </summary>
     /// <param name="result"></param>
     /// <returns></returns>
-    public IEnumerator GetProfile(Action<StageResponse[]> result)
+    public IEnumerator GetProfile(Action<RivalResponse[]> result)
     {
         // ステージ一覧取得APIを実行
         UnityWebRequest request = UnityWebRequest.Get(
-            API_BASE_URL + "battleMode");
+            API_BASE_URL + "battleMode/rivals/get");
 
         yield return request.SendWebRequest();
 
@@ -260,8 +260,8 @@ public class NetworkManager : MonoBehaviour
         {
             //通信が成功した場合、返ってきたJsonをオブジェクトに変換
             string resultJson = request.downloadHandler.text;
-            StageResponse[] response =
-                JsonConvert.DeserializeObject<StageResponse[]>(resultJson);
+            RivalResponse[] response =
+                JsonConvert.DeserializeObject<RivalResponse[]>(resultJson);
             result?.Invoke(response);//ここで呼び出し元のresult処理を呼ぶ
         }
         else

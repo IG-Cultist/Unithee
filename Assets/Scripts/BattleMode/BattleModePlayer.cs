@@ -206,6 +206,15 @@ public class BattleModePlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Debug.Log("RivalID" + RivalData.rivalID);
+            foreach (var data in RivalData.cardIDList)
+            {
+                Debug.Log("cardId:" + data);
+            }
+        }
+
         if (Input.GetMouseButtonUp(0)) audioSource.PlayOneShot(clickSE);
 
         battleSpeed = (int)Math.Ceiling(gameSpeedSlider.value);
