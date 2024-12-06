@@ -33,6 +33,9 @@ public class BattleMode : MonoBehaviour
     // 警告テキスト
     [SerializeField] Text warningText;
 
+    // ポイントテキスト
+    [SerializeField] Text pointText;
+
     // デッキ構築済み確認変数
     bool isSetDeck;
 
@@ -111,6 +114,16 @@ public class BattleMode : MonoBehaviour
             }
             rivalDataDictionary.Add(userID, cardList);
             SetRivalDeck();
+        }));
+
+
+        StartCoroutine(NetworkManager.Instance.GetMyProfile(userData =>
+        {
+            // 所得ライバルデータ数分ループ
+            foreach (var item in userData)
+            {
+                pointText.text = "Your Point:" + item.Point.ToString();
+            }
         }));
     }
 

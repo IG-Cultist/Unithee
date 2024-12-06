@@ -293,6 +293,8 @@ public class SelectScene : MonoBehaviour
             GameObject obj = (GameObject)Resources.Load("Cards(ID)/" + id[i]);
             // 取得したカードを生成
             GameObject cards = Instantiate(obj, new Vector2(-430f + (280f * i), 0f), Quaternion.identity);
+
+            cards.name = obj.name;
             cards.transform.localScale = new Vector2(1.7f,2.4f);
             // メインデッキパネルに生成
             cards.transform.SetParent(parent.transform, false);

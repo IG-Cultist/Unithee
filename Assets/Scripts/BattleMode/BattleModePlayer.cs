@@ -83,6 +83,8 @@ public class BattleModePlayer : MonoBehaviour
     // Hand
     List<GameObject> handCard;
 
+    List<int> activeCardID = new List<int>();
+
     // Passive Dictionary
     Dictionary<string, ItemResponse> passiveDictionary;
 
@@ -145,6 +147,25 @@ public class BattleModePlayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(NetworkManager.Instance.ShowDeck(cards =>
+        {
+            if (cards == null) return;
+            // ユーザのデッキ情報を取得
+            foreach (var card in cards)
+            {
+                if (card == null) continue;
+                // カードIDを取得
+                string strID = card.CardID.ToString();
+                int.TryParse(strID, out int cardID);
+
+                // デッキにカードIDを追加
+                activeCardID.Add(cardID);
+            };
+            // 手札カードを設定
+            handCard = new List<GameObject>();
+            SetCard();
+        }));
+
         iconTxt = protectIcon.transform.Find("Text");
         // SetSE
         this.gameObject.AddComponent<AudioSource>();
@@ -158,9 +179,7 @@ public class BattleModePlayer : MonoBehaviour
         clearSE = (AudioClip)Resources.Load("SE/Clear");
         clickSE = (AudioClip)Resources.Load("SE/Click");
 
-        // 手札カードを設定
-        handCard = new List<GameObject>();
-        SetCard();
+
 
         // Set Battle Speed
         // battleSpeed = (int)Math.Ceiling(gameSpeedSlider.value);
@@ -671,6 +690,7 @@ public class BattleModePlayer : MonoBehaviour
                 // テキストを表示し、クリアサウンドを再生
                 infoText.text = "勝利！";
                 audioSource.PlayOneShot(clearSE);
+                StartCoroutine(NetworkManager.Instance.StoreResult(1, RivalData.rivalID));
                 return;
             }
 
@@ -678,6 +698,7 @@ public class BattleModePlayer : MonoBehaviour
             if (enemyScript.isDead == true)
             {
                 infoText.text += "\n敗北...";
+                StartCoroutine(NetworkManager.Instance.StoreResult(0,RivalData.rivalID));
                 return;
             }
 
@@ -693,6 +714,7 @@ public class BattleModePlayer : MonoBehaviour
                     infoText.text = "\nRival:出血死!\n勝利！";
                 }
                 audioSource.PlayOneShot(clearSE);
+                StartCoroutine(NetworkManager.Instance.StoreResult(1, RivalData.rivalID));
                 return;
             }
 
@@ -700,6 +722,7 @@ public class BattleModePlayer : MonoBehaviour
             if (enemyScript.isDead == true)
             {
                 infoText.text += "\n敗北...";
+                StartCoroutine(NetworkManager.Instance.StoreResult(0, RivalData.rivalID));
                 return;
             }
 
@@ -726,6 +749,7 @@ public class BattleModePlayer : MonoBehaviour
         // Reset Count
         count = 0;
         infoText.text = "撃破失敗...\nライバルの勝利";
+        StartCoroutine(NetworkManager.Instance.StoreResult(0, RivalData.rivalID));
         button.SetActive(true);
     }
 
@@ -831,6 +855,12 @@ public class BattleModePlayer : MonoBehaviour
         SceneManager.LoadScene("Battle");
     }
 
+    public void RetireGame()
+    {
+        StartCoroutine(NetworkManager.Instance.StoreResult(0, RivalData.rivalID));
+        SceneManager.LoadScene("Battle");
+    }
+
     /// <summary>
     /// Attack's Effect Progress
     /// </summary>
@@ -926,14 +956,52 @@ public class BattleModePlayer : MonoBehaviour
     {
         int cnt = 0;
 
-        foreach (var cards in card)
+        foreach (var cards in activeCardID)
         {
+            string name;
+            switch (cards)
+            {
+                case 1:
+                    name = "Sword";
+                    break;
+                case 2:
+                    name = "Shield";
+                    break;
+                case 3:
+                    name = "SwatShield";
+                    break;
+                case 4:
+                    name = "A.X.E";
+                    break;
+                case 5:
+                    name = "S.Y.T.H";
+                    break;
+                case 6:
+                    name = "Injector";
+                    break;
+                case 7:
+                    name = "ForgeHammer";
+                    break;
+                case 8:
+                    name = "M.A.C.E";
+                    break;
+                case 9:
+                    name = "PoisonKnife";
+                    break;
+                case 10:
+                    name = "9mmBullet";
+                    break;
+                default:
+                    name = "Unknown";
+                    break;
+            }
+
             //  Get Prefabs from List
-            GameObject obj = (GameObject)Resources.Load("Cards/Card/" + cards.name);
+            GameObject obj = (GameObject)Resources.Load("Cards/Card/" + name);
             // Create Action Objects
             GameObject item = Instantiate(obj, new Vector2(1.17f + (2.2f * cnt), -3.4f), Quaternion.identity);
             // Rename
-            item.name = cards.name;
+            item.name = name;
 
             item.transform.SetParent(parentCard.transform, false);
             handCard.Add(item);

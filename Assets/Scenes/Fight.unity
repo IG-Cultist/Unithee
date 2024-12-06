@@ -1850,7 +1850,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &993238457
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1916,7 +1916,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1513272484}
         m_TargetAssemblyTypeName: BattleModePlayer, Assembly-CSharp
-        m_MethodName: endGame
+        m_MethodName: RetireGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3377,7 +3377,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1626164361
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4639,11 +4639,6 @@ MonoBehaviour:
   isBleeding: 0
   infoText: {fileID: 1427263499}
   health: {fileID: 582026321671613733, guid: f6455b4f83123644d9d169632a2fdfc9, type: 3}
-  actionList:
-  - Sword
-  - Sword
-  - Sword
-  - Sword
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

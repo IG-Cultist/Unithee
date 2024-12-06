@@ -92,6 +92,29 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 戦闘結果登録処理
+    /// </summary>
+    /// <param name="judge"></param>
+    /// <param name="rival_id"></param>
+    /// <returns></returns>
+    public IEnumerator StoreResult(int judge, int rival_id)
+    {
+        //Create Object Send for Server
+        StoreResultResponse requestData = new StoreResultResponse();
+
+        // 取得したIDをリクエストに入れる
+        requestData.Judge = judge;
+        requestData.RivalID = rival_id;
+        //サーバに送信するオブジェクトをJAONに変換response
+        string json = JsonConvert.SerializeObject(requestData);
+        //Send
+        UnityWebRequest request = UnityWebRequest.Post(
+            API_BASE_URL + "battleMode/result/update", json, "application/json");
+        request.SetRequestHeader("Authorization", "Bearer " + authToken);
+        yield return request.SendWebRequest();
+    }
+
+    /// <summary>
     /// 防衛デッキ登録処理
     /// </summary>
     /// <param name="cardID"></param>
@@ -296,6 +319,35 @@ public class NetworkManager : MonoBehaviour
         {
             result?.Invoke(null);
         }     
+    }
+
+    /// <summary>
+    /// 自分のプロフィール取得処理
+    /// </summary>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public IEnumerator GetMyProfile(Action<ProfileResponse[]> result)
+    {
+        // プロフィール取得APIを実行
+        UnityWebRequest request = UnityWebRequest.Get(
+            API_BASE_URL + "battleMode/show");
+            request.SetRequestHeader("Authorization", "Bearer " + authToken);
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success
+             && request.responseCode == 200)
+        {
+            //通信が成功した場合、返ってきたJsonをオブジェクトに変換
+            string resultJson = request.downloadHandler.text;
+            ProfileResponse[] response =
+                JsonConvert.DeserializeObject<ProfileResponse[]>(resultJson);
+
+            result?.Invoke(response);//ここで呼び出し元のresult処理を呼ぶ
+        }
+        else
+        {
+            result?.Invoke(null);
+        }
     }
 
     /// <summary>

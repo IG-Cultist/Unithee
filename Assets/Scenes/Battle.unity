@@ -370,6 +370,7 @@ MonoBehaviour:
   - {fileID: 2717123248429956538}
   warning: {fileID: 1747058868}
   warningText: {fileID: 1747058870}
+  pointText: {fileID: 1512950044}
 --- !u!4 &149039069
 Transform:
   m_ObjectHideFlags: 0
