@@ -8,4 +8,6 @@ public class SaveData
     public int UserID { get; set; }
     public List<int> StageList { get; set; }
     public string Token { get; set; }
+    public string IconName { get; set; }
+    public string DisplayName { get; set; }
 }

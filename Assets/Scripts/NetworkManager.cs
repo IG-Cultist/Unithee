@@ -21,6 +21,8 @@ public class NetworkManager : MonoBehaviour
     private int userID = 0;
     private string userName = "";
     private List<int> stageList = new List<int>();
+    public string displayName = "";
+    public string iconName = "";
     private static NetworkManager instance;
     private string authToken;
     public string AuthToken { get { return authToken; } }
@@ -275,6 +277,7 @@ public class NetworkManager : MonoBehaviour
         // ステージ一覧取得APIを実行
         UnityWebRequest request = UnityWebRequest.Get(
             API_BASE_URL + "battleMode/rivals/get");
+        request.SetRequestHeader("Authorization", "Bearer " + authToken);
 
         yield return request.SendWebRequest();
 
@@ -348,6 +351,48 @@ public class NetworkManager : MonoBehaviour
         {
             result?.Invoke(null);
         }
+    }
+
+    /// <summary>
+    /// バトルモードプロフィール登録処理
+    /// </summary>
+    /// <param name="cardID"></param>
+    /// <returns></returns>
+    public IEnumerator StoreProfile()
+    {
+        //Create Object Send for Server
+        StoreProfileRequest requestData = new StoreProfileRequest();
+
+        //サーバに送信するオブジェクトをJAONに変換response
+        string json = JsonConvert.SerializeObject(requestData);
+        //Send
+        UnityWebRequest request = UnityWebRequest.Post(
+            API_BASE_URL + "battleMode/store", json, "application/json");
+        request.SetRequestHeader("Authorization", "Bearer " + authToken);
+        yield return request.SendWebRequest();
+    }
+
+    /// <summary>
+    /// バトルモードプロフィール更新処理
+    /// </summary>
+    /// <param name="cardID"></param>
+    /// <returns></returns>
+    public IEnumerator UpdateProfile(string name, string iconName)
+    {
+        //Create Object Send for Server
+        StoreProfileRequest requestData = new StoreProfileRequest();
+
+        // 取得したIDをリクエストに入れる
+        requestData.Name = name;
+        requestData.IconName = iconName;
+
+        //サーバに送信するオブジェクトをJAONに変換response
+        string json = JsonConvert.SerializeObject(requestData);
+        //Send
+        UnityWebRequest request = UnityWebRequest.Post(
+            API_BASE_URL + "battleMode/update", json, "application/json");
+        request.SetRequestHeader("Authorization", "Bearer " + authToken);
+        yield return request.SendWebRequest();
     }
 
     /// <summary>

@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Threading.Tasks;
+using UnityEngine.Rendering;
 public class SelectScene : MonoBehaviour
 {
     // ステージ情報
@@ -48,6 +49,9 @@ public class SelectScene : MonoBehaviour
 
     // カードパネル
     [SerializeField] GameObject cardViewPanel;
+
+    // アイコンパネル
+    [SerializeField] GameObject iconPanel;
 
     // 詳細パネル
     [SerializeField] GameObject helpPanel;
@@ -90,6 +94,13 @@ public class SelectScene : MonoBehaviour
 
     AudioSource audioSource;
 
+    GameObject nowIcon;
+
+    Image iconImage;
+    int iconNum;
+    string iconName = "icon000";
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -110,12 +121,32 @@ public class SelectScene : MonoBehaviour
         showCardPanel.SetActive(false);
         defenceDeckPanel.SetActive(false);
         helpPanel.SetActive(false);
+        iconPanel.SetActive(false);
+
+        // オブジェクトの取得
+        nowIcon = GameObject.Find("MyIcon");
+
+        // コンポーネントの取得
+        iconImage = nowIcon.GetComponent<Image>();
 
         // デッキデータスクリプトを取得
         deckData = FindObjectOfType<DeckData>();
 
         // ステージ情報取得
         NetworkManager networkManager = NetworkManager.Instance;
+        //if (networkManager.displayName == "")
+        //{
+        //    playerName.text = "未設定";
+        //}else playerName.text = networkManager.displayName;
+
+        //if (networkManager.iconName != "")
+        //{
+        //    Texture2D texture = Resources.Load("Icons/" + networkManager.iconName) as Texture2D;
+
+        //    iconImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),
+        //                                   Vector2.zero);
+        //}
+
         List<int> stageIDs = networkManager.GetID();
         StartCoroutine(NetworkManager.Instance.GetStage(stages =>
         {
@@ -151,6 +182,33 @@ public class SelectScene : MonoBehaviour
                     btn.GetComponent<Image>().color = Color.yellow;
                 }
                 cnt++;
+            }
+        }));
+
+        StartCoroutine(NetworkManager.Instance.GetMyProfile(user =>
+        {
+            if (user.Length == 0)
+            {
+                NetworkManager networkManager = NetworkManager.Instance;
+                networkManager.StoreProfile();
+            }
+            else
+            {
+                foreach (var profile in user)
+                {
+                    if (profile.Name != "")
+                    {
+                        playerName.text = profile.Name;
+                    }
+
+                    if (profile.IconName != "")
+                    {
+                        Texture2D texture = Resources.Load("Icons/" + profile.IconName) as Texture2D;
+
+                        iconImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),
+                                                       Vector2.zero);
+                    }
+                }
             }
         }));
     }
@@ -532,6 +590,7 @@ public class SelectScene : MonoBehaviour
         cardViewPanel.SetActive(false);
         infoPanel.SetActive(false);
         showCardPanel.SetActive(false);
+        iconPanel.SetActive(false);
     }
 
     /// <summary>
@@ -554,6 +613,7 @@ public class SelectScene : MonoBehaviour
         infoPanel.SetActive(false);
         showCardPanel.SetActive(false);
         helpPanel.SetActive(false);
+        iconPanel.SetActive(false);
     }
 
     /// <summary>
@@ -567,7 +627,7 @@ public class SelectScene : MonoBehaviour
         buildPanel.SetActive(false);
         infoPanel.SetActive(false);
         showCardPanel.SetActive(false);
-
+        iconPanel.SetActive(false);
     }
 
 
@@ -601,6 +661,7 @@ public class SelectScene : MonoBehaviour
         SetUsableView();
         deckBuildPanel.SetActive(false);
         infoPanel.SetActive(false);
+        iconPanel.SetActive(false);
     }
 
     /// <summary>
@@ -668,6 +729,7 @@ public class SelectScene : MonoBehaviour
             case "SwatShield":
                 infoText.text = name + ":2ブロックを受ける 枚数×" + stack;
                 break;
+
             default:
                 break;
         }
@@ -725,5 +787,73 @@ public class SelectScene : MonoBehaviour
             await Task.Delay(10);
         }
         loadingPanel.SetActive(false);
+    }
+
+    public void OpenIconPanel()
+    {
+        iconPanel.SetActive(true);
+
+        helpPanel.SetActive(true);
+        cardViewPanel.SetActive(false);
+        buildPanel.SetActive(false);
+        infoPanel.SetActive(false);
+        showCardPanel.SetActive(false);
+    }
+
+    public void CloseIconPanel()
+    {
+        iconPanel.SetActive(false);
+    }
+
+    /// <summary>
+    /// 次のアイコン選択処理
+    /// </summary>
+    public void NextIcon()
+    {  
+        iconNum++;
+        if (iconNum >= 10) iconNum = 0;
+
+        // オブジェクトの取得
+        Image preview = GameObject.Find("IconPreview").GetComponent<Image>();
+        // リソースから、アイコンを取得
+        Texture2D texture = Resources.Load("Icons/icon00" + iconNum) as Texture2D;
+
+        iconImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),
+                                       Vector2.zero);
+        preview.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),
+                               Vector2.zero);
+
+        iconName = texture.name;  
+    }
+
+    /// <summary>
+    /// 前のアイコン選択処理
+    /// </summary>
+    public void BackIcon()
+    {
+        iconNum--;
+        if (iconNum <= -1) iconNum = 9;
+
+        // オブジェクトの取得
+        Image preview = GameObject.Find("IconPreview").GetComponent<Image>();
+        // リソースから、アイコンを取得
+        Texture2D texture = Resources.Load("Icons/icon00" + iconNum) as Texture2D;
+
+        iconImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),
+                                       Vector2.zero);
+        preview.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),
+                       Vector2.zero);
+
+        iconName = texture.name;
+    }
+
+    /// <summary>
+    /// プロフィール更新
+    /// </summary>
+    public void updateDisplayInfo()
+    {
+        Debug.Log("アイコン名:" + iconName);
+        Debug.Log("プレイヤー名:" + playerName.text); ;
+        StartCoroutine(NetworkManager.Instance.UpdateProfile(playerName.text, iconName));
     }
 }
