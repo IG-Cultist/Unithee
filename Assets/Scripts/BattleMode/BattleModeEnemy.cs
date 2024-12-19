@@ -1,6 +1,6 @@
 /*
  * BattleModeEnemyScript
- * Creator:¼‰YW‘¾ Update:2024/10/21
+ * Creator:è¥¿æµ¦æ™ƒå¤ª Update:2024/10/21
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +10,6 @@ using UnityEngine.UI;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
-using static UnityEditor.Progress;
 using UnityEngine.U2D;
 
 public class BattleModeEnemy : MonoBehaviour
@@ -20,13 +19,13 @@ public class BattleModeEnemy : MonoBehaviour
 
     [SerializeField] GameObject Enemy;
     [SerializeField] List<Sprite> spriteList;
-    //“GHP
+    //æ•µHP
     public GameObject[] playerHP;
-    //HPc—Ê
+    //HPæ®‹é‡
     public int playerLife;
-    //–hŒä’l
+    //é˜²å¾¡å€¤
     public int block;
-    //UŒ‚’l
+    //æ”»æ’ƒå€¤
     public int dmg;
 
     int count;
@@ -38,7 +37,7 @@ public class BattleModeEnemy : MonoBehaviour
     List<GameObject> actionObject;
 
     public bool isDead;
-    // oŒŒ”»’è
+    // å‡ºè¡€åˆ¤å®š
     public bool isBleeding;
 
     //Card Script
@@ -77,7 +76,7 @@ public class BattleModeEnemy : MonoBehaviour
     // Passive Turn's Count
     int passiveCnt = 0;
 
-    // ƒsƒXƒgƒ‹g—p‰Â”\ƒtƒ‰ƒO
+    // ãƒ”ã‚¹ãƒˆãƒ«ä½¿ç”¨å¯èƒ½ãƒ•ãƒ©ã‚°
     bool isReload;
 
     // Passives
@@ -106,7 +105,7 @@ public class BattleModeEnemy : MonoBehaviour
         painted = false;
         isReload = false;
 
-        //ƒvƒŒƒCƒ„[HP‚ğƒ^ƒO‚Åæ“¾
+        //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼HPã‚’ã‚¿ã‚°ã§å–å¾—
         playerHP = GameObject.FindGameObjectsWithTag("PlayerHP");
         healthScript = FindObjectOfType<Health>();
         playerLife = healthScript.BattleModeHealth;
@@ -141,7 +140,7 @@ public class BattleModeEnemy : MonoBehaviour
         count = 0;
         passiveCnt = 0;
 
-        // s“®ƒAƒCƒRƒ“‚ğ¶¬
+        // è¡Œå‹•ã‚¢ã‚¤ã‚³ãƒ³ã‚’ç”Ÿæˆ
         SetActions();
     }
 
@@ -166,7 +165,7 @@ public class BattleModeEnemy : MonoBehaviour
     }
 
     /// <summary>
-    /// s“®ˆ—
+    /// è¡Œå‹•å‡¦ç†
     /// </summary>
     public int Attack()
     {
@@ -198,7 +197,7 @@ public class BattleModeEnemy : MonoBehaviour
             case 1:
                 passiveEffect("Attack", actionList[count]);
                 dmg += 1;
-                infoText.text = "Rival:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                infoText.text = "Rival:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                 SEType = "light";
                 break;
 
@@ -212,7 +211,7 @@ public class BattleModeEnemy : MonoBehaviour
                 audioSource.PlayOneShot(defenceSE);
                 block++;
                 iconTxt.gameObject.GetComponent<Text>().text = block.ToString();
-                infoText.text = "Rival:" + 1 + "ƒuƒƒbƒN‚ğó‚¯‚é";
+                infoText.text = "Rival:" + 1 + "ãƒ–ãƒ­ãƒƒã‚¯ã‚’å—ã‘ã‚‹";
                 break;
 
             case 3:
@@ -225,41 +224,41 @@ public class BattleModeEnemy : MonoBehaviour
                 audioSource.PlayOneShot(defenceSE);
                 block+=2;
                 iconTxt.gameObject.GetComponent<Text>().text = block.ToString();
-                infoText.text = "Rival:" + 2 + "ƒuƒƒbƒN‚ğó‚¯‚é";
+                infoText.text = "Rival:" + 2 + "ãƒ–ãƒ­ãƒƒã‚¯ã‚’å—ã‘ã‚‹";
                 break;
             case 4:
                 passiveEffect("Attack", actionList[count]);
                 dmg += 1;
                 playerScript.block = 0;
-                infoText.text = "Rival:ƒV[ƒ‹ƒh”j‰óI" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                infoText.text = "Rival:ã‚·ãƒ¼ãƒ«ãƒ‰ç ´å£Šï¼" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                 SEType = "heavy";
                 break;
 
             case 5:
                 passiveEffect("Attack", actionList[count]);
                 dmg += 2;
-                infoText.text = "Rival:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                infoText.text = "Rival:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                 SEType = "heavy";
                 break;
 
             case 6:
                 passiveEffect("Attack", actionList[count]);
                 dmg += 1;
-                infoText.text = "Rival:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é\nPlayer‚ÉoŒŒ‚ğ•t—^!";
+                infoText.text = "Rival:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹\nPlayerã«å‡ºè¡€ã‚’ä»˜ä¸!";
                 SEType = "light";
                 break;
 
             case 7:
                 passiveEffect("Attack", actionList[count]);
                 dmg += 1;
-                infoText.text = "Rival:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é\nŸ‚Ìs“®‚ÅUŒ‚—Í+1";
+                infoText.text = "Rival:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹\næ¬¡ã®è¡Œå‹•ã§æ”»æ’ƒåŠ›+1";
                 SEType = "heavy";
                 break;
 
             case 8:
                 passiveEffect("Attack", actionList[count]);
                 dmg += block;
-                infoText.text = "Rival:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                infoText.text = "Rival:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                 SEType = "heavy";
                 break;
 
@@ -267,7 +266,7 @@ public class BattleModeEnemy : MonoBehaviour
             case 9:
                 passiveEffect("Attack", actionList[count]);
                 dmg += 1;
-                infoText.text = "Rival:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é\nPlayer‚Í“Å‚É‚æ‚èUŒ‚—Í-1";
+                infoText.text = "Rival:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹\nPlayerã¯æ¯’ã«ã‚ˆã‚Šæ”»æ’ƒåŠ›-1";
                 SEType = "light";
                 break;
 
@@ -276,13 +275,13 @@ public class BattleModeEnemy : MonoBehaviour
                 if (isReload == true)
                 {
                     dmg += 3;
-                    infoText.text = "Rival:‘f‘‚­’eŠÛ‚ğ‚ßAƒgƒŠƒK[‚ğˆø‚¢‚½I\n" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                    infoText.text = "Rival:ç´ æ—©ãå¼¾ä¸¸ã‚’è¾¼ã‚ã€ãƒˆãƒªã‚¬ãƒ¼ã‚’å¼•ã„ãŸï¼\n" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                     isReload = false;
                 }
                 else
                 {
                     dmg = 0;
-                    infoText.text = "Rival:d•û‚È‚­’eŠÛ‚ğ“Š‚°‚½I\nˆÓ–¡‚ª‚È‚¢I" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                    infoText.text = "Rival:ä»•æ–¹ãªãå¼¾ä¸¸ã‚’æŠ•ã’ãŸï¼\næ„å‘³ãŒãªã„ï¼" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                 }
                 SEType = "light";
                 break;
@@ -294,12 +293,12 @@ public class BattleModeEnemy : MonoBehaviour
             audioSource.PlayOneShot(parrySE);
             blockEffect();
             playerScript.block--;
-            infoText.text += "\nYou:UŒ‚‚ğƒuƒƒbƒN";
+            infoText.text += "\nYou:æ”»æ’ƒã‚’ãƒ–ãƒ­ãƒƒã‚¯";
             infoText.color = Color.white;
         }
         else
         {
-            // •Ší•ÊSE
+            // æ­¦å™¨åˆ¥SE
             switch (SEType)
             {
                 case "light":
@@ -320,14 +319,14 @@ public class BattleModeEnemy : MonoBehaviour
 
             for (int i = 0; i < dmg; i++)
             {
-                //•\¦HP‚ğŒ¸‚ç‚·
+                //è¡¨ç¤ºHPã‚’æ¸›ã‚‰ã™
                 Destroy(playerHP[(playerLife - 1)]);
 
-                //“à•”‚àŒ¸‚ç‚·
+                //å†…éƒ¨ã‚‚æ¸›ã‚‰ã™
                 playerLife--;
                 damageEffect();
 
-                //HPc—Ê‚ª0‚Ìê‡Aˆ—‚ğs‚í‚È‚¢
+                //HPæ®‹é‡ãŒ0ã®å ´åˆã€å‡¦ç†ã‚’è¡Œã‚ãªã„
                 if (playerLife <= 0)
                 {
                     isDead = true;
@@ -406,7 +405,7 @@ public class BattleModeEnemy : MonoBehaviour
     /// </summary>
     public void EnemyExplain(GameObject enemy)
     {
-        infoText.text = enemy.name + ":ƒ‰ƒCƒoƒ‹I";
+        infoText.text = enemy.name + ":ãƒ©ã‚¤ãƒãƒ«ï¼";
     }
 
     /// <summary>

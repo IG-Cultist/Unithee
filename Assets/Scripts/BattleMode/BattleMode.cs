@@ -1,6 +1,6 @@
 /*
  * BattleModeScript
- * Creator:¼‰YW‘¾ Update:2024/11/27
+ * Creator:è¥¿æµ¦æ™ƒå¤ª Update:2024/11/27
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -12,40 +12,40 @@ using System;
 
 public class BattleMode : MonoBehaviour
 {
-    // Œ»İ‚ÌƒfƒbƒL•\¦—pe
+    // ç¾åœ¨ã®ãƒ‡ãƒƒã‚­è¡¨ç¤ºç”¨è¦ª
     [SerializeField] GameObject deckParent;
 
-    // ƒ[ƒfƒBƒ“ƒOƒpƒlƒ‹
+    // ãƒ­ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ãƒ‘ãƒãƒ«
     [SerializeField] GameObject loadingPanel;
 
-    // ƒ[ƒfƒBƒ“ƒOƒAƒCƒRƒ“
+    // ãƒ­ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã‚¢ã‚¤ã‚³ãƒ³
     [SerializeField] GameObject loadingIcon;
 
-    // ƒ‰ƒCƒoƒ‹ƒpƒlƒ‹‚ÌƒvƒŒƒnƒu
+    // ãƒ©ã‚¤ãƒãƒ«ãƒ‘ãƒãƒ«ã®ãƒ—ãƒ¬ãƒãƒ–
     [SerializeField] GameObject profilePrefab;
 
-    // ƒ‰ƒCƒoƒ‹ƒfƒbƒL‚Ìƒpƒlƒ‹
+    // ãƒ©ã‚¤ãƒãƒ«ãƒ‡ãƒƒã‚­ã®ãƒ‘ãƒãƒ«
     [SerializeField] GameObject[] rivalDeckPanel;
 
-    // ƒ‰ƒCƒoƒ‹ƒvƒƒtƒB[ƒ‹‚Ìƒpƒlƒ‹
+    // ãƒ©ã‚¤ãƒãƒ«ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«ã®ãƒ‘ãƒãƒ«
     [SerializeField] GameObject[] rivalProfilePanel;
 
-    // ŒxƒeƒLƒXƒg‚ÌƒIƒuƒWƒFƒNƒg
+    // è­¦å‘Šãƒ†ã‚­ã‚¹ãƒˆã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
     [SerializeField] GameObject warning;
 
-    // ŒxƒeƒLƒXƒg
+    // è­¦å‘Šãƒ†ã‚­ã‚¹ãƒˆ
     [SerializeField] Text warningText;
 
-    // ƒ|ƒCƒ“ƒgƒeƒLƒXƒg
+    // ãƒã‚¤ãƒ³ãƒˆãƒ†ã‚­ã‚¹ãƒˆ
     [SerializeField] Text pointText;
 
-    // ƒfƒbƒL\’zÏ‚İŠm”F•Ï”
+    // ãƒ‡ãƒƒã‚­æ§‹ç¯‰æ¸ˆã¿ç¢ºèªå¤‰æ•°
     bool isSetDeck;
 
-    // Œ»İ‚ÌƒfƒbƒLIDƒŠƒXƒg
+    // ç¾åœ¨ã®ãƒ‡ãƒƒã‚­IDãƒªã‚¹ãƒˆ
     List<int> activeDeckID = new List<int>();
 
-    //ƒ‰ƒCƒoƒ‹‚Ìƒf[ƒ^ƒfƒBƒNƒVƒ‡ƒiƒŠ
+    //ãƒ©ã‚¤ãƒãƒ«ã®ãƒ‡ãƒ¼ã‚¿ãƒ‡ã‚£ã‚¯ã‚·ãƒ§ãƒŠãƒª
     Dictionary<int,List<int>> rivalDataDictionary = new Dictionary<int,List<int>>();
 
     string[] iconNames = {"","",""};
@@ -53,7 +53,7 @@ public class BattleMode : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // ”ñ“¯Šúˆ—Š®—¹‚Ü‚Å‘Ò‹@‚³‚¹‚é
+        // éåŒæœŸå‡¦ç†å®Œäº†ã¾ã§å¾…æ©Ÿã•ã›ã‚‹
         Loading();
 
         isSetDeck = true;
@@ -61,11 +61,11 @@ public class BattleMode : MonoBehaviour
 
         StartCoroutine(NetworkManager.Instance.ShowDeck(cards =>
         {
-            // ƒ†[ƒU‚ÌƒfƒbƒL–‡”‚ª4–‡‚Å‚È‚¢ê‡
+            // ãƒ¦ãƒ¼ã‚¶ã®ãƒ‡ãƒƒã‚­æšæ•°ãŒ4æšã§ãªã„å ´åˆ
             if (cards.Length != 4)
             {
                 isSetDeck = false;
-                warningText.text = "’FƒfƒbƒL‚ÌƒJ[ƒh–‡”‚ª•s\•ª‚È‚½‚ß\r\n@@í“¬‚ªŠJn‚Å‚«‚Ü‚¹‚ñ";
+                warningText.text = "æ³¨ï¼šãƒ‡ãƒƒã‚­ã®ã‚«ãƒ¼ãƒ‰æšæ•°ãŒä¸ååˆ†ãªãŸã‚\r\nã€€ã€€æˆ¦é—˜ãŒé–‹å§‹ã§ãã¾ã›ã‚“";
                 warning.SetActive(true);
             }
 
@@ -79,11 +79,11 @@ public class BattleMode : MonoBehaviour
 
             StartCoroutine(NetworkManager.Instance.ShowDefenceDeck(cards =>
             {
-                // ƒ†[ƒU‚Ì–h‰qƒfƒbƒL–‡”‚ª4–‡‚Å‚È‚¢ê‡
+                // ãƒ¦ãƒ¼ã‚¶ã®é˜²è¡›ãƒ‡ãƒƒã‚­æšæ•°ãŒ4æšã§ãªã„å ´åˆ
                 if (cards.Length != 4)
                 {
                     isSetDeck = false;
-                    warningText.text = "’FƒfƒBƒtƒFƒ“ƒXƒfƒbƒL‚ÌƒJ[ƒh–‡”‚ª•s\•ª‚È‚½‚ß\r\n@@í“¬‚ªŠJn‚Å‚«‚Ü‚¹‚ñ";
+                    warningText.text = "æ³¨ï¼šãƒ‡ã‚£ãƒ•ã‚§ãƒ³ã‚¹ãƒ‡ãƒƒã‚­ã®ã‚«ãƒ¼ãƒ‰æšæ•°ãŒä¸ååˆ†ãªãŸã‚\r\nã€€ã€€æˆ¦é—˜ãŒé–‹å§‹ã§ãã¾ã›ã‚“";
                     warning.SetActive(true);
                 }
             }));
@@ -91,32 +91,32 @@ public class BattleMode : MonoBehaviour
 
         StartCoroutine(NetworkManager.Instance.GetProfile(rivalData =>
         {
-            // ‘ã“ü—pƒŠƒXƒg
+            // ä»£å…¥ç”¨ãƒªã‚¹ãƒˆ
             List<int> cardList = new List<int>();
-            // ƒ†[ƒUID•Û‘¶—p•Ï”
+            // ãƒ¦ãƒ¼ã‚¶IDä¿å­˜ç”¨å¤‰æ•°
             int userID = 0;
             int cnt = 0;
             int count = 0;
             RivalData.rivalIDList = new List<int>();
-            // Š“¾ƒ‰ƒCƒoƒ‹ƒf[ƒ^”•ªƒ‹[ƒv
+            // æ‰€å¾—ãƒ©ã‚¤ãƒãƒ«ãƒ‡ãƒ¼ã‚¿æ•°åˆ†ãƒ«ãƒ¼ãƒ—
             foreach (var item in rivalData)
             {
-                // ID‚ğint‰»
+                // IDã‚’intåŒ–
                 int.TryParse(item.UserID.ToString(), out int id);
 
-                // •Û‘¶‚µ‚½ID‚ÆˆÙ‚È‚é‚©‚ÂŒ»İ‚ÌƒŠƒXƒgƒJƒEƒ“ƒg‚ª4‚Ìê‡
+                // ä¿å­˜ã—ãŸIDã¨ç•°ãªã‚‹ã‹ã¤ç¾åœ¨ã®ãƒªã‚¹ãƒˆã‚«ã‚¦ãƒ³ãƒˆãŒ4ã®å ´åˆ
                 if (userID != id && cardList.Count == 4)
                 {
                     rivalDataDictionary.Add(userID, cardList);
                     RivalData.rivalIDList.Add(userID);
-                    // ‘ã“ü—pƒŠƒXƒg‚ğƒŠƒZƒbƒg
+                    // ä»£å…¥ç”¨ãƒªã‚¹ãƒˆã‚’ãƒªã‚»ãƒƒãƒˆ
                     cardList = new List<int>();
                     cnt++;
                 }
                 userID = id;
-                // ƒJ[ƒhID‚ğint‰»
+                // ã‚«ãƒ¼ãƒ‰IDã‚’intåŒ–
                 int.TryParse(item.CardID.ToString(), out int cardID);
-                // ‘ã“ü—pƒŠƒXƒg‚Éæ“¾ƒJ[ƒh‚ğ“ü‚ê‚é
+                // ä»£å…¥ç”¨ãƒªã‚¹ãƒˆã«å–å¾—ã‚«ãƒ¼ãƒ‰ã‚’å…¥ã‚Œã‚‹
                 cardList.Add(cardID);
                 count++;
             }
@@ -138,7 +138,7 @@ public class BattleMode : MonoBehaviour
 
                     if (item.IconName != "")
                     {
-                        // ƒŠƒ\[ƒX‚©‚çAƒAƒCƒRƒ“‚ğæ“¾
+                        // ãƒªã‚½ãƒ¼ã‚¹ã‹ã‚‰ã€ã‚¢ã‚¤ã‚³ãƒ³ã‚’å–å¾—
                         Texture2D texture = Resources.Load("Icons/" + item.IconName.ToString()) as Texture2D;
 
                         icon.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),
@@ -147,7 +147,7 @@ public class BattleMode : MonoBehaviour
                     }
                     else
                     {
-                        // ƒŠƒ\[ƒX‚©‚çAƒAƒCƒRƒ“‚ğæ“¾
+                        // ãƒªã‚½ãƒ¼ã‚¹ã‹ã‚‰ã€ã‚¢ã‚¤ã‚³ãƒ³ã‚’å–å¾—
                         Texture2D texture = Resources.Load("Icons/icon000") as Texture2D;
 
                         icon.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),
@@ -178,7 +178,7 @@ public class BattleMode : MonoBehaviour
 
         StartCoroutine(NetworkManager.Instance.GetMyProfile(userData =>
         {           
-            // Š“¾ƒ‰ƒCƒoƒ‹ƒf[ƒ^”•ªƒ‹[ƒv
+            // æ‰€å¾—ãƒ©ã‚¤ãƒãƒ«ãƒ‡ãƒ¼ã‚¿æ•°åˆ†ãƒ«ãƒ¼ãƒ—
             foreach (var item in userData)
             {
                 pointText.text = "Your Point:" + item.Point.ToString();
@@ -192,7 +192,7 @@ public class BattleMode : MonoBehaviour
     }
 
     /// <summary>
-    /// í“¬ƒV[ƒ“‚Ö‘JˆÚ
+    /// æˆ¦é—˜ã‚·ãƒ¼ãƒ³ã¸é·ç§»
     /// </summary>
     public void goFight(List<int> cardList, int rivalID, string iconName)
     {
@@ -203,49 +203,49 @@ public class BattleMode : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒfƒbƒL•\¦ˆ—
+    /// ãƒ‡ãƒƒã‚­è¡¨ç¤ºå‡¦ç†
     /// </summary>
     void SetDeck()
     {
-        // ¶¬‚³‚ê‚Ä‚¢‚éƒJ[ƒh‚ğ‚·‚×‚Äíœ
+        // ç”Ÿæˆã•ã‚Œã¦ã„ã‚‹ã‚«ãƒ¼ãƒ‰ã‚’ã™ã¹ã¦å‰Šé™¤
         foreach (Transform n in deckParent.transform)
         {
             GameObject.Destroy(n.gameObject);
         }
 
-        // ŠeƒJ[ƒh‚ÌƒXƒ^ƒbƒN”•ªƒ‹[ƒv
+        // å„ã‚«ãƒ¼ãƒ‰ã®ã‚¹ã‚¿ãƒƒã‚¯æ•°åˆ†ãƒ«ãƒ¼ãƒ—
         for (int i = 0; i < activeDeckID.Count; i++)
         {
             if (activeDeckID[i] == 0) continue;
-            // “¯–¼‚ÌƒJ[ƒh‚ğƒŠƒ\[ƒXƒtƒ@ƒCƒ‹‚©‚çæ“¾
+            // åŒåã®ã‚«ãƒ¼ãƒ‰ã‚’ãƒªã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰å–å¾—
             GameObject obj = (GameObject)Resources.Load("Cards(ID)/" + activeDeckID[i]);
-            // æ“¾‚µ‚½ƒJ[ƒh‚ğ¶¬
+            // å–å¾—ã—ãŸã‚«ãƒ¼ãƒ‰ã‚’ç”Ÿæˆ
             GameObject cards = Instantiate(obj, new Vector2(-680f + (450f * i), 0f), Quaternion.identity);
             cards.name = activeDeckID[i].ToString();
             cards.transform.localScale = new Vector2(2.7f, 3.9f);
-            // ƒƒCƒ“ƒfƒbƒLƒpƒlƒ‹‚É¶¬
+            // ãƒ¡ã‚¤ãƒ³ãƒ‡ãƒƒã‚­ãƒ‘ãƒãƒ«ã«ç”Ÿæˆ
             cards.transform.SetParent(deckParent.transform, false);
         }
     }
 
     /// <summary>
-    /// ƒ‰ƒCƒoƒ‹ƒfƒbƒL•\¦ˆ—
+    /// ãƒ©ã‚¤ãƒãƒ«ãƒ‡ãƒƒã‚­è¡¨ç¤ºå‡¦ç†
     /// </summary>
     void SetRivalDeck()
     {
         int cnt = 0;
         foreach (var cards in rivalDataDictionary)
         {
-            // ŠeƒJ[ƒh‚Ì–‡”•ªƒ‹[ƒv
+            // å„ã‚«ãƒ¼ãƒ‰ã®æšæ•°åˆ†ãƒ«ãƒ¼ãƒ—
             for (int i = 0; i < cards.Value.Count; i++)
             {
-                // “¯–¼‚ÌƒJ[ƒh‚ğƒŠƒ\[ƒXƒtƒ@ƒCƒ‹‚©‚çæ“¾
+                // åŒåã®ã‚«ãƒ¼ãƒ‰ã‚’ãƒªã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰å–å¾—
                 GameObject obj = (GameObject)Resources.Load("Cards(ID)/" + cards.Value[i]);
-                // æ“¾‚µ‚½ƒJ[ƒh‚ğ¶¬
+                // å–å¾—ã—ãŸã‚«ãƒ¼ãƒ‰ã‚’ç”Ÿæˆ
                 GameObject cardObj = Instantiate(obj, new Vector2(-330f + (220f * i), 0f), Quaternion.identity);
                 cardObj.name = cards.Value[i].ToString();
                 cardObj.transform.localScale = new Vector2(1.1f, 2f);
-                // ƒ‰ƒCƒoƒ‹ƒfƒbƒLƒpƒlƒ‹‚É¶¬
+                // ãƒ©ã‚¤ãƒãƒ«ãƒ‡ãƒƒã‚­ãƒ‘ãƒãƒ«ã«ç”Ÿæˆ
                 cardObj.transform.SetParent(rivalDeckPanel[cnt].transform, false);
                 rivalDeckPanel[cnt].name = cards.Key.ToString();
             }
@@ -262,7 +262,7 @@ public class BattleMode : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒƒOŠm”Fˆ—
+    /// ãƒ­ã‚°ç¢ºèªå‡¦ç†
     /// </summary>
     public void CheckLog()
     {
@@ -270,7 +270,7 @@ public class BattleMode : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒZƒŒƒNƒg‰æ–Ê‚É–ß‚éˆ—
+    /// ã‚»ãƒ¬ã‚¯ãƒˆç”»é¢ã«æˆ»ã‚‹å‡¦ç†
     /// </summary>
     public void exitBattleScene()
     {
@@ -278,7 +278,7 @@ public class BattleMode : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒ[ƒfƒBƒ“ƒO
+    /// ãƒ­ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°
     /// </summary>
     async void Loading()
     {

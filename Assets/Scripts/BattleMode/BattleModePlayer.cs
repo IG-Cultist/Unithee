@@ -1,6 +1,6 @@
 /*
  * BattleModePlayerScript
- * Creator:¼‰YW‘¾ Update:2024/10/21
+ * Creator:è¥¿æµ¦æ™ƒå¤ª Update:2024/10/21
  */
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using Unity.Collections.LowLevel.Unsafe;
 
 public class BattleModePlayer : MonoBehaviour
 {
-    // ƒJ[ƒh”z’u‚Ìe
+    // ã‚«ãƒ¼ãƒ‰é…ç½®ã®è¦ª
     [SerializeField] GameObject parentCard;
 
     // GameEnd Button
@@ -47,10 +47,10 @@ public class BattleModePlayer : MonoBehaviour
     // GameSpeed Slider
     [SerializeField] Slider gameSpeedSlider;
 
-    // ƒ[ƒfƒBƒ“ƒOƒpƒlƒ‹
+    // ãƒ­ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ãƒ‘ãƒãƒ«
     [SerializeField] GameObject loadingPanel;
 
-    // ƒ[ƒfƒBƒ“ƒOƒAƒCƒRƒ“
+    // ãƒ­ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã‚¢ã‚¤ã‚³ãƒ³
     [SerializeField] GameObject loadingIcon;
 
     // Attack's SoundEffect
@@ -131,16 +131,16 @@ public class BattleModePlayer : MonoBehaviour
     // Enemy's Dead
     public bool isDead;
 
-    // oŒŒ”»’è
+    // å‡ºè¡€åˆ¤å®š
     public bool isBleeding;
 
     // Pause Check
     bool isPause;
 
-    // •Ší‹­‰»ƒtƒ‰ƒO
+    // æ­¦å™¨å¼·åŒ–ãƒ•ãƒ©ã‚°
     bool isForge;
 
-    // ƒsƒXƒgƒ‹g—p‰Â”\ƒtƒ‰ƒO
+    // ãƒ”ã‚¹ãƒˆãƒ«ä½¿ç”¨å¯èƒ½ãƒ•ãƒ©ã‚°
     bool isReload;
 
     bool isFight;
@@ -159,18 +159,18 @@ public class BattleModePlayer : MonoBehaviour
         StartCoroutine(NetworkManager.Instance.ShowDeck(cards =>
         {
             if (cards == null) return;
-            // ƒ†[ƒU‚ÌƒfƒbƒLî•ñ‚ğæ“¾
+            // ãƒ¦ãƒ¼ã‚¶ã®ãƒ‡ãƒƒã‚­æƒ…å ±ã‚’å–å¾—
             foreach (var card in cards)
             {
                 if (card == null) continue;
-                // ƒJ[ƒhID‚ğæ“¾
+                // ã‚«ãƒ¼ãƒ‰IDã‚’å–å¾—
                 string strID = card.CardID.ToString();
                 int.TryParse(strID, out int cardID);
 
-                // ƒfƒbƒL‚ÉƒJ[ƒhID‚ğ’Ç‰Á
+                // ãƒ‡ãƒƒã‚­ã«ã‚«ãƒ¼ãƒ‰IDã‚’è¿½åŠ 
                 activeCardID.Add(cardID);
             };
-            // èDƒJ[ƒh‚ğİ’è
+            // æ‰‹æœ­ã‚«ãƒ¼ãƒ‰ã‚’è¨­å®š
             handCard = new List<GameObject>();
             SetCard();
         }));
@@ -293,13 +293,13 @@ public class BattleModePlayer : MonoBehaviour
 
         // Shot Ray from Touch Point
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        // ‘æ“ñˆø” ƒŒƒC‚Í‚Ç‚Ì•ûŒü‚Éi‚Ş‚©(zero=w’è“_)
+        // ç¬¬äºŒå¼•æ•° ãƒ¬ã‚¤ã¯ã©ã®æ–¹å‘ã«é€²ã‚€ã‹(zero=æŒ‡å®šç‚¹)
         RaycastHit2D hit2d = Physics2D.Raycast(worldPosition, Vector2.zero);
 
         // Hit Process
         if (hit2d)
         {
-            //ƒqƒbƒg‚µ‚½ƒIƒuƒWƒFƒNƒgæ“¾
+            //ãƒ’ãƒƒãƒˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå–å¾—
             GameObject hitObj = hit2d.collider.gameObject;
 
             if (panelActive == true)
@@ -327,55 +327,55 @@ public class BattleModePlayer : MonoBehaviour
                 switch (hitObj.name)
                 {
                     case "Sword":
-                        infoText.text = "Sword:1ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                        infoText.text = "Sword:1ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                         break;
 
                     case "DeathS.Y.T.H":
-                        infoText.text = "DeathS.Y.T.H:3ƒ_ƒ[ƒW‚ğ—^‚¦‚éŠçFH‚Ìˆ«‚¢‘åŠ™";
+                        infoText.text = "DeathS.Y.T.H:3ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹é¡”è‰²ï¼Ÿã®æ‚ªã„å¤§éŒ";
                         break;
 
                     case "S.Y.T.H":
-                        infoText.text = "S.Y.T.H:2ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                        infoText.text = "S.Y.T.H:2ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                         break;
 
                     case "A.X.E":
-                        infoText.text = "A.X.E:1ƒ_ƒ[ƒW‚ğ—^‚¦‚é\nƒuƒƒbƒN‚ğ–³‹•”j‰ó";
+                        infoText.text = "A.X.E:1ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹\nãƒ–ãƒ­ãƒƒã‚¯ã‚’ç„¡è¦–ï¼†ç ´å£Š";
                         break;
 
                     case "M.A.C.E":
-                        infoText.text = "M.A.C.E:1ƒ_ƒ[ƒW‚É‰Á‚¦ƒuƒƒbƒN‚Ì’l•ªƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                        infoText.text = "M.A.C.E:1ãƒ€ãƒ¡ãƒ¼ã‚¸ã«åŠ ãˆãƒ–ãƒ­ãƒƒã‚¯ã®å€¤åˆ†ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                         break;
 
                     case "T.N.T":
-                        infoText.text = "T.N.T:‰ó–Å“I‚Èƒ_ƒ[ƒW‚ğ—^‚¦‚é...";
+                        infoText.text = "T.N.T:å£Šæ»…çš„ãªãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹...";
                         break;
 
                     case "Shield":
-                        infoText.text = "Shield:1ƒuƒƒbƒN‚ğó‚¯‚é";
+                        infoText.text = "Shield:1ãƒ–ãƒ­ãƒƒã‚¯ã‚’å—ã‘ã‚‹";
                         break;
 
                     case "Reflection":
-                        infoText.text = "Reflection:UŒ‚‚ğ”½Ë‚·‚éƒoƒŠƒA‚ğ“WŠJ";
+                        infoText.text = "Reflection:æ”»æ’ƒã‚’åå°„ã™ã‚‹ãƒãƒªã‚¢ã‚’å±•é–‹";
                         break;
 
                     case "ForgeHammer":
-                        infoText.text = hitObj.name + ":1ƒ_ƒ[ƒW‚ğ—^‚¦‚é\nŸ‚Ìs“®‚ÌUŒ‚—Í+1";
+                        infoText.text = hitObj.name + ":1ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹\næ¬¡ã®è¡Œå‹•ã®æ”»æ’ƒåŠ›+1";
                         break;
 
                     case "Injector":
-                        infoText.text = hitObj.name + ":1ƒ_ƒ[ƒW‚ğ—^‚¦‚é\n“G‚ğoŒŒ‚³‚¹‚é(s“®–ˆ1ƒ_ƒ[ƒW)";
+                        infoText.text = hitObj.name + ":1ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹\næ•µã‚’å‡ºè¡€ã•ã›ã‚‹(è¡Œå‹•æ¯1ãƒ€ãƒ¡ãƒ¼ã‚¸)";
                         break;
 
                     case "PoisonKnife":
-                        infoText.text = hitObj.name + ":1ƒ_ƒ[ƒW‚ğ—^‚¦‚é\n“G‚ÌUŒ‚—Í-1";
+                        infoText.text = hitObj.name + ":1ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹\næ•µã®æ”»æ’ƒåŠ›-1";
                         break;
 
                     case "6mmBullet":
-                        infoText.text = hitObj.name + ":3ƒ_ƒ[ƒW‚ğ—^‚¦‚é\n...e‚ª‚ ‚ê‚Î‚Ì˜b";
+                        infoText.text = hitObj.name + ":3ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹\n...éŠƒãŒã‚ã‚Œã°ã®è©±";
                         break;
 
                     case "SwatShield":
-                        infoText.text = hitObj.name + ":2ƒuƒƒbƒN‚ğó‚¯‚é";
+                        infoText.text = hitObj.name + ":2ãƒ–ãƒ­ãƒƒã‚¯ã‚’å—ã‘ã‚‹";
                         break;
                 }
             }
@@ -410,47 +410,47 @@ public class BattleModePlayer : MonoBehaviour
                     switch (hitObj.name)
                     {
                         case "Sword":
-                            infoText.text = hitObj.name + ":1ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                            infoText.text = hitObj.name + ":1ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                             break;
 
                         case "S.Y.T.H":
-                            infoText.text = hitObj.name + ":2ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                            infoText.text = hitObj.name + ":2ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                             break;
 
                         case "A.X.E":
-                            infoText.text = hitObj.name + ":1ƒ_ƒ[ƒW‚ğ—^‚¦‚é\nƒuƒƒbƒN‚ğ–³‹•”j‰ó";
+                            infoText.text = hitObj.name + ":1ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹\nãƒ–ãƒ­ãƒƒã‚¯ã‚’ç„¡è¦–ï¼†ç ´å£Š";
                             break;
 
                         case "M.A.C.E":
-                            infoText.text = hitObj.name + ":1ƒ_ƒ[ƒW‚É‰Á‚¦ƒuƒƒbƒN‚Ì’l•ªƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                            infoText.text = hitObj.name + ":1ãƒ€ãƒ¡ãƒ¼ã‚¸ã«åŠ ãˆãƒ–ãƒ­ãƒƒã‚¯ã®å€¤åˆ†ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                             break;
 
                         case "T.N.T":
-                            infoText.text = hitObj.name + ":‰ó–Å“I‚Èƒ_ƒ[ƒW‚ğ—^‚¦‚é...";
+                            infoText.text = hitObj.name + ":å£Šæ»…çš„ãªãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹...";
                             break;
 
                         case "Shield":
-                            infoText.text = hitObj.name + ":1ƒuƒƒbƒN‚ğó‚¯‚é";
+                            infoText.text = hitObj.name + ":1ãƒ–ãƒ­ãƒƒã‚¯ã‚’å—ã‘ã‚‹";
                             break;
 
                         case "ForgeHammer":
-                            infoText.text = hitObj.name + ":1ƒ_ƒ[ƒW‚ğ—^‚¦‚é\nŸ‚Ìs“®‚ÌUŒ‚—Í+1";
+                            infoText.text = hitObj.name + ":1ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹\næ¬¡ã®è¡Œå‹•ã®æ”»æ’ƒåŠ›+1";
                             break;
 
                         case "Injector":
-                            infoText.text = hitObj.name + ":1ƒ_ƒ[ƒW‚ğ—^‚¦‚é\n“G‚ğoŒŒ‚³‚¹‚é(s“®–ˆ1ƒ_ƒ[ƒW)";
+                            infoText.text = hitObj.name + ":1ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹\næ•µã‚’å‡ºè¡€ã•ã›ã‚‹(è¡Œå‹•æ¯1ãƒ€ãƒ¡ãƒ¼ã‚¸)";
                             break;
 
                         case "PoisonKnife":
-                            infoText.text = hitObj.name + ":1ƒ_ƒ[ƒW‚ğ—^‚¦‚é\n“G‚ÌUŒ‚—Í-1";
+                            infoText.text = hitObj.name + ":1ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹\næ•µã®æ”»æ’ƒåŠ›-1";
                             break;
 
                         case "6mmBullet":
-                            infoText.text = hitObj.name + ":3ƒ_ƒ[ƒW‚ğ—^‚¦‚é\n...e‚ª‚ ‚ê‚Î‚Ì˜b";
+                            infoText.text = hitObj.name + ":3ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹\n...éŠƒãŒã‚ã‚Œã°ã®è©±";
                             break;
 
                         case "SwatShield":
-                            infoText.text = hitObj.name + ":2ƒuƒƒbƒN‚ğó‚¯‚é";
+                            infoText.text = hitObj.name + ":2ãƒ–ãƒ­ãƒƒã‚¯ã‚’å—ã‘ã‚‹";
                             break;
                     }
                 }
@@ -478,7 +478,7 @@ public class BattleModePlayer : MonoBehaviour
             }
             else if (panelActive != true && hitObj.tag == "passive")
             {
-                // ƒ^ƒbƒ`‚µ‚½ƒIƒuƒWƒFƒNƒg‚ğƒfƒBƒŒƒNƒVƒ‡ƒiƒŠ‚©‚çæ“¾
+                // ã‚¿ãƒƒãƒã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ãƒ‡ã‚£ãƒ¬ã‚¯ã‚·ãƒ§ãƒŠãƒªã‹ã‚‰å–å¾—
                 infoText.text = passiveDictionary[hitObj.name].Name + ":" + passiveDictionary[hitObj.name].Explain;
             }
         }
@@ -501,29 +501,29 @@ public class BattleModePlayer : MonoBehaviour
             bool isBlock = false;
             switch (item.tag) //Judge the Card's Tag
             {
-                case "Attack": //ƒJ[ƒhƒ^ƒCƒv‚ªUŒ‚‚Ìê‡
+                case "Attack": //ã‚«ãƒ¼ãƒ‰ã‚¿ã‚¤ãƒ—ãŒæ”»æ’ƒã®å ´åˆ
                     //Active to Passives
                     passiveEffect(item);
 
-                    // ƒJ[ƒh–¼•Êˆ—
+                    // ã‚«ãƒ¼ãƒ‰ååˆ¥å‡¦ç†
                     switch (item.name)
                     {
                         case "Sword":
                             dmg += 1;
-                            infoText.text = "You:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                            infoText.text = "You:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                             SEType = "light";
                             break;
 
                         case "A.X.E":
                             dmg += 1;
                             enemyScript.block = 0;
-                            infoText.text = "You:ƒV[ƒ‹ƒh”j‰óI\n" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                            infoText.text = "You:ã‚·ãƒ¼ãƒ«ãƒ‰ç ´å£Šï¼\n" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                             SEType = "heavy";
                             break;
 
                         case "S.Y.T.H":
                             dmg += 2;
-                            infoText.text = "You:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                            infoText.text = "You:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                             SEType = "heavy";
                             break;
 
@@ -531,22 +531,22 @@ public class BattleModePlayer : MonoBehaviour
                             dmg += block;
                             if (dmg < 3)
                             {
-                                infoText.text = "You:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                                infoText.text = "You:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                             }
-                            else infoText.text = "You:ŸÓg‚ÌˆêŒ‚!\n" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é!";
+                            else infoText.text = "You:æ¸¾èº«ã®ä¸€æ’ƒ!\n" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹!";
                             SEType = "heavy";
 
                             break;
 
                         case "T.N.T":
                             dmg += 999;
-                            infoText.text = "You:ƒhƒJ[ƒ“!\n" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é!";
+                            infoText.text = "You:ãƒ‰ã‚«ãƒ¼ãƒ³!\n" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹!";
                             SEType = "boom";
                             break;
 
                         case "ForgeHammer":
                             dmg += 1;
-                            infoText.text = "You:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é\nŸ‚Ìs“®‚ÅUŒ‚—Í+1";
+                            infoText.text = "You:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹\næ¬¡ã®è¡Œå‹•ã§æ”»æ’ƒåŠ›+1";
                             SEType = "heavy";
                             isForge = true;
                             break;
@@ -554,14 +554,14 @@ public class BattleModePlayer : MonoBehaviour
                         case "Injector":
                             enemyScript.isBleeding = true;
                             dmg += 1;
-                            infoText.text = "You:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é\n‘Šè‚ÉoŒŒ‚ğ•t—^!";
+                            infoText.text = "You:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹\nç›¸æ‰‹ã«å‡ºè¡€ã‚’ä»˜ä¸!";
                             SEType = "light";
                             break;
 
                         case "PoisonKnife":
                             enemyScript.dmg -= 1;
                             dmg += 1;
-                            infoText.text = "You:" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é\n‘Šè‚Í“Å‚É‚æ‚èUŒ‚—Í-1";
+                            infoText.text = "You:" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹\nç›¸æ‰‹ã¯æ¯’ã«ã‚ˆã‚Šæ”»æ’ƒåŠ›-1";
                             SEType = "light";
                             break;
 
@@ -569,55 +569,55 @@ public class BattleModePlayer : MonoBehaviour
                             if (isReload == true)
                             {
                                 dmg += 3;
-                                infoText.text = "You:‘f‘‚­’eŠÛ‚ğ‚ßAƒgƒŠƒK[‚ğˆø‚¢‚½I\n" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                                infoText.text = "You:ç´ æ—©ãå¼¾ä¸¸ã‚’è¾¼ã‚ã€ãƒˆãƒªã‚¬ãƒ¼ã‚’å¼•ã„ãŸï¼\n" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                                 isReload = false;
                             }
                             else
                             {
                                 dmg = 0;
-                                infoText.text = "You:d•û‚È‚­’eŠÛ‚ğ“Š‚°‚½I\nˆÓ–¡‚ª‚È‚¢I" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                                infoText.text = "You:ä»•æ–¹ãªãå¼¾ä¸¸ã‚’æŠ•ã’ãŸï¼\næ„å‘³ãŒãªã„ï¼" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
                             }
 
                             SEType = "light";
                             break;
                     }
 
-                    // “G‚ªƒuƒƒbƒN‚ğ‚Á‚Ä‚¢‚é‚©‚ÂŒ»ƒJ[ƒh‚ªA.X.E‚Å‚Í‚È‚¢ê‡
+                    // æ•µãŒãƒ–ãƒ­ãƒƒã‚¯ã‚’æŒã£ã¦ã„ã‚‹ã‹ã¤ç¾ã‚«ãƒ¼ãƒ‰ãŒA.X.Eã§ã¯ãªã„å ´åˆ
                     if (enemyScript.block != 0 && item.name != "A.X.E")
                     {
-                        // ƒuƒƒbƒN’l‚ğŒ¸‚ç‚·
+                        // ãƒ–ãƒ­ãƒƒã‚¯å€¤ã‚’æ¸›ã‚‰ã™
                         enemyScript.block--;
                         if (enemyScript.block <= 0) if (enemyScript.protectIcon != false) enemyScript.protectIcon.SetActive(false);
                         blockEffect();
                         isBlock = true;
 
-                        // ‘Î‰‚µ‚½‰¹º‚ÆUI‚ğo‚·
+                        // å¯¾å¿œã—ãŸéŸ³å£°ã¨UIã‚’å‡ºã™
                         audioSource.PlayOneShot(parrySE);
-                        infoText.text = "Rival:UŒ‚‚ğƒuƒƒbƒN";
+                        infoText.text = "Rival:æ”»æ’ƒã‚’ãƒ–ãƒ­ãƒƒã‚¯";
                         dmg = 0;
                     }
                     else
                     {
-                        // Œ»UŒ‚’l•ªŒJ‚è•Ô‚·
+                        // ç¾æ”»æ’ƒå€¤åˆ†ç¹°ã‚Šè¿”ã™
                         for (int i = 0; i < dmg; i++)
                         {
-                            //HPc—Ê‚ª0‚Ìê‡Aˆ—‚ğs‚í‚È‚¢
+                            //HPæ®‹é‡ãŒ0ã®å ´åˆã€å‡¦ç†ã‚’è¡Œã‚ãªã„
                             if (enemyLife <= 0)
                             {
                                 break;
                             }
-                            //•\¦‚ğŒ¸‚ç‚·
+                            //è¡¨ç¤ºã‚’æ¸›ã‚‰ã™
                             Destroy(enemyHP[(enemyLife - 1)]);
 
-                            //“à•”‚àŒ¸‚ç‚·
+                            //å†…éƒ¨ã‚‚æ¸›ã‚‰ã™
                             enemyLife--;
                         }
                         if (enemyScript.playerLife <= 0) enemyScript.isDead = true;
 
-                        // “G‚ª€‚ñ‚¾ê‡
+                        // æ•µãŒæ­»ã‚“ã å ´åˆ
                         if (enemyLife <= 0) isDead = true;
                     }
-                    // •Ší•ÊSE
+                    // æ­¦å™¨åˆ¥SE
                     switch (SEType)
                     {
                         case "light":
@@ -637,34 +637,34 @@ public class BattleModePlayer : MonoBehaviour
                     item.SetActive(false);
                     break;
 
-                case "Defence":@//ƒJ[ƒhƒ^ƒCƒv‚ª–hŒä‚Ìê‡
+                case "Defence":ã€€//ã‚«ãƒ¼ãƒ‰ã‚¿ã‚¤ãƒ—ãŒé˜²å¾¡ã®å ´åˆ
                     audioSource.PlayOneShot(defenceSE);
                     passiveEffect(item);
                     switch (item.name)
                     {
                         case "Shield":
                             block++;
-                            infoText.text = "You:" + block + "ƒuƒƒbƒN‚ğó‚¯‚é";
+                            infoText.text = "You:" + block + "ãƒ–ãƒ­ãƒƒã‚¯ã‚’å—ã‘ã‚‹";
                             break;
 
                         case "SwatShield":
                             block += 2;
-                            infoText.text = "You:" + block + "ƒuƒƒbƒN‚ğó‚¯‚é";
+                            infoText.text = "You:" + block + "ãƒ–ãƒ­ãƒƒã‚¯ã‚’å—ã‘ã‚‹";
                             break;
 
                         case "SpikeShield":
                             block++;
-                            infoText.text = "You:" + block + "ƒuƒƒbƒN‚ğó‚¯‚é\nƒV[ƒ‹ƒhƒoƒbƒVƒ…‚ğ‚©‚Ü‚µ‚½I" + dmg + "ƒ_ƒ[ƒW‚ğ—^‚¦‚é";
+                            infoText.text = "You:" + block + "ãƒ–ãƒ­ãƒƒã‚¯ã‚’å—ã‘ã‚‹\nã‚·ãƒ¼ãƒ«ãƒ‰ãƒãƒƒã‚·ãƒ¥ã‚’ã‹ã¾ã—ãŸï¼" + dmg + "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹";
 
-                            //HPc—Ê‚ª0‚Ìê‡Aˆ—‚ğs‚í‚È‚¢
+                            //HPæ®‹é‡ãŒ0ã®å ´åˆã€å‡¦ç†ã‚’è¡Œã‚ãªã„
                             if (enemyLife <= 0)
                             {
                                 break;
                             }
-                            //•\¦‚ğŒ¸‚ç‚·
+                            //è¡¨ç¤ºã‚’æ¸›ã‚‰ã™
                             Destroy(enemyHP[(enemyLife - 1)]);
 
-                            //“à•”‚àŒ¸‚ç‚·
+                            //å†…éƒ¨ã‚‚æ¸›ã‚‰ã™
                             enemyLife--;
 
                             // if Enemy Dead
@@ -674,7 +674,7 @@ public class BattleModePlayer : MonoBehaviour
                             break;
                     }
 
-                    // ƒuƒƒbƒN’l‚ª0ˆÈã‚©‚ÂƒAƒCƒRƒ“‚ª¶¬‚³‚ê‚Ä‚¢‚È‚¢ê‡
+                    // ãƒ–ãƒ­ãƒƒã‚¯å€¤ãŒ0ä»¥ä¸Šã‹ã¤ã‚¢ã‚¤ã‚³ãƒ³ãŒç”Ÿæˆã•ã‚Œã¦ã„ãªã„å ´åˆ
                     if (block > 0)
                     {
                         protectIcon.SetActive(true);
@@ -693,11 +693,11 @@ public class BattleModePlayer : MonoBehaviour
             item.SetActive(false);
             await Task.Delay(battleSpeed);
 
-            // “G‚ª€–S‚µ‚Ä‚¢‚½ê‡
+            // æ•µãŒæ­»äº¡ã—ã¦ã„ãŸå ´åˆ
             if (isDead == true)
             {
-                // ƒeƒLƒXƒg‚ğ•\¦‚µAƒNƒŠƒAƒTƒEƒ“ƒh‚ğÄ¶
-                infoText.text = "Ÿ—˜I";
+                // ãƒ†ã‚­ã‚¹ãƒˆã‚’è¡¨ç¤ºã—ã€ã‚¯ãƒªã‚¢ã‚µã‚¦ãƒ³ãƒ‰ã‚’å†ç”Ÿ
+                infoText.text = "å‹åˆ©ï¼";
                 audioSource.PlayOneShot(clearSE);
                 StartCoroutine(NetworkManager.Instance.StoreResult(1, RivalData.rivalID, () => {
 
@@ -706,10 +706,10 @@ public class BattleModePlayer : MonoBehaviour
                 return;
             }
 
-            // €‚ñ‚¾ê‡ƒeƒLƒXƒg‚ğ•\¦‚µAƒŠƒ^[ƒ“‚·‚é
+            // æ­»ã‚“ã å ´åˆãƒ†ã‚­ã‚¹ãƒˆã‚’è¡¨ç¤ºã—ã€ãƒªã‚¿ãƒ¼ãƒ³ã™ã‚‹
             if (enemyScript.isDead == true)
             {
-                infoText.text += "\n”s–k...";
+                infoText.text += "\næ•—åŒ—...";
                 StartCoroutine(NetworkManager.Instance.StoreResult(0,RivalData.rivalID, () => {
 
                     isComplete = true;
@@ -720,13 +720,13 @@ public class BattleModePlayer : MonoBehaviour
             // Enemy's Action
             enemyScript.Attack();
 
-            // “G‚ª€–S‚©‚ÂƒvƒŒƒCƒ„[‚ª€–S‚µ‚Ä‚¢‚È‚¢ê‡
+            // æ•µãŒæ­»äº¡ã‹ã¤ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ­»äº¡ã—ã¦ã„ãªã„å ´åˆ
             if (isDead == true && enemyScript.isDead != true)
             {
-                // “G€–S‚ÌƒeƒLƒXƒg•\¦•ªŠò
+                // æ•µæ­»äº¡æ™‚ã®ãƒ†ã‚­ã‚¹ãƒˆè¡¨ç¤ºåˆ†å²
                 if (enemyScript.isBleeding == true)
                 {
-                    infoText.text = "\nRival:oŒŒ€!\nŸ—˜I";
+                    infoText.text = "\nRival:å‡ºè¡€æ­»!\nå‹åˆ©ï¼";
                 }
                 audioSource.PlayOneShot(clearSE);
                 StartCoroutine(NetworkManager.Instance.StoreResult(1, RivalData.rivalID, () => {
@@ -736,10 +736,10 @@ public class BattleModePlayer : MonoBehaviour
                 return;
             }
 
-            //@ƒvƒŒƒCƒ„[€–S‚ÌƒeƒLƒXƒg•\¦
+            //ã€€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æ­»äº¡æ™‚ã®ãƒ†ã‚­ã‚¹ãƒˆè¡¨ç¤º
             if (enemyScript.isDead == true)
             {
-                infoText.text += "\n”s–k...";
+                infoText.text += "\næ•—åŒ—...";
                 StartCoroutine(NetworkManager.Instance.StoreResult(0, RivalData.rivalID, () => {
 
                     isComplete = true;
@@ -747,7 +747,7 @@ public class BattleModePlayer : MonoBehaviour
                 return;
             }
 
-            // ƒtƒH[ƒWƒnƒ“ƒ}[‚ğg—p‚µ‚½ê‡DMG+1
+            // ãƒ•ã‚©ãƒ¼ã‚¸ãƒãƒ³ãƒãƒ¼ã‚’ä½¿ç”¨ã—ãŸå ´åˆDMG+1
             if (isForge == true)
             {
                 dmg = 1;
@@ -769,7 +769,7 @@ public class BattleModePlayer : MonoBehaviour
         activeList.Clear();
         // Reset Count
         count = 0;
-        infoText.text = "Œ‚”j¸”s...\nƒ‰ƒCƒoƒ‹‚ÌŸ—˜";
+        infoText.text = "æ’ƒç ´å¤±æ•—...\nãƒ©ã‚¤ãƒãƒ«ã®å‹åˆ©";
         StartCoroutine(NetworkManager.Instance.StoreResult(0, RivalData.rivalID, () =>
         {
 
@@ -783,7 +783,7 @@ public class BattleModePlayer : MonoBehaviour
     /// </summary>
     void cardRefresh(List<GameObject> refreshTarget)
     {
-        // ˆê“I‚ÉŒ»İƒAƒNƒeƒBƒu‚ÈƒJ[ƒh‚ğ‘ã“ü‚·‚éƒŠƒXƒg
+        // ä¸€æ™‚çš„ã«ç¾åœ¨ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªã‚«ãƒ¼ãƒ‰ã‚’ä»£å…¥ã™ã‚‹ãƒªã‚¹ãƒˆ
         List<GameObject> keepList = new List<GameObject>();
         foreach (var item in refreshTarget) //Drstroy All Active Card & Add Assumed List
         {
@@ -795,18 +795,18 @@ public class BattleModePlayer : MonoBehaviour
         // Reset Count
         count = 0;
 
-        foreach (var item in keepList) //•À‚×‚È‚¨‚·
+        foreach (var item in keepList) //ä¸¦ã¹ãªãŠã™
         {
-            //Œ»İ‚ÌƒJ[ƒhƒvƒŒƒnƒu‚ğŒ³‚ÉAƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬A
+            //ç¾åœ¨ã®ã‚«ãƒ¼ãƒ‰ãƒ—ãƒ¬ãƒãƒ–ã‚’å…ƒã«ã€ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆã€
             GameObject obj = Instantiate(item, new Vector2(-8.2f + (2.0f * count), -4.1f), Quaternion.identity);
-            //ƒIƒuƒWƒFƒNƒg‚ÌF‚ğ’ù³
+            //ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è‰²ã‚’è¨‚æ­£
             obj.GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
-            //ƒNƒ[ƒ“‚µ‚½ƒIƒuƒWƒFƒNƒg‚Ì–¼‘O‚ğ’ù³
+            //ã‚¯ãƒ­ãƒ¼ãƒ³ã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åå‰ã‚’è¨‚æ­£
             obj.name = item.name;
-            //ƒJ[ƒh‚Ìƒ^ƒO‚ğƒNƒ[ƒ“ƒIƒuƒWƒFƒNƒg‚É‚à’Ç‰Á
+            //ã‚«ãƒ¼ãƒ‰ã®ã‚¿ã‚°ã‚’ã‚¯ãƒ­ãƒ¼ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã‚‚è¿½åŠ 
             obj.tag = item.tag;
             refreshTarget.Add(obj);
-            //‡˜‚ğ‰ÁZ
+            //é †åºã‚’åŠ ç®—
             count++;
         }
     }
@@ -979,7 +979,7 @@ public class BattleModePlayer : MonoBehaviour
     }
 
     /// <summary>
-    /// èDƒJ[ƒh‚ğ•\¦‚·‚éˆ—
+    /// æ‰‹æœ­ã‚«ãƒ¼ãƒ‰ã‚’è¡¨ç¤ºã™ã‚‹å‡¦ç†
     /// </summary>
     void SetCard()
     {
