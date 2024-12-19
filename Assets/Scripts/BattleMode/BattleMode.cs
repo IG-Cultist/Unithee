@@ -27,6 +27,9 @@ public class BattleMode : MonoBehaviour
     // ライバルデッキのパネル
     [SerializeField] GameObject[] rivalDeckPanel;
 
+    // ライバルプロフィールのパネル
+    [SerializeField] GameObject[] rivalProfilePanel;
+
     // 警告テキストのオブジェクト
     [SerializeField] GameObject warning;
 
@@ -44,6 +47,8 @@ public class BattleMode : MonoBehaviour
 
     //ライバルのデータディクショナリ
     Dictionary<int,List<int>> rivalDataDictionary = new Dictionary<int,List<int>>();
+
+    string[] iconNames = {"","",""};
 
     // Start is called before the first frame update
     void Start()
@@ -91,7 +96,8 @@ public class BattleMode : MonoBehaviour
             // ユーザID保存用変数
             int userID = 0;
             int cnt = 0;
-
+            int count = 0;
+            RivalData.rivalIDList = new List<int>();
             // 所得ライバルデータ数分ループ
             foreach (var item in rivalData)
             {
@@ -102,6 +108,7 @@ public class BattleMode : MonoBehaviour
                 if (userID != id && cardList.Count == 4)
                 {
                     rivalDataDictionary.Add(userID, cardList);
+                    RivalData.rivalIDList.Add(userID);
                     // 代入用リストをリセット
                     cardList = new List<int>();
                     cnt++;
@@ -111,14 +118,66 @@ public class BattleMode : MonoBehaviour
                 int.TryParse(item.CardID.ToString(), out int cardID);
                 // 代入用リストに取得カードを入れる
                 cardList.Add(cardID);
+                count++;
             }
             rivalDataDictionary.Add(userID, cardList);
-            SetRivalDeck();
+            RivalData.rivalIDList.Add(userID);
+
+            for (int i = 0; i < RivalData.rivalIDList.Count; i++)
+            {
+                Debug.Log(RivalData.rivalIDList[i]);
+            }
+
+
+            StartCoroutine(NetworkManager.Instance.GetMultiProfile(userData =>
+            {
+                int cnt = 0;
+                foreach (var item in userData)
+                {
+                    Image icon = rivalProfilePanel[cnt].transform.GetChild(0).GetComponent<Image>();
+
+                    if (item.IconName != "")
+                    {
+                        // リソースから、アイコンを取得
+                        Texture2D texture = Resources.Load("Icons/" + item.IconName.ToString()) as Texture2D;
+
+                        icon.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),
+                                                       Vector2.zero);
+                        iconNames[cnt] = item.IconName;
+                    }
+                    else
+                    {
+                        // リソースから、アイコンを取得
+                        Texture2D texture = Resources.Load("Icons/icon000") as Texture2D;
+
+                        icon.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),
+                                                       Vector2.zero);
+                        iconNames[cnt] = "icon000";
+                    }
+
+                    if (item.Name != "")
+                    {
+                        Text name = rivalProfilePanel[cnt].transform.GetChild(1).GetComponent<Text>();
+                        name.text = "Name:" + item.Name;
+                    }
+                    else
+                    {
+                        Text name = rivalProfilePanel[cnt].transform.GetChild(1).GetComponent<Text>();
+                        name.text = "Name:NoName";
+                    }
+
+                    Text point = rivalProfilePanel[cnt].transform.GetChild(2).GetComponent<Text>();
+                    point.text ="Point:" + item.Point.ToString();
+                    cnt++;
+                }
+
+                SetRivalDeck();
+            }));
         }));
 
 
         StartCoroutine(NetworkManager.Instance.GetMyProfile(userData =>
-        {
+        {           
             // 所得ライバルデータ数分ループ
             foreach (var item in userData)
             {
@@ -135,11 +194,11 @@ public class BattleMode : MonoBehaviour
     /// <summary>
     /// 戦闘シーンへ遷移
     /// </summary>
-    public void goFight(List<int> cardList, int rivalID)
+    public void goFight(List<int> cardList, int rivalID, string iconName)
     {
         if (isSetDeck == false) return;
 
-        SetRivalData(cardList, rivalID);
+        SetRivalData(cardList, rivalID, iconName);
         SceneManager.LoadScene("Fight");
     }
 
@@ -189,10 +248,15 @@ public class BattleMode : MonoBehaviour
                 // ライバルデッキパネルに生成
                 cardObj.transform.SetParent(rivalDeckPanel[cnt].transform, false);
                 rivalDeckPanel[cnt].name = cards.Key.ToString();
-
             }
             GameObject child = rivalDeckPanel[cnt].transform.GetChild(0).gameObject;
-            child.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => goFight(cards.Value,cards.Key));
+            string iconName ="icon000";
+            if (cnt <= iconNames.Length)
+            {
+                iconName = iconNames[cnt];
+            }
+
+            child.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => goFight(cards.Value,cards.Key, iconName));
             cnt++;
         }
     }
@@ -238,9 +302,10 @@ public class BattleMode : MonoBehaviour
         loadingPanel.SetActive(false);
     }
 
-    void SetRivalData(List<int> cardList, int rivalID)
+    void SetRivalData(List<int> cardList, int rivalID, string iconName)
     {
         RivalData.cardIDList = cardList;
         RivalData.rivalID = rivalID;
+        RivalData.iconName = iconName;
     }
 }

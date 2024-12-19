@@ -47,6 +47,12 @@ public class BattleModePlayer : MonoBehaviour
     // GameSpeed Slider
     [SerializeField] Slider gameSpeedSlider;
 
+    // ローディングパネル
+    [SerializeField] GameObject loadingPanel;
+
+    // ローディングアイコン
+    [SerializeField] GameObject loadingIcon;
+
     // Attack's SoundEffect
     AudioClip attackSE;
 
@@ -142,11 +148,14 @@ public class BattleModePlayer : MonoBehaviour
     // Panel's Active Check
     bool panelActive;
 
+    bool isComplete = false;
+
     AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
     {
+        loadingPanel.SetActive(false);
         StartCoroutine(NetworkManager.Instance.ShowDeck(cards =>
         {
             if (cards == null) return;
@@ -239,7 +248,7 @@ public class BattleModePlayer : MonoBehaviour
         battleSpeed = (int)Math.Ceiling(gameSpeedSlider.value);
         if (protectIcon != null) iconTxt.gameObject.GetComponent<Text>().text = block.ToString();
 
-        if (enemyScript.isDead == true)
+        if (enemyScript.isDead == true && isComplete == true)
         {
             button.SetActive(true);
         }
@@ -253,7 +262,7 @@ public class BattleModePlayer : MonoBehaviour
                 selectedCard[i].GetComponent<Renderer>().material.color = new Color32(255, 255, 255, 255);
             }
 
-            button.SetActive(true);
+            if (isComplete == true) button.SetActive(true);
 
             enemyTexture.SetActive(false);
         }
@@ -690,7 +699,10 @@ public class BattleModePlayer : MonoBehaviour
                 // テキストを表示し、クリアサウンドを再生
                 infoText.text = "勝利！";
                 audioSource.PlayOneShot(clearSE);
-                StartCoroutine(NetworkManager.Instance.StoreResult(1, RivalData.rivalID));
+                StartCoroutine(NetworkManager.Instance.StoreResult(1, RivalData.rivalID, () => {
+
+                    isComplete = true;
+                }));
                 return;
             }
 
@@ -698,7 +710,10 @@ public class BattleModePlayer : MonoBehaviour
             if (enemyScript.isDead == true)
             {
                 infoText.text += "\n敗北...";
-                StartCoroutine(NetworkManager.Instance.StoreResult(0,RivalData.rivalID));
+                StartCoroutine(NetworkManager.Instance.StoreResult(0,RivalData.rivalID, () => {
+
+                    isComplete = true;
+                }));
                 return;
             }
 
@@ -714,7 +729,10 @@ public class BattleModePlayer : MonoBehaviour
                     infoText.text = "\nRival:出血死!\n勝利！";
                 }
                 audioSource.PlayOneShot(clearSE);
-                StartCoroutine(NetworkManager.Instance.StoreResult(1, RivalData.rivalID));
+                StartCoroutine(NetworkManager.Instance.StoreResult(1, RivalData.rivalID, () => {
+
+                    isComplete = true;
+                }));
                 return;
             }
 
@@ -722,7 +740,10 @@ public class BattleModePlayer : MonoBehaviour
             if (enemyScript.isDead == true)
             {
                 infoText.text += "\n敗北...";
-                StartCoroutine(NetworkManager.Instance.StoreResult(0, RivalData.rivalID));
+                StartCoroutine(NetworkManager.Instance.StoreResult(0, RivalData.rivalID, () => {
+
+                    isComplete = true;
+                }));
                 return;
             }
 
@@ -749,7 +770,11 @@ public class BattleModePlayer : MonoBehaviour
         // Reset Count
         count = 0;
         infoText.text = "撃破失敗...\nライバルの勝利";
-        StartCoroutine(NetworkManager.Instance.StoreResult(0, RivalData.rivalID));
+        StartCoroutine(NetworkManager.Instance.StoreResult(0, RivalData.rivalID, () =>
+        {
+
+            isComplete = true;
+        }));
         button.SetActive(true);
     }
 
@@ -857,8 +882,12 @@ public class BattleModePlayer : MonoBehaviour
 
     public void RetireGame()
     {
-        StartCoroutine(NetworkManager.Instance.StoreResult(0, RivalData.rivalID));
-        SceneManager.LoadScene("Battle");
+        Loading();
+        StartCoroutine(NetworkManager.Instance.StoreResult(0, RivalData.rivalID, () => {
+
+            isComplete = true; 
+            SceneManager.LoadScene("Battle");
+        }));
     }
 
     /// <summary>
@@ -1007,5 +1036,27 @@ public class BattleModePlayer : MonoBehaviour
             handCard.Add(item);
             cnt++;
         }
+    }
+
+    async void Loading()
+    {
+        loadingPanel.SetActive(true);
+
+        float angle = 8;
+        bool rot = true;
+
+        for (int i = 0; i < 150; i++)
+        {
+            if (rot)
+            {
+                loadingIcon.transform.rotation *= Quaternion.AngleAxis(angle, Vector3.back);
+            }
+            else
+            {
+                loadingIcon.transform.rotation *= Quaternion.AngleAxis(angle, Vector3.forward);
+            }
+            await Task.Delay(10);
+        }
+        loadingPanel.SetActive(false);
     }
 }

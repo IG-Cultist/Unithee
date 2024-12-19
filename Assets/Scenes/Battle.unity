@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &100599220
 RectTransform:
   m_ObjectHideFlags: 0
@@ -368,6 +368,10 @@ MonoBehaviour:
   - {fileID: 924920862031502928}
   - {fileID: 2717123247681592536}
   - {fileID: 2717123248429956538}
+  rivalProfilePanel:
+  - {fileID: 2306238556126774835}
+  - {fileID: 676019410473256123}
+  - {fileID: 676019408520095193}
   warning: {fileID: 1747058868}
   warningText: {fileID: 1747058870}
   pointText: {fileID: 1512950044}

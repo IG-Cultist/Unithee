@@ -6,17 +6,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
+
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using static UnityEditor.Progress;
+using UnityEngine.U2D;
 
 public class BattleModeEnemy : MonoBehaviour
 {
     // Parent
     [SerializeField] GameObject parent;
 
+    [SerializeField] GameObject Enemy;
+    [SerializeField] List<Sprite> spriteList;
     //“GHP
     public GameObject[] playerHP;
     //HPŽc—Ê
@@ -90,6 +93,16 @@ public class BattleModeEnemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SpriteRenderer image = Enemy.GetComponent<SpriteRenderer>();
+
+        foreach (Sprite sprite in spriteList)
+        {
+            if (sprite.name == RivalData.iconName)
+            {
+                image.sprite = sprite;
+                break;
+            }
+        }
         painted = false;
         isReload = false;
 
