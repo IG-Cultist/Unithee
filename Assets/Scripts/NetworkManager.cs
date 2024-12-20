@@ -364,9 +364,10 @@ public class NetworkManager : MonoBehaviour
     {
         // プロフィール取得APIを実行
         UnityWebRequest request = UnityWebRequest.Get(
-            API_BASE_URL + "battleMode/multiShow?user_ids[]=" + RivalData.rivalIDList[0]
-            + "&user_ids[]=" + RivalData.rivalIDList[1]
-            + "&user_ids[]=" + RivalData.rivalIDList[2]);
+            API_BASE_URL + "battleMode/multiShow?user_ids="
+             + RivalData.rivalIDList[0] + ","
+             + RivalData.rivalIDList[1] + ","
+             + RivalData.rivalIDList[2]);
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.Success
