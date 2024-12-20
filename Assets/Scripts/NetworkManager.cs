@@ -221,6 +221,7 @@ public class NetworkManager : MonoBehaviour
             //ファイルにユーザIDを保存
             this.userName = requestData.Name;
             this.userID = response.UserID;
+            this.authToken = response.Token;
             SaveUserData();
             isSuccess = true;
         }
