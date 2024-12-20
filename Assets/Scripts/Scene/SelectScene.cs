@@ -189,8 +189,7 @@ public class SelectScene : MonoBehaviour
         {
             if (user.Length == 0)
             {
-                NetworkManager networkManager = NetworkManager.Instance;
-                networkManager.StoreProfile();
+                StartCoroutine(NetworkManager.Instance.StoreProfile());
             }
             else
             {
