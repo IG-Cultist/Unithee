@@ -3,13 +3,13 @@ using Newtonsoft.Json;
 public class RivalResponse 
 {
     /// <summary>
-    /// ユーザIDのプロパティ
+    /// 繝ｦ繝ｼ繧ｶID縺ｮ繝励Ο繝代ユ繧｣
     /// </summary>
     [JsonProperty("user_id")]
     public int UserID { get; set; }
 
     /// <summary>
-    /// カードIDのプロパティ
+    /// 繧ｫ繝ｼ繝迂D縺ｮ繝励Ο繝代ユ繧｣
     /// </summary>
     [JsonProperty("card_id")]
     public int CardID { get; set; }

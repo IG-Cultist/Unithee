@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 public class DeckResponse
 {
     /// <summary>
-    /// デッキカードIDのプロパティ
+    /// 繝�繝�繧ｭ繧ｫ繝ｼ繝迂D縺ｮ繝励Ο繝代ユ繧｣
     /// </summary>
     [JsonProperty("card_id")]
     public int CardID { get; set; }

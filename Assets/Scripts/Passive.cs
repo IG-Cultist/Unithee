@@ -1,6 +1,6 @@
 /*
  * PassiveScript
- * Creator:¼‰YW‘¾ Update:2024/07/26
+ * Creator:è¥¿æµ¦æ™ƒå¤ª Update:2024/07/26
 */
 using System.Collections;
 using System.Collections.Generic;

@@ -1,6 +1,6 @@
 /*
  * SelectSceneScript
- * Creator:¼‰YW‘¾ Update:2024/11/07
+ * Creator:è¥¿æµ¦æ™ƒå¤ª Update:2024/11/07
 */
 using System.Collections.Generic;
 using Unity.Collections.LowLevel.Unsafe;
@@ -11,76 +11,76 @@ using System.Threading.Tasks;
 using UnityEngine.Rendering;
 public class SelectScene : MonoBehaviour
 {
-    // ƒXƒe[ƒWî•ñ
+    // ã‚¹ãƒ†ãƒ¼ã‚¸æƒ…å ±
     [SerializeField] GameObject info;
 
-    // ƒXƒe[ƒWƒ{ƒ^ƒ“
+    // ã‚¹ãƒ†ãƒ¼ã‚¸ãƒœã‚¿ãƒ³
     [SerializeField] GameObject btnPrefab;
 
-    // à–¾ƒ{ƒ^ƒ“
+    // èª¬æ˜ãƒœã‚¿ãƒ³
     [SerializeField] GameObject infoButton;
 
     // Card Explain Text
     [SerializeField] Text infoTxt;
 
-    // ƒfƒbƒLí•ÊƒeƒLƒXƒg
+    // ãƒ‡ãƒƒã‚­ç¨®åˆ¥ãƒ†ã‚­ã‚¹ãƒˆ
     [SerializeField] Text deckTxt;
 
-    // ŒxƒeƒLƒXƒg
+    // è­¦å‘Šãƒ†ã‚­ã‚¹ãƒˆ
     [SerializeField] Text warning;
 
-    // ƒXƒe[ƒW‚Ìe
+    // ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¦ª
     [SerializeField] GameObject stageParent;
 
-    // ƒJ[ƒh‚Ìe
+    // ã‚«ãƒ¼ãƒ‰ã®è¦ª
     [SerializeField] GameObject cardParent;
 
-    // ƒXƒe[ƒW‰ğàƒpƒlƒ‹
+    // ã‚¹ãƒ†ãƒ¼ã‚¸è§£èª¬ãƒ‘ãƒãƒ«
     [SerializeField] GameObject infoPanel;
 
-    // ƒfƒbƒL\’zƒpƒlƒ‹
+    // ãƒ‡ãƒƒã‚­æ§‹ç¯‰ãƒ‘ãƒãƒ«
     [SerializeField] GameObject deckBuildPanel;
 
-    // ƒJ[ƒhQÆƒpƒlƒ‹
+    // ã‚«ãƒ¼ãƒ‰å‚ç…§ãƒ‘ãƒãƒ«
     [SerializeField] GameObject showCardPanel;
 
-    // ƒrƒ‹ƒhƒpƒlƒ‹
+    // ãƒ“ãƒ«ãƒ‰ãƒ‘ãƒãƒ«
     [SerializeField] GameObject buildPanel;
 
-    // ƒJ[ƒhƒpƒlƒ‹
+    // ã‚«ãƒ¼ãƒ‰ãƒ‘ãƒãƒ«
     [SerializeField] GameObject cardViewPanel;
 
-    // ƒAƒCƒRƒ“ƒpƒlƒ‹
+    // ã‚¢ã‚¤ã‚³ãƒ³ãƒ‘ãƒãƒ«
     [SerializeField] GameObject iconPanel;
 
-    // Ú×ƒpƒlƒ‹
+    // è©³ç´°ãƒ‘ãƒãƒ«
     [SerializeField] GameObject helpPanel;
 
-    // ƒJ[ƒhe
+    // ã‚«ãƒ¼ãƒ‰è¦ª
     [SerializeField] GameObject cardViewParent;
 
-    // Œ»İ‚ÌƒfƒbƒL‚Ìe
+    // ç¾åœ¨ã®ãƒ‡ãƒƒã‚­ã®è¦ª
     [SerializeField] GameObject activeDeckParent;
 
-    // Œ»İ‚Ì–h‰qƒfƒbƒL‚Ìe
+    // ç¾åœ¨ã®é˜²è¡›ãƒ‡ãƒƒã‚­ã®è¦ª
     [SerializeField] GameObject activeDefenceDeckParent;
 
-    //ƒƒCƒ“ƒfƒbƒL‚Ìe
+    //ãƒ¡ã‚¤ãƒ³ãƒ‡ãƒƒã‚­ã®è¦ª
     [SerializeField] GameObject mainDeckPanel;
 
-    // –h‰qƒfƒbƒL‚Ìe
+    // é˜²è¡›ãƒ‡ãƒƒã‚­ã®è¦ª
     [SerializeField] GameObject defenceDeckPanel;
 
-    // ƒ[ƒfƒBƒ“ƒOƒpƒlƒ‹
+    // ãƒ­ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ãƒ‘ãƒãƒ«
     [SerializeField] GameObject loadingPanel;
 
-    // ƒ[ƒfƒBƒ“ƒOƒAƒCƒRƒ“
+    // ãƒ­ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã‚¢ã‚¤ã‚³ãƒ³
     [SerializeField] GameObject loadingIcon;
 
     // Deck Panel
     [SerializeField] Text infoText;
 
-    // ƒvƒŒƒCƒ„[–¼
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å
     [SerializeField] Text playerName;
 
     // Clear's SoundEffect
@@ -89,7 +89,7 @@ public class SelectScene : MonoBehaviour
     public bool isClick = false;
     bool isSet;
 
-    // ƒfƒbƒLƒf[ƒ^—pƒXƒNƒŠƒvƒg
+    // ãƒ‡ãƒƒã‚­ãƒ‡ãƒ¼ã‚¿ç”¨ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
     DeckData deckData;
 
     AudioSource audioSource;
@@ -104,7 +104,7 @@ public class SelectScene : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // ”ñ“¯Šúˆ—Š®—¹‚Ü‚Å‘Ò‹@‚³‚¹‚é
+        // éåŒæœŸå‡¦ç†å®Œäº†ã¾ã§å¾…æ©Ÿã•ã›ã‚‹
         Loading();
         isSet = false;
 
@@ -114,7 +114,7 @@ public class SelectScene : MonoBehaviour
 
         clickSE = (AudioClip)Resources.Load("SE/Click");
 
-        // ‘S‚Ä‚Ìƒpƒlƒ‹‚ğ•Â‚¶‚é
+        // å…¨ã¦ã®ãƒ‘ãƒãƒ«ã‚’é–‰ã˜ã‚‹
         infoPanel.SetActive(false);
         info.SetActive(false);
         deckBuildPanel.SetActive(false);
@@ -123,20 +123,20 @@ public class SelectScene : MonoBehaviour
         helpPanel.SetActive(false);
         iconPanel.SetActive(false);
 
-        // ƒIƒuƒWƒFƒNƒg‚Ìæ“¾
+        // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å–å¾—
         nowIcon = GameObject.Find("MyIcon");
 
-        // ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìæ“¾
+        // ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å–å¾—
         iconImage = nowIcon.GetComponent<Image>();
 
-        // ƒfƒbƒLƒf[ƒ^ƒXƒNƒŠƒvƒg‚ğæ“¾
+        // ãƒ‡ãƒƒã‚­ãƒ‡ãƒ¼ã‚¿ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’å–å¾—
         deckData = FindObjectOfType<DeckData>();
 
-        // ƒXƒe[ƒWî•ñæ“¾
+        // ã‚¹ãƒ†ãƒ¼ã‚¸æƒ…å ±å–å¾—
         NetworkManager networkManager = NetworkManager.Instance;
         //if (networkManager.displayName == "")
         //{
-        //    playerName.text = "–¢İ’è";
+        //    playerName.text = "æœªè¨­å®š";
         //}else playerName.text = networkManager.displayName;
 
         //if (networkManager.iconName != "")
@@ -229,7 +229,7 @@ public class SelectScene : MonoBehaviour
         Transform infoText = info.transform.Find("Text");
         infoText.gameObject.GetComponent<Text>().text = btnName;
 
-        // Infoƒpƒlƒ‹‚Ì‚İ‚ğŠJ‚«A‚»‚êˆÈŠO‚ğ•Â‚¶‚é
+        // Infoãƒ‘ãƒãƒ«ã®ã¿ã‚’é–‹ãã€ãã‚Œä»¥å¤–ã‚’é–‰ã˜ã‚‹
         info.SetActive(true);
         deckBuildPanel.SetActive(false);
         infoPanel.SetActive(false);
@@ -237,7 +237,7 @@ public class SelectScene : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒfƒbƒL’Ç‰Áˆ—
+    /// ãƒ‡ãƒƒã‚­è¿½åŠ å‡¦ç†
     /// </summary>
     void AddDeck(GameObject obj)
     {
@@ -258,53 +258,53 @@ public class SelectScene : MonoBehaviour
             requestValue = 2;
         }
 
-        // ‘I‘ğ‚³‚ê‚½ƒIƒuƒWƒFƒNƒg”Ô†‚ğint‚É‚·‚é
+        // é¸æŠã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç•ªå·ã‚’intã«ã™ã‚‹
         int cardID = deckData.ConvertName(obj.name);
         
-        // ‘ÎÛƒIƒuƒWƒFƒNƒg‚Ìó‘Ô‚ğŠm”F
+        // å¯¾è±¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®çŠ¶æ…‹ã‚’ç¢ºèª
         bool isSelected = deckData.CheckUsable(obj.name);
 
         if (otherList.Contains(obj.name))
         {
-            warning.text = "‚»‚ÌƒJ[ƒh‚Í•Ê‚ÌƒfƒbƒL‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚éI";
+            warning.text = "ãã®ã‚«ãƒ¼ãƒ‰ã¯åˆ¥ã®ãƒ‡ãƒƒã‚­ã«å«ã¾ã‚Œã¦ã„ã‚‹ï¼";
         }
         else if (isSelected == true)
-        { // ‘I‘ğ‚³‚ê‚Ä‚¢‚½ê‡
-            // ó‘Ô‚ğ–¢‘I‘ğ‚É‚·‚é
+        { // é¸æŠã•ã‚Œã¦ã„ãŸå ´åˆ
+            // çŠ¶æ…‹ã‚’æœªé¸æŠã«ã™ã‚‹
             deckData.UpdateUsable(obj.name, 0);
-            // ‘I‘ğƒJ[ƒhIDƒŠƒXƒg‚©‚çœ‹
+            // é¸æŠã‚«ãƒ¼ãƒ‰IDãƒªã‚¹ãƒˆã‹ã‚‰é™¤å»
             activeList.Remove(cardID);
         }
         else if(isSelected == false && activeList.Count < 4) 
-        { // ‘ÎÛƒIƒuƒWƒFƒNƒg‚ª–¢‘I‘ğ‚©‚ÂŒ»İ‚ÌƒfƒbƒL”‚ª4–¢–‚Ìê‡
-            // ‘I‘ğó‘Ô‚É‚·‚é
+        { // å¯¾è±¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒæœªé¸æŠã‹ã¤ç¾åœ¨ã®ãƒ‡ãƒƒã‚­æ•°ãŒ4æœªæº€ã®å ´åˆ
+            // é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
             deckData.UpdateUsable(obj.name, requestValue);
-            // ‘I‘ğƒJ[ƒhIDƒŠƒXƒg‚É’Ç‰Á
+            // é¸æŠã‚«ãƒ¼ãƒ‰IDãƒªã‚¹ãƒˆã«è¿½åŠ 
             activeList.Add(cardID);
         }
         else if (activeList.Count == 4)
         {
-            warning.text = "‚±‚êˆÈã‚Í’Ç‰Á‚Å‚«‚È‚¢I";
+            warning.text = "ã“ã‚Œä»¥ä¸Šã¯è¿½åŠ ã§ããªã„ï¼";
         }
-        // ƒXƒNƒ[ƒ‹ƒrƒ…[‚ğXV
+        // ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒ“ãƒ¥ãƒ¼ã‚’æ›´æ–°
         UpdaetView(obj);
     }
 
     /// <summary>
-    /// ƒJ[ƒhˆê——XVˆ—
+    /// ã‚«ãƒ¼ãƒ‰ä¸€è¦§æ›´æ–°å‡¦ç†
     /// </summary>
     void UpdaetView(GameObject obj)
     {
         List<List<int>> usableCards = deckData.GetUsable();
         for (int i = 1; i <= 9; i++)
         {
-            // 4‰ñƒ‹[ƒv
+            // 4å›ãƒ«ãƒ¼ãƒ—
             for (int j = 1; j <= 4; j++)
             {
-                // •¶š—ñ”»’è
+                // æ–‡å­—åˆ—åˆ¤å®š
                 if (obj.name == i.ToString() + "," + j.ToString())
                 {
-                    // ‘I‘ğ‚³‚ê‚Ä‚¢‚é‚È‚çF‚ğ•ÏX
+                    // é¸æŠã•ã‚Œã¦ã„ã‚‹ãªã‚‰è‰²ã‚’å¤‰æ›´
                     if (usableCards[i - 1][j - 1] == 1)
                     {
                         obj.GetComponent<Image>().color = Color.gray;
@@ -314,7 +314,7 @@ public class SelectScene : MonoBehaviour
                         obj.GetComponent<Image>().color =Color.blue;
                     }
                     else
-                    { //F‚ğƒŠƒZƒbƒg
+                    { //è‰²ã‚’ãƒªã‚»ãƒƒãƒˆ
                         obj.GetComponent<Image>().color = Color.white;
                     }
                 }
@@ -323,7 +323,7 @@ public class SelectScene : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒfƒbƒL•\¦ˆ—
+    /// ãƒ‡ãƒƒã‚­è¡¨ç¤ºå‡¦ç†
     /// </summary>
     public void UpdateDeck(List<int> id)
     {
@@ -342,29 +342,29 @@ public class SelectScene : MonoBehaviour
             GameObject.Destroy(n.gameObject);
         }
 
-        // ŠeƒJ[ƒh‚ÌƒXƒ^ƒbƒN”•ªƒ‹[ƒv
+        // å„ã‚«ãƒ¼ãƒ‰ã®ã‚¹ã‚¿ãƒƒã‚¯æ•°åˆ†ãƒ«ãƒ¼ãƒ—
         for (int i = 0; i < id.Count; i++)
         {
             if (id[i] == 0) continue;
-            // “¯–¼‚ÌƒJ[ƒh‚ğƒŠƒ\[ƒXƒtƒ@ƒCƒ‹‚©‚çæ“¾
+            // åŒåã®ã‚«ãƒ¼ãƒ‰ã‚’ãƒªã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰å–å¾—
             GameObject obj = (GameObject)Resources.Load("Cards(ID)/" + id[i]);
-            // æ“¾‚µ‚½ƒJ[ƒh‚ğ¶¬
+            // å–å¾—ã—ãŸã‚«ãƒ¼ãƒ‰ã‚’ç”Ÿæˆ
             GameObject cards = Instantiate(obj, new Vector2(-430f + (280f * i), 0f), Quaternion.identity);
 
             cards.name = obj.name;
             cards.transform.localScale = new Vector2(1.7f,2.4f);
-            // ƒƒCƒ“ƒfƒbƒLƒpƒlƒ‹‚É¶¬
+            // ãƒ¡ã‚¤ãƒ³ãƒ‡ãƒƒã‚­ãƒ‘ãƒãƒ«ã«ç”Ÿæˆ
             cards.transform.SetParent(parent.transform, false);
         }
     }
 
     /// <summary>
-    /// ƒ‰ƒ“ƒ_ƒ€ƒl[ƒ€ƒRƒ“ƒo[ƒgˆ—
+    /// ãƒ©ãƒ³ãƒ€ãƒ ãƒãƒ¼ãƒ ã‚³ãƒ³ãƒãƒ¼ãƒˆå‡¦ç†
     /// </summary>
     public void randomName()
     {   
         System.Random rand = new System.Random();
-        // ƒtƒ@ƒXƒgƒl[ƒ€’è‹`
+        // ãƒ•ã‚¡ã‚¹ãƒˆãƒãƒ¼ãƒ å®šç¾©
         string[] firstName = new string[]{
             "Nice","Abnormal","Delicious","Difficulty","Mr",
             "Mrs","Master","Huge","Tiny","Clever",
@@ -373,7 +373,7 @@ public class SelectScene : MonoBehaviour
             "Oriental","Muscly","Mudly","More","Strong",
             "Shiny","Sparkle","Legal","Hardest","Dancing"
         };
-        // ƒZƒJƒ“ƒhƒl[ƒ€’è‹`
+        // ã‚»ã‚«ãƒ³ãƒ‰ãƒãƒ¼ãƒ å®šç¾©
         string[] secondtName = new string[]{
             "Cake","Rock","Slime","Clover","Animal",
             "Fish","Earth","Throat","City","Dwarf",
@@ -382,11 +382,11 @@ public class SelectScene : MonoBehaviour
             "Thief","Bird","Cat","Water","CowBoy",
             "Skelton","Boots","Game","Card","Data"
         };
-        // 1`30‚Ü‚Å‚Ì—”‚ğ‘ã“ü
+        // 1ï½30ã¾ã§ã®ä¹±æ•°ã‚’ä»£å…¥
         int num = rand.Next(1, 30);
         int num2 = rand.Next(1, 30);
 
-        // Še—”‚É‰‚¶‚½–¼‘O‚ğ‘ã“ü
+        // å„ä¹±æ•°ã«å¿œã˜ãŸåå‰ã‚’ä»£å…¥
         playerName.text ="Name:" + firstName[num] + secondtName[num2];
     }
 
@@ -398,7 +398,7 @@ public class SelectScene : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒfƒbƒLØ‚è‘Ö‚¦ˆ—
+    /// ãƒ‡ãƒƒã‚­åˆ‡ã‚Šæ›¿ãˆå‡¦ç†
     /// </summary>
     public void ChangeDeck()
     {
@@ -409,7 +409,7 @@ public class SelectScene : MonoBehaviour
             deckTxt.text = "Defence Deck";
             isClick = true;
 
-            // –h‰qƒfƒbƒL‚ğXV‚µA•\¦
+            // é˜²è¡›ãƒ‡ãƒƒã‚­ã‚’æ›´æ–°ã—ã€è¡¨ç¤º
             UpdateDeck(deckData.GetDefenceDeck());
         }
         else
@@ -419,36 +419,36 @@ public class SelectScene : MonoBehaviour
             deckTxt.text = "Main Deck";
             isClick = false;   
 
-            // ƒƒCƒ“ƒfƒbƒL‚ğXV‚µA•\¦
+            // ãƒ¡ã‚¤ãƒ³ãƒ‡ãƒƒã‚­ã‚’æ›´æ–°ã—ã€è¡¨ç¤º
             UpdateDeck(deckData.GetDeck());
         }
     }
 
     /// <summary>
-    /// ƒJ[ƒhˆê——¶¬ˆ—
+    /// ã‚«ãƒ¼ãƒ‰ä¸€è¦§ç”Ÿæˆå‡¦ç†
     /// </summary>
     void CardSet()
     {
         if (isSet == true) return;
         int cnt = 0;
         List<List<int>> usableCards =  deckData.GetUsable();
-        // ƒfƒBƒNƒVƒ‡ƒiƒŠ[“à‚ÌƒAƒCƒeƒ€•ªƒ‹[ƒv
+        // ãƒ‡ã‚£ã‚¯ã‚·ãƒ§ãƒŠãƒªãƒ¼å†…ã®ã‚¢ã‚¤ãƒ†ãƒ åˆ†ãƒ«ãƒ¼ãƒ—
         foreach (var item in deckData.cardDictionary.Keys)
         {
-            // ƒL[‚ğ•¶š—ñ‚É•ÏŠ·
+            // ã‚­ãƒ¼ã‚’æ–‡å­—åˆ—ã«å¤‰æ›
             string cardName = item.ToString();
-            // ƒXƒ^ƒbƒN”‚ğ”š‚É•ÏŠ·
+            // ã‚¹ã‚¿ãƒƒã‚¯æ•°ã‚’æ•°å­—ã«å¤‰æ›
             int.TryParse(deckData.cardDictionary[cardName].Stack, out int stack);
 
-            // ŠeƒJ[ƒh‚ÌƒXƒ^ƒbƒN”•ªƒ‹[ƒv
+            // å„ã‚«ãƒ¼ãƒ‰ã®ã‚¹ã‚¿ãƒƒã‚¯æ•°åˆ†ãƒ«ãƒ¼ãƒ—
             for (int i = 0; i < 4; i++)
             {
-                // ƒ‹[ƒv”‚ªƒXƒ^ƒbƒN”–¢–‚Ìê‡
+                // ãƒ«ãƒ¼ãƒ—æ•°ãŒã‚¹ã‚¿ãƒƒã‚¯æ•°æœªæº€ã®å ´åˆ
                 if (stack > i)
                 {
-                    // “¯–¼‚ÌƒJ[ƒh‚ğƒŠƒ\[ƒXƒtƒ@ƒCƒ‹‚©‚çæ“¾
+                    // åŒåã®ã‚«ãƒ¼ãƒ‰ã‚’ãƒªã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰å–å¾—
                     GameObject obj = (GameObject)Resources.Load("UI/" + cardName);
-                    // æ“¾‚µ‚½ƒJ[ƒh‚ğ¶¬
+                    // å–å¾—ã—ãŸã‚«ãƒ¼ãƒ‰ã‚’ç”Ÿæˆ
                     GameObject cards = Instantiate(obj, new Vector2(-400f + (200f * i), 125f - (250f * cnt)), Quaternion.identity);
                     // Rename
                     cards.name = (cnt+1) + "," + (i+1);
@@ -462,19 +462,19 @@ public class SelectScene : MonoBehaviour
                     }
                     cards.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => AddDeck(cards));
 
-                    // ¶¬ƒJ[ƒh‚ğƒXƒNƒ[ƒ‹ƒrƒ…[‚É’Ç‰Á
+                    // ç”Ÿæˆã‚«ãƒ¼ãƒ‰ã‚’ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒ“ãƒ¥ãƒ¼ã«è¿½åŠ 
                     cards.transform.SetParent(cardViewParent.transform, false);
                 }
-                else // ƒ‹[ƒv”‚ªƒXƒ^ƒbƒN”‚ğ’´‚¦‚½ê‡Aƒ_ƒ~[‚ğ¶¬‚µ‚Ä®“Ú‚·‚é
+                else // ãƒ«ãƒ¼ãƒ—æ•°ãŒã‚¹ã‚¿ãƒƒã‚¯æ•°ã‚’è¶…ãˆãŸå ´åˆã€ãƒ€ãƒŸãƒ¼ã‚’ç”Ÿæˆã—ã¦æ•´é “ã™ã‚‹
                 {
-                    // “§–¾‚Èƒ_ƒ~[‚ğƒŠƒ\[ƒXƒtƒ@ƒCƒ‹‚©‚çæ“¾
+                    // é€æ˜ãªãƒ€ãƒŸãƒ¼ã‚’ãƒªã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰å–å¾—
                     GameObject obj = (GameObject)Resources.Load("UI/Dummy");
-                    // æ“¾‚µ‚½ƒ_ƒ~[‚ğ¶¬
+                    // å–å¾—ã—ãŸãƒ€ãƒŸãƒ¼ã‚’ç”Ÿæˆ
                     GameObject cards = Instantiate(obj, new Vector2(-400f + (200f * i), 125f - (250f * cnt)), Quaternion.identity);
                     // Rename
                     cards.name = "dummy";
 
-                    // ƒ_ƒ~[‚ğƒXƒNƒ[ƒ‹ƒrƒ…[‚É’Ç‰Á
+                    // ãƒ€ãƒŸãƒ¼ã‚’ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒ“ãƒ¥ãƒ¼ã«è¿½åŠ 
                     cards.transform.SetParent(cardViewParent.transform, false);
                 }
             }
@@ -520,43 +520,43 @@ public class SelectScene : MonoBehaviour
         switch (stageInfo.gameObject.GetComponent<Text>().text)
         {
             case "1":
-                infoTxt.text = "³‚µ‚¢è‡‚ÅŒ‚”j‚ğ–Úw‚»‚¤";
+                infoTxt.text = "æ­£ã—ã„æ‰‹é †ã§æ’ƒç ´ã‚’ç›®æŒ‡ãã†";
                 break;
 
             case "2":
-                infoTxt.text = "‚±‚±‚Å‚ÍƒV[ƒ‹ƒh‚ğ”j‰ó‚·‚é‚±‚Æ‚ªd—v‚Æ‚È‚é\n";
+                infoTxt.text = "ã“ã“ã§ã¯ã‚·ãƒ¼ãƒ«ãƒ‰ã‚’ç ´å£Šã™ã‚‹ã“ã¨ãŒé‡è¦ã¨ãªã‚‹\n";
                 break;
 
             case "3":
-                infoTxt.text = "‚à‚½‚à‚½‚µ‚Ä‚¢‚é‚Æ”š”j‚³‚ê‚Ä‚µ‚Ü‚¤\n‚Ç‚±‚©‚ÉƒV[ƒ‹ƒh‚Í‚È‚¢‚¾‚ë‚¤‚©";
+                infoTxt.text = "ã‚‚ãŸã‚‚ãŸã—ã¦ã„ã‚‹ã¨çˆ†ç ´ã•ã‚Œã¦ã—ã¾ã†\nã©ã“ã‹ã«ã‚·ãƒ¼ãƒ«ãƒ‰ã¯ãªã„ã ã‚ã†ã‹";
                 break;
 
             case "4":
-                infoTxt.text = "‘½Ê‚È•Ší‚ÅæøçW‚µ‚Ä‚­‚é\nUŒ‚‚ÌŒø‰Ê‚ğŠo‚¦‚Ä‚¨‚±‚¤";
+                infoTxt.text = "å¤šå½©ãªæ­¦å™¨ã§è¹‚èº™ã—ã¦ãã‚‹\næ”»æ’ƒã®åŠ¹æœã‚’è¦šãˆã¦ãŠã“ã†";
                 break;
 
             case "5":
-                infoTxt.text = "“Å‚ÅUŒ‚—Í‚ª‰º‚ª‚Á‚Ä‚µ‚Ü‚¤\nŒğŠ·‚ğ‹ìg‚µ‚æ‚¤";
+                infoTxt.text = "æ¯’ã§æ”»æ’ƒåŠ›ãŒä¸‹ãŒã£ã¦ã—ã¾ã†\näº¤æ›ã‚’é§†ä½¿ã—ã‚ˆã†";
                 break;
 
             case "6":
-                infoTxt.text = "‚±‚¿‚ç‚Ìs“®‚ğƒRƒs[‚³‚ê‚é\n‚‰Î—Í‚ÌƒJ[ƒh‚ğg‚¤‚Æ‚«‚Í’ˆÓ‚µ‚æ‚¤";
+                infoTxt.text = "ã“ã¡ã‚‰ã®è¡Œå‹•ã‚’ã‚³ãƒ”ãƒ¼ã•ã‚Œã‚‹\né«˜ç«åŠ›ã®ã‚«ãƒ¼ãƒ‰ã‚’ä½¿ã†ã¨ãã¯æ³¨æ„ã—ã‚ˆã†";
                 break;
 
             case "7":
-                infoTxt.text = "”½ËƒoƒŠƒA‚ÅUŒ‚‚ğ’µ‚Ë•Ô‚µ‚Ä‚­‚é\n‘OƒXƒe[ƒW“¯—lƒJ[ƒh‘I‚Ñ‚ÍTd‚É";
+                infoTxt.text = "åå°„ãƒãƒªã‚¢ã§æ”»æ’ƒã‚’è·³ã­è¿”ã—ã¦ãã‚‹\nå‰ã‚¹ãƒ†ãƒ¼ã‚¸åŒæ§˜ã‚«ãƒ¼ãƒ‰é¸ã³ã¯æ…é‡ã«";
                 break;
 
             case "8":
-                infoTxt.text = "–hŒä‚ÍÅ‘å‚Ì...–hŒäH";
+                infoTxt.text = "é˜²å¾¡ã¯æœ€å¤§ã®...é˜²å¾¡ï¼Ÿ";
                 break;
 
             case "9":
-                infoTxt.text = "”w‹Ø‚ª“€‚è‚»‚¤‚¾...\nÅ‰‚Ì–ÒU‚ğ“Ë”j‚Å‚«‚ê‚ÎŸ‚¿‹Ø‚ÍŒ©‚¦‚Ä‚­‚é‚¾‚ë‚¤";
+                infoTxt.text = "èƒŒç­‹ãŒå‡ã‚Šãã†ã ...\næœ€åˆã®çŒ›æ”»ã‚’çªç ´ã§ãã‚Œã°å‹ã¡ç­‹ã¯è¦‹ãˆã¦ãã‚‹ã ã‚ã†";
                 break;
 
             case "10":
-                infoTxt.text = "Œ»ƒo[ƒWƒ‡ƒ“‚Å‚ÍÅŒã‚Ì“G‚Æ‚È‚é\nƒ_ƒCƒiƒ}ƒCƒg‚Å‚à‚Ô‚Â‚¯‚Ä‚â‚ë‚¤\n...‚»‚à‚»‚à‚±‚ê‚ğŒ©‚Ä‚él‚Í‚¢‚é‚Ì‚©H";
+                infoTxt.text = "ç¾ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã§ã¯æœ€å¾Œã®æ•µã¨ãªã‚‹\nãƒ€ã‚¤ãƒŠãƒã‚¤ãƒˆã§ã‚‚ã¶ã¤ã‘ã¦ã‚„ã‚ã†\n...ãã‚‚ãã‚‚ã“ã‚Œã‚’è¦‹ã¦ã‚‹äººã¯ã„ã‚‹ã®ã‹ï¼Ÿ";
                 break;
         }
     }
@@ -570,7 +570,7 @@ public class SelectScene : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒfƒbƒL\’zƒpƒlƒ‹‚ğŠJ‚­ˆ—
+    /// ãƒ‡ãƒƒã‚­æ§‹ç¯‰ãƒ‘ãƒãƒ«ã‚’é–‹ãå‡¦ç†
     /// </summary>
     public void openDeckBuildPanel()
     {
@@ -593,7 +593,7 @@ public class SelectScene : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒfƒbƒL\’zƒpƒlƒ‹‚ğ•Â‚¶‚éˆ—
+    /// ãƒ‡ãƒƒã‚­æ§‹ç¯‰ãƒ‘ãƒãƒ«ã‚’é–‰ã˜ã‚‹å‡¦ç†
     /// </summary>
     public void closeDeckBuildPanel()
     {
@@ -601,7 +601,7 @@ public class SelectScene : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒJ[ƒhƒrƒ…[ƒpƒlƒ‹ˆ—
+    /// ã‚«ãƒ¼ãƒ‰ãƒ“ãƒ¥ãƒ¼ãƒ‘ãƒãƒ«å‡¦ç†
     /// </summary>
     public void openViewPanel()
     {
@@ -616,7 +616,7 @@ public class SelectScene : MonoBehaviour
     }
 
     /// <summary>
-    /// Ú×ƒpƒlƒ‹ˆ—
+    /// è©³ç´°ãƒ‘ãƒãƒ«å‡¦ç†
     /// </summary>
     public void openHelpPanel()
     {    
@@ -631,7 +631,7 @@ public class SelectScene : MonoBehaviour
 
 
     /// <summary>
-    /// ƒrƒ‹ƒh‰æ–Ê‚É–ß‚éˆ—
+    /// ãƒ“ãƒ«ãƒ‰ç”»é¢ã«æˆ»ã‚‹å‡¦ç†
     /// </summary>
     public void backBuildPanel()
     {
@@ -652,7 +652,7 @@ public class SelectScene : MonoBehaviour
     }
 
     /// <summary>
-    /// g—p‰Â”\ƒJ[ƒhˆê——ƒpƒlƒ‹QÆˆ—
+    /// ä½¿ç”¨å¯èƒ½ã‚«ãƒ¼ãƒ‰ä¸€è¦§ãƒ‘ãƒãƒ«å‚ç…§å‡¦ç†
     /// </summary>
     public void openShowCardPanel()
     {
@@ -664,7 +664,7 @@ public class SelectScene : MonoBehaviour
     }
 
     /// <summary>
-    /// g—p‰Â”\ƒJ[ƒhˆê——ƒpƒlƒ‹‚ğ•Â‚¶‚éˆ—
+    /// ä½¿ç”¨å¯èƒ½ã‚«ãƒ¼ãƒ‰ä¸€è¦§ãƒ‘ãƒãƒ«ã‚’é–‰ã˜ã‚‹å‡¦ç†
     /// </summary>
     public void closeCardPanel()
     {
@@ -690,43 +690,43 @@ public class SelectScene : MonoBehaviour
         switch (name)
         {
             case "Sword":
-                infoText.text = name + ":1ƒ_ƒ[ƒW‚ğ—^‚¦‚é –‡”~" + stack;
+                infoText.text = name + ":1ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹ æšæ•°Ã—" + stack;
                 break;
 
             case "S.Y.T.H":
-                infoText.text = name + ":2ƒ_ƒ[ƒW‚ğ—^‚¦‚é –‡”~" + stack;
+                infoText.text = name + ":2ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹ æšæ•°Ã—" + stack;
                 break;
 
             case "A.X.E":
-                infoText.text = name + ":1ƒ_ƒ[ƒW‚ğ—^‚¦‚é ƒuƒƒbƒN‚ğ–³‹•”j‰ó –‡”~" + stack;
+                infoText.text = name + ":1ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹ ãƒ–ãƒ­ãƒƒã‚¯ã‚’ç„¡è¦–ï¼†ç ´å£Š æšæ•°Ã—" + stack;
                 break;
 
             case "M.A.C.E":
-                infoText.text = name + ":1ƒ_ƒ[ƒW‚É‰Á‚¦ƒuƒƒbƒN‚Ì’l•ªƒ_ƒ[ƒW‚ğ—^‚¦‚é –‡”~" + stack;
+                infoText.text = name + ":1ãƒ€ãƒ¡ãƒ¼ã‚¸ã«åŠ ãˆãƒ–ãƒ­ãƒƒã‚¯ã®å€¤åˆ†ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹ æšæ•°Ã—" + stack;
                 break;
 
             case "Shield":
-                infoText.text = name + ":1ƒuƒƒbƒN‚ğó‚¯‚é –‡”~" + stack;
+                infoText.text = name + ":1ãƒ–ãƒ­ãƒƒã‚¯ã‚’å—ã‘ã‚‹ æšæ•°Ã—" + stack;
                 break;
 
             case "ForgeHammer":
-                infoText.text = name + ":1ƒ_ƒ[ƒW‚ğ—^‚¦‚é Ÿ‚Ìs“®‚ÌUŒ‚—Í+1 –‡”~" + stack;
+                infoText.text = name + ":1ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹ æ¬¡ã®è¡Œå‹•ã®æ”»æ’ƒåŠ›+1 æšæ•°Ã—" + stack;
                 break;
 
             case "Injector":
-                infoText.text = name + ":1ƒ_ƒ[ƒW‚ğ—^‚¦‚é “G‚ğoŒŒ‚³‚¹‚é(s“®–ˆ1ƒ_ƒ[ƒW) –‡”~" + stack;
+                infoText.text = name + ":1ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹ æ•µã‚’å‡ºè¡€ã•ã›ã‚‹(è¡Œå‹•æ¯1ãƒ€ãƒ¡ãƒ¼ã‚¸) æšæ•°Ã—" + stack;
                 break;
 
             case "PoisonKnife":
-                infoText.text = name + ":1ƒ_ƒ[ƒW‚ğ—^‚¦‚é “G‚ÌUŒ‚—Í-1 –‡”~" + stack;
+                infoText.text = name + ":1ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹ æ•µã®æ”»æ’ƒåŠ›-1 æšæ•°Ã—" + stack;
                 break;
 
             case "6mmBullet":
-                infoText.text = name + ":3ƒ_ƒ[ƒW‚ğ—^‚¦‚é ...e‚ª‚ ‚ê‚Î‚Ì˜b –‡”~" + stack;
+                infoText.text = name + ":3ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹ ...éŠƒãŒã‚ã‚Œã°ã®è©± æšæ•°Ã—" + stack;
                 break;
 
             case "SwatShield":
-                infoText.text = name + ":2ƒuƒƒbƒN‚ğó‚¯‚é –‡”~" + stack;
+                infoText.text = name + ":2ãƒ–ãƒ­ãƒƒã‚¯ã‚’å—ã‘ã‚‹ æšæ•°Ã—" + stack;
                 break;
 
             default:
@@ -742,9 +742,9 @@ public class SelectScene : MonoBehaviour
 
         foreach (var item in deckData.cardDictionary.Keys)
         {
-            // ƒL[‚ğ•¶š—ñ‚É•ÏŠ·
+            // ã‚­ãƒ¼ã‚’æ–‡å­—åˆ—ã«å¤‰æ›
             string cardName = item.ToString();
-            // ƒXƒ^ƒbƒN”‚ğ”š‚É•ÏŠ·
+            // ã‚¹ã‚¿ãƒƒã‚¯æ•°ã‚’æ•°å­—ã«å¤‰æ›
             int.TryParse(deckData.cardDictionary[cardName].Stack, out int cardStack);
 
             GameObject obj = (GameObject)Resources.Load("UI/" + cardName);
@@ -805,16 +805,16 @@ public class SelectScene : MonoBehaviour
     }
 
     /// <summary>
-    /// Ÿ‚ÌƒAƒCƒRƒ“‘I‘ğˆ—
+    /// æ¬¡ã®ã‚¢ã‚¤ã‚³ãƒ³é¸æŠå‡¦ç†
     /// </summary>
     public void NextIcon()
     {  
         iconNum++;
         if (iconNum >= 10) iconNum = 0;
 
-        // ƒIƒuƒWƒFƒNƒg‚Ìæ“¾
+        // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å–å¾—
         Image preview = GameObject.Find("IconPreview").GetComponent<Image>();
-        // ƒŠƒ\[ƒX‚©‚çAƒAƒCƒRƒ“‚ğæ“¾
+        // ãƒªã‚½ãƒ¼ã‚¹ã‹ã‚‰ã€ã‚¢ã‚¤ã‚³ãƒ³ã‚’å–å¾—
         Texture2D texture = Resources.Load("Icons/icon00" + iconNum) as Texture2D;
 
         iconImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),
@@ -826,16 +826,16 @@ public class SelectScene : MonoBehaviour
     }
 
     /// <summary>
-    /// ‘O‚ÌƒAƒCƒRƒ“‘I‘ğˆ—
+    /// å‰ã®ã‚¢ã‚¤ã‚³ãƒ³é¸æŠå‡¦ç†
     /// </summary>
     public void BackIcon()
     {
         iconNum--;
         if (iconNum <= -1) iconNum = 9;
 
-        // ƒIƒuƒWƒFƒNƒg‚Ìæ“¾
+        // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å–å¾—
         Image preview = GameObject.Find("IconPreview").GetComponent<Image>();
-        // ƒŠƒ\[ƒX‚©‚çAƒAƒCƒRƒ“‚ğæ“¾
+        // ãƒªã‚½ãƒ¼ã‚¹ã‹ã‚‰ã€ã‚¢ã‚¤ã‚³ãƒ³ã‚’å–å¾—
         Texture2D texture = Resources.Load("Icons/icon00" + iconNum) as Texture2D;
 
         iconImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),
@@ -847,12 +847,12 @@ public class SelectScene : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒvƒƒtƒB[ƒ‹XV
+    /// ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«æ›´æ–°
     /// </summary>
     public void updateDisplayInfo()
     {
-        Debug.Log("ƒAƒCƒRƒ“–¼:" + iconName);
-        Debug.Log("ƒvƒŒƒCƒ„[–¼:" + playerName.text); ;
+        Debug.Log("ã‚¢ã‚¤ã‚³ãƒ³å:" + iconName);
+        Debug.Log("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å:" + playerName.text); ;
         StartCoroutine(NetworkManager.Instance.UpdateProfile(playerName.text, iconName));
     }
 }

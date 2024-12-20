@@ -1,6 +1,6 @@
 /*
  * DeckDataScript
- * Creator:¼‰YW‘¾ Update:2024/10/30
+ * Creator:è¥¿æµ¦æ™ƒå¤ª Update:2024/10/30
 */
 using System;
 using System.Collections;
@@ -9,60 +9,60 @@ using UnityEngine;
 
 public class DeckData : MonoBehaviour
 {
-    // g—p‰Â‚ÌƒJ[ƒhƒIƒuƒWƒFƒNƒg“ñŸŒ³ƒŠƒXƒg
+    // ä½¿ç”¨å¯ã®ã‚«ãƒ¼ãƒ‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆäºŒæ¬¡å…ƒãƒªã‚¹ãƒˆ
     public List<List<int>> usableObjList = new List<List<int>>();
 
-    // g—p‰Â”\ƒJ[ƒh‚ÌƒfƒBƒNƒVƒ‡ƒiƒŠ[
+    // ä½¿ç”¨å¯èƒ½ã‚«ãƒ¼ãƒ‰ã®ãƒ‡ã‚£ã‚¯ã‚·ãƒ§ãƒŠãƒªãƒ¼
     public Dictionary<string, UsableCardResponse> cardDictionary = new Dictionary<string, UsableCardResponse>();
 
-    // Œ»İ‚ÌƒfƒbƒL“àƒJ[ƒhIDƒŠƒXƒg
+    // ç¾åœ¨ã®ãƒ‡ãƒƒã‚­å†…ã‚«ãƒ¼ãƒ‰IDãƒªã‚¹ãƒˆ
     List<int> activeCardID = new List<int>();
 
-    // Œ»İ‚ÌƒfƒbƒL“àƒJ[ƒhIDƒŠƒXƒg
+    // ç¾åœ¨ã®ãƒ‡ãƒƒã‚­å†…ã‚«ãƒ¼ãƒ‰IDãƒªã‚¹ãƒˆ
     List<int> activeDefenceCardID = new List<int>();
 
-    // ƒXƒe[ƒW‘I‘ğ‰æ–ÊƒXƒNƒŠƒvƒg
+    // ã‚¹ãƒ†ãƒ¼ã‚¸é¸æŠç”»é¢ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
     SelectScene selectScene;
 
-    // ƒƒCƒ“ƒfƒbƒL“à‚ÌƒJ[ƒh–¼ƒŠƒXƒg
+    // ãƒ¡ã‚¤ãƒ³ãƒ‡ãƒƒã‚­å†…ã®ã‚«ãƒ¼ãƒ‰åãƒªã‚¹ãƒˆ
     List<string> mainDeckNameList = new List<string>();
 
-    // –h‰qƒfƒbƒL“à‚ÌƒJ[ƒh–¼ƒŠƒXƒg
+    // é˜²è¡›ãƒ‡ãƒƒã‚­å†…ã®ã‚«ãƒ¼ãƒ‰åãƒªã‚¹ãƒˆ
     List<string> defenceDeckNameList = new List<string>();
 
     // Start is called before the first frame update
     void Start()
     {
-        // ƒXƒe[ƒW‘I‘ğ‰æ–ÊƒXƒNƒŠƒvƒg‚ğæ“¾
+        // ã‚¹ãƒ†ãƒ¼ã‚¸é¸æŠç”»é¢ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’å–å¾—
         selectScene = FindObjectOfType<SelectScene>();
 
         StartCoroutine(NetworkManager.Instance.ShowDeck(cards =>
         {
             if (cards == null) return;
-            // ƒ†[ƒU‚ÌƒfƒbƒLî•ñ‚ğæ“¾
+            // ãƒ¦ãƒ¼ã‚¶ã®ãƒ‡ãƒƒã‚­æƒ…å ±ã‚’å–å¾—
             foreach (var card in cards)
             {
                 if (card == null) continue;
-                // ƒJ[ƒhID‚ğæ“¾
+                // ã‚«ãƒ¼ãƒ‰IDã‚’å–å¾—
                 string strID = card.CardID.ToString();
                 int.TryParse(strID, out int cardID);
 
-                // ƒfƒbƒL‚ÉƒJ[ƒhID‚ğ’Ç‰Á
+                // ãƒ‡ãƒƒã‚­ã«ã‚«ãƒ¼ãƒ‰IDã‚’è¿½åŠ 
                 activeCardID.Add(cardID);
             }
 
             StartCoroutine(NetworkManager.Instance.ShowDefenceDeck(cards =>
             {
                 if (cards == null) return;
-                // ƒ†[ƒU‚Ì–h‰qƒfƒbƒLî•ñ‚ğæ“¾
+                // ãƒ¦ãƒ¼ã‚¶ã®é˜²è¡›ãƒ‡ãƒƒã‚­æƒ…å ±ã‚’å–å¾—
                 foreach (var card in cards)
                 {
                     if (card == null) continue;
-                    // ƒJ[ƒhID‚ğæ“¾
+                    // ã‚«ãƒ¼ãƒ‰IDã‚’å–å¾—
                     string strID = card.CardID.ToString();
                     int.TryParse(strID, out int cardID);
 
-                    // –h‰qƒfƒbƒL‚ÉƒJ[ƒhID‚ğ’Ç‰Á
+                    // é˜²è¡›ãƒ‡ãƒƒã‚­ã«ã‚«ãƒ¼ãƒ‰IDã‚’è¿½åŠ 
                     activeDefenceCardID.Add(cardID);
                 }
 
@@ -70,7 +70,7 @@ public class DeckData : MonoBehaviour
                 {
                     foreach (var card in cards)
                     {
-                        // Šeî•ñ‚ğæ“¾
+                        // å„æƒ…å ±ã‚’å–å¾—
                         string strID = card.CardID.ToString();
                         int.TryParse(strID, out int cardID);
 
@@ -79,7 +79,7 @@ public class DeckData : MonoBehaviour
 
                         string cardName = card.Name.ToString();
 
-                        // g—p‰Â”\ƒJ[ƒh‚ğƒXƒ^ƒbƒN”•ªƒŠƒXƒg‚É“Ë‚Á‚Ş
+                        // ä½¿ç”¨å¯èƒ½ã‚«ãƒ¼ãƒ‰ã‚’ã‚¹ã‚¿ãƒƒã‚¯æ•°åˆ†ãƒªã‚¹ãƒˆã«çªã£è¾¼ã‚€
                         List<int> Items = new List<int>();
                         for (int i = 0; i < cardStack; i++)
                         {
@@ -87,14 +87,14 @@ public class DeckData : MonoBehaviour
                         }
                         usableObjList.Add(Items);
 
-                        // ƒJ[ƒhî•ñ‚ğƒfƒBƒNƒVƒ‡ƒiƒŠ[‚É‚Ü‚Æ‚ß‚é
+                        // ã‚«ãƒ¼ãƒ‰æƒ…å ±ã‚’ãƒ‡ã‚£ã‚¯ã‚·ãƒ§ãƒŠãƒªãƒ¼ã«ã¾ã¨ã‚ã‚‹
                         cardDictionary.Add(card.Name, card);
                     }
 
                     foreach (var item in activeCardID)
                     {
                         int cnt = 0;
-                        // ƒfƒbƒL“à‚É‚ ‚éƒJ[ƒh“Ç‚İ‚İˆ—
+                        // ãƒ‡ãƒƒã‚­å†…ã«ã‚ã‚‹ã‚«ãƒ¼ãƒ‰èª­ã¿è¾¼ã¿å‡¦ç†
                         foreach (var id in usableObjList[item - 1])
                         {
                             if (id != 1 && id != 2)
@@ -110,7 +110,7 @@ public class DeckData : MonoBehaviour
                     foreach (var item in activeDefenceCardID)
                     {
                         int cnt = 0;
-                        // ƒfƒbƒL“à‚É‚ ‚éƒJ[ƒh“Ç‚İ‚İˆ—
+                        // ãƒ‡ãƒƒã‚­å†…ã«ã‚ã‚‹ã‚«ãƒ¼ãƒ‰èª­ã¿è¾¼ã¿å‡¦ç†
                         foreach (var id in usableObjList[item - 1])
                         {
                             if (id != 1 && id != 2)
@@ -135,7 +135,7 @@ public class DeckData : MonoBehaviour
     }
 
     /// <summary>
-    /// Œ»İ‚ÌƒfƒbƒL‚ğDB‚É•Û‘¶‚·‚éˆ—
+    /// ç¾åœ¨ã®ãƒ‡ãƒƒã‚­ã‚’DBã«ä¿å­˜ã™ã‚‹å‡¦ç†
     /// </summary>
     /// <param name="cardID"></param>
     public void SetDeck()
@@ -143,10 +143,10 @@ public class DeckData : MonoBehaviour
         List<int> list = new List<int>();
         mainDeckNameList.Clear();
 
-        // Œ»İ‚ÌƒfƒbƒL‚ÌƒJ[ƒh–‡”•ªƒ‹[ƒv
+        // ç¾åœ¨ã®ãƒ‡ãƒƒã‚­ã®ã‚«ãƒ¼ãƒ‰æšæ•°åˆ†ãƒ«ãƒ¼ãƒ—
         foreach (var id in activeCardID)
         {
-            // ŠeƒXƒ^ƒbƒN”•ªƒ‹[ƒv
+            // å„ã‚¹ã‚¿ãƒƒã‚¯æ•°åˆ†ãƒ«ãƒ¼ãƒ—
             for (int i = 0; i < usableObjList[id -1].Count; i++)
             {
                 if (usableObjList[id-1][i] == 1)
@@ -158,32 +158,32 @@ public class DeckData : MonoBehaviour
             }
         }
 
-        // Œ»İŠi”[‚³‚ê‚Ä‚¢‚éID‚ğíœ
+        // ç¾åœ¨æ ¼ç´ã•ã‚Œã¦ã„ã‚‹IDã‚’å‰Šé™¤
         activeCardID.Clear();
 
         int cnt = 0;
-        // DB‘—M—p”z—ñ
+        // DBé€ä¿¡ç”¨é…åˆ—
         int[] sendData = { 0, 0, 0, 0 };
 
-        // æ“¾‚µ‚Ä‚«‚½ID‚ğ‘ã“ü
+        // å–å¾—ã—ã¦ããŸIDã‚’ä»£å…¥
         foreach (var id in list)
         {
             if (list == null) break;
-            // Œ»İ‚ÌƒfƒbƒLƒŠƒXƒg‚ÉID‚ğ“ü‚ê‚é
+            // ç¾åœ¨ã®ãƒ‡ãƒƒã‚­ãƒªã‚¹ãƒˆã«IDã‚’å…¥ã‚Œã‚‹
             activeCardID.Add((int)id);
 
-            // ‘—M—p”z—ñ‚ÉID‚ğ“ü‚ê‚é
+            // é€ä¿¡ç”¨é…åˆ—ã«IDã‚’å…¥ã‚Œã‚‹
             sendData[cnt] = (int)id;
             cnt++;
         }
 
         selectScene.UpdateDeck(activeCardID);
-        // æ“¾‚µ‚½ID‚ğDB‚É‘—M
+        // å–å¾—ã—ãŸIDã‚’DBã«é€ä¿¡
         StartCoroutine(NetworkManager.Instance.StoreCard(sendData));
     }
 
     /// <summary>
-    /// Œ»İ‚Ì–h‰qƒfƒbƒL‚ğDB‚É•Û‘¶‚·‚éˆ—
+    /// ç¾åœ¨ã®é˜²è¡›ãƒ‡ãƒƒã‚­ã‚’DBã«ä¿å­˜ã™ã‚‹å‡¦ç†
     /// </summary>
     /// <param name="cardID"></param>
     public void SetDefenceDeck()
@@ -191,10 +191,10 @@ public class DeckData : MonoBehaviour
         List<int> list = new List<int>();
         defenceDeckNameList.Clear();
 
-        // Œ»İ‚ÌƒfƒbƒL‚ÌƒJ[ƒh–‡”•ªƒ‹[ƒv
+        // ç¾åœ¨ã®ãƒ‡ãƒƒã‚­ã®ã‚«ãƒ¼ãƒ‰æšæ•°åˆ†ãƒ«ãƒ¼ãƒ—
         foreach (var id in activeDefenceCardID)
         {
-            // ŠeƒXƒ^ƒbƒN”•ªƒ‹[ƒv
+            // å„ã‚¹ã‚¿ãƒƒã‚¯æ•°åˆ†ãƒ«ãƒ¼ãƒ—
             for (int i = 0; i < usableObjList[id - 1].Count; i++)
             {
                 if (usableObjList[id - 1][i] == 2)
@@ -206,32 +206,32 @@ public class DeckData : MonoBehaviour
             }
         }
 
-        // Œ»İŠi”[‚³‚ê‚Ä‚¢‚éID‚ğíœ
+        // ç¾åœ¨æ ¼ç´ã•ã‚Œã¦ã„ã‚‹IDã‚’å‰Šé™¤
         activeDefenceCardID.Clear();
 
         int cnt = 0;
-        // DB‘—M—p”z—ñ
+        // DBé€ä¿¡ç”¨é…åˆ—
         int[] sendData = { 0, 0, 0, 0 };
 
-        // æ“¾‚µ‚Ä‚«‚½ID‚ğ‘ã“ü
+        // å–å¾—ã—ã¦ããŸIDã‚’ä»£å…¥
         foreach (var id in list)
         {
             if (list == null) break;
-            // Œ»İ‚ÌƒfƒbƒLƒŠƒXƒg‚ÉID‚ğ“ü‚ê‚é
+            // ç¾åœ¨ã®ãƒ‡ãƒƒã‚­ãƒªã‚¹ãƒˆã«IDã‚’å…¥ã‚Œã‚‹
             activeDefenceCardID.Add((int)id);
 
-            // ‘—M—p”z—ñ‚ÉID‚ğ“ü‚ê‚é
+            // é€ä¿¡ç”¨é…åˆ—ã«IDã‚’å…¥ã‚Œã‚‹
             sendData[cnt] = (int)id;
             cnt++;
         }
 
         selectScene.UpdateDeck(activeDefenceCardID);
-        // æ“¾‚µ‚½ID‚ğDB‚É‘—M
+        // å–å¾—ã—ãŸIDã‚’DBã«é€ä¿¡
         StartCoroutine(NetworkManager.Instance.StoreDefenceCard(sendData));
     }
 
     /// <summary>
-    /// Œ»İ‚ÌƒfƒbƒL“àƒJ[ƒhIDæ“¾ˆ—
+    /// ç¾åœ¨ã®ãƒ‡ãƒƒã‚­å†…ã‚«ãƒ¼ãƒ‰IDå–å¾—å‡¦ç†
     /// </summary>
     public List<int> GetDeck()
     {
@@ -239,7 +239,7 @@ public class DeckData : MonoBehaviour
     }
 
     /// <summary>
-    /// Œ»İ‚ÌƒfƒbƒL“àƒJ[ƒh–¼æ“¾ˆ—
+    /// ç¾åœ¨ã®ãƒ‡ãƒƒã‚­å†…ã‚«ãƒ¼ãƒ‰åå–å¾—å‡¦ç†
     /// </summary>
     public List<string> GetDeckName()
     {
@@ -247,7 +247,7 @@ public class DeckData : MonoBehaviour
     }
 
     /// <summary>
-    /// Œ»İ‚Ì–h‰qƒfƒbƒL“àƒJ[ƒhIDæ“¾ˆ—
+    /// ç¾åœ¨ã®é˜²è¡›ãƒ‡ãƒƒã‚­å†…ã‚«ãƒ¼ãƒ‰IDå–å¾—å‡¦ç†
     /// </summary>
     public List<int> GetDefenceDeck()
     {
@@ -255,7 +255,7 @@ public class DeckData : MonoBehaviour
     }
 
     /// <summary>
-    /// Œ»İ‚Ì–h‰qƒfƒbƒL“àƒJ[ƒh–¼æ“¾ˆ—
+    /// ç¾åœ¨ã®é˜²è¡›ãƒ‡ãƒƒã‚­å†…ã‚«ãƒ¼ãƒ‰åå–å¾—å‡¦ç†
     /// </summary>
     public List<string> GetDefenceDeckName()
     {
@@ -263,7 +263,7 @@ public class DeckData : MonoBehaviour
     }
 
     /// <summary>
-    /// ‘I‘ğó‘ÔƒŠƒXƒgæ“¾ˆ—
+    /// é¸æŠçŠ¶æ…‹ãƒªã‚¹ãƒˆå–å¾—å‡¦ç†
     /// </summary>
     public List<List<int>> GetUsable()
     {
@@ -271,7 +271,7 @@ public class DeckData : MonoBehaviour
     }
 
     /// <summary>
-    /// g—p‰Â”\ƒJ[ƒhIDæ“¾ˆ—
+    /// ä½¿ç”¨å¯èƒ½ã‚«ãƒ¼ãƒ‰IDå–å¾—å‡¦ç†
     /// </summary>
     /// <returns></returns>
     public Dictionary<string, UsableCardResponse> GetCardDictionary()
@@ -280,19 +280,19 @@ public class DeckData : MonoBehaviour
     }
 
     /// <summary>
-    /// ‘I‘ğó‘Ô”»•Êˆ—
+    /// é¸æŠçŠ¶æ…‹åˆ¤åˆ¥å‡¦ç†
     /// </summary>
     public bool CheckUsable(string requestStr)
     {
         for (int i = 1; i <= 9; i++)
         {
-            // 4‰ñƒ‹[ƒv
+            // 4å›ãƒ«ãƒ¼ãƒ—
             for (int j = 1; j <= 4; j++)
             {
-                // •¶š—ñ”»’è
+                // æ–‡å­—åˆ—åˆ¤å®š
                 if (requestStr == i.ToString() + "," + j.ToString())
                 {
-                    //‘I‘ğ‚³‚ê‚Ä‚¢‚é‚È‚çTrue‚ğ•Ô‚·
+                    //é¸æŠã•ã‚Œã¦ã„ã‚‹ãªã‚‰Trueã‚’è¿”ã™
                     if (usableObjList[i - 1][j - 1] == 1 || usableObjList[i - 1][j - 1] == 2)
                     {
                         return true;
@@ -304,7 +304,7 @@ public class DeckData : MonoBehaviour
     }
 
     /// <summary>
-    /// ‘I‘ğó‘ÔXVˆ—
+    /// é¸æŠçŠ¶æ…‹æ›´æ–°å‡¦ç†
     /// </summary>
     /// <param name="requestStr"></param>
     /// <param name="val"></param>
@@ -312,13 +312,13 @@ public class DeckData : MonoBehaviour
     {
         for (int i = 1; i <= 9; i++)
         {
-            // 4‰ñƒ‹[ƒv
+            // 4å›ãƒ«ãƒ¼ãƒ—
             for (int j = 1; j <= 4; j++)
             {
-                // •¶š—ñ”»’è
+                // æ–‡å­—åˆ—åˆ¤å®š
                 if (requestStr == i.ToString() + "," + j.ToString() )
                 {
-                    // ‘I‘ğó‘Ô‚ğƒŠƒNƒGƒXƒg‚³‚ê‚½’l‚ÉXV
+                    // é¸æŠçŠ¶æ…‹ã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆã•ã‚ŒãŸå€¤ã«æ›´æ–°
                     usableObjList[i-1][j-1] = val;
                     return;
                 }
@@ -327,7 +327,7 @@ public class DeckData : MonoBehaviour
     }
 
     /// <summary>
-    /// –¼‘O‚ğID‚É•ÏŠ·‚·‚éˆ—
+    /// åå‰ã‚’IDã«å¤‰æ›ã™ã‚‹å‡¦ç†
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
@@ -335,10 +335,10 @@ public class DeckData : MonoBehaviour
     {
         for (int i = 1; i <= 9; i++)
         {
-            // 4‰ñƒ‹[ƒv
+            // 4å›ãƒ«ãƒ¼ãƒ—
             for (int j = 1; j <= 4; j++)
             {
-                // •¶š—ñ”»’è
+                // æ–‡å­—åˆ—åˆ¤å®š
                 if (requestStr == i.ToString() + "," + j.ToString())
                 {
                     return i;

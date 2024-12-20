@@ -1,6 +1,6 @@
 /*
  * TitleScript
- * Creator:¼‰YW‘¾ Update:2024/10/28
+ * Creator:è¥¿æµ¦æ™ƒå¤ª Update:2024/10/28
 */
 using System;
 using UnityEngine;
@@ -36,14 +36,14 @@ public class Title : MonoBehaviour
         }
         count++;
 
-        //ƒNƒŠƒbƒN
+        //ã‚¯ãƒªãƒƒã‚¯
         if (Input.GetMouseButtonUp(0))
         {
             //StartCoroutine(checkCatalog());
             bool isSuccess = NetworkManager.Instance.LoadUserData();
 
             if (!isSuccess)
-            { //ƒ†[ƒUƒf[ƒ^‚ª•Û‘¶‚³‚ê‚Ä‚¢‚È‚©‚Á‚½ê‡
+            { //ãƒ¦ãƒ¼ã‚¶ãƒ‡ãƒ¼ã‚¿ãŒä¿å­˜ã•ã‚Œã¦ã„ãªã‹ã£ãŸå ´åˆ
                 StartCoroutine(NetworkManager.Instance.StoreUser(
                     result => //After Set's Process
                     {
@@ -52,16 +52,16 @@ public class Title : MonoBehaviour
             }
             else
             {
-                //ƒg[ƒNƒ“‚ª‚È‚¢ê‡Aƒg[ƒNƒ“‚ğ¶¬
+                //ãƒˆãƒ¼ã‚¯ãƒ³ãŒãªã„å ´åˆã€ãƒˆãƒ¼ã‚¯ãƒ³ã‚’ç”Ÿæˆ
                 if (NetworkManager.Instance.AuthToken == null)
                 {
                     StartCoroutine(NetworkManager.Instance.CreateToken(
-                        result => //¶¬ŒãAƒV[ƒ“‘JˆÚ
+                        result => //ç”Ÿæˆå¾Œã€ã‚·ãƒ¼ãƒ³é·ç§»
                         {
                             SceneManager.LoadScene("SelectScene");
                         }));
                 }
-                else SceneManager.LoadScene("SelectScene"); //Šù‚Éƒg[ƒNƒ“‚ğ‚Á‚Ä‚¢‚éê‡A‚»‚Ì‚Ü‚ÜƒV[ƒ“‘JˆÚ
+                else SceneManager.LoadScene("SelectScene"); //æ—¢ã«ãƒˆãƒ¼ã‚¯ãƒ³ã‚’æŒã£ã¦ã„ã‚‹å ´åˆã€ãã®ã¾ã¾ã‚·ãƒ¼ãƒ³é·ç§»
             }
         }
     }
@@ -74,7 +74,7 @@ public class Title : MonoBehaviour
     //    Addressables.Release(checkHandle);
     //    if(updates.Count >= 1)
     //    {
-    //        //XV‚ª‚ ‚éê‡‚Íƒ[ƒh‰æ–Ê‚Ö
+    //        //æ›´æ–°ãŒã‚ã‚‹å ´åˆã¯ãƒ­ãƒ¼ãƒ‰ç”»é¢ã¸
     //        SceneManager.LoadScene("LoadScene");
     //    }
     //}

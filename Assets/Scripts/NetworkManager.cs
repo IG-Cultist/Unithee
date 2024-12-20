@@ -1,6 +1,6 @@
 /*
  * NetworkManagerScript
- * Creator:¼‰YW‘¾ Update:2024/10/11
+ * Creator:è¥¿æµ¦æ™ƒå¤ª Update:2024/10/11
 */
 using Newtonsoft.Json;
 using System;
@@ -15,7 +15,7 @@ using UnityEngine.Networking;
 public class NetworkManager : MonoBehaviour
 {
     /// <summary>
-    /// ƒVƒ“ƒOƒ‹ƒgƒ“
+    /// ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³
     /// </summary>
     const string API_BASE_URL = "https://api-deadlydraw.japaneast.cloudapp.azure.com/api/";
     private int userID = 0;
@@ -41,7 +41,7 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒg[ƒNƒ“¶¬ˆ—
+    /// ãƒˆãƒ¼ã‚¯ãƒ³ç”Ÿæˆå‡¦ç†
     /// </summary>
     /// <param name="response"></param>
     /// <returns></returns>
@@ -57,11 +57,11 @@ public class NetworkManager : MonoBehaviour
         yield return request.SendWebRequest();
         if(request.result == UnityWebRequest.Result.Success ) 
         {
-            //’ÊM‚ª¬Œ÷‚µ‚½ê‡A•Ô‚Á‚Ä‚«‚½Json‚ğƒIƒuƒWƒFƒNƒg‚É•ÏŠ·
+            //é€šä¿¡ãŒæˆåŠŸã—ãŸå ´åˆã€è¿”ã£ã¦ããŸJsonã‚’ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¤‰æ›
             string resultJson = request.downloadHandler.text;
             StoreUserresponse resp =
                 JsonConvert.DeserializeObject<StoreUserresponse>(resultJson);
-            //ƒtƒ@ƒCƒ‹‚ÉID‚Æƒg[ƒNƒ“‚ğ•Û‘¶
+            //ãƒ•ã‚¡ã‚¤ãƒ«ã«IDã¨ãƒˆãƒ¼ã‚¯ãƒ³ã‚’ä¿å­˜
             this.authToken = resp.Token;
             this.userID = resp.UserID;
             SaveUserData();
@@ -70,7 +70,7 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒfƒbƒL“o˜^ˆ—
+    /// ãƒ‡ãƒƒã‚­ç™»éŒ²å‡¦ç†
     /// </summary>
     /// <param name="cardID"></param>
     /// <returns></returns>
@@ -79,12 +79,12 @@ public class NetworkManager : MonoBehaviour
         //Create Object Send for Server
         StoreDeckRequest requestData = new StoreDeckRequest();
 
-        // æ“¾‚µ‚½ID‚ğƒŠƒNƒGƒXƒg‚É“ü‚ê‚é
+        // å–å¾—ã—ãŸIDã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆã«å…¥ã‚Œã‚‹
         requestData.CardID_1 = cardID[0];
         requestData.CardID_2 = cardID[1];
         requestData.CardID_3 = cardID[2];
         requestData.CardID_4 = cardID[3];
-        //ƒT[ƒo‚É‘—M‚·‚éƒIƒuƒWƒFƒNƒg‚ğJAON‚É•ÏŠ·response
+        //ã‚µãƒ¼ãƒã«é€ä¿¡ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’JAONã«å¤‰æ›response
         string json = JsonConvert.SerializeObject(requestData);
         //Send
         UnityWebRequest request = UnityWebRequest.Post(
@@ -94,7 +94,7 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
-    /// í“¬Œ‹‰Ê“o˜^ˆ—
+    /// æˆ¦é—˜çµæœç™»éŒ²å‡¦ç†
     /// </summary>
     /// <param name="judge"></param>
     /// <param name="rival_id"></param>
@@ -104,10 +104,10 @@ public class NetworkManager : MonoBehaviour
         //Create Object Send for Server
         StoreResultResponse requestData = new StoreResultResponse();
 
-        // æ“¾‚µ‚½ID‚ğƒŠƒNƒGƒXƒg‚É“ü‚ê‚é
+        // å–å¾—ã—ãŸIDã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆã«å…¥ã‚Œã‚‹
         requestData.Judge = judge;
         requestData.RivalID = rival_id;
-        //ƒT[ƒo‚É‘—M‚·‚éƒIƒuƒWƒFƒNƒg‚ğJAON‚É•ÏŠ·response
+        //ã‚µãƒ¼ãƒã«é€ä¿¡ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’JAONã«å¤‰æ›response
         string json = JsonConvert.SerializeObject(requestData);
         //Send
         UnityWebRequest request = UnityWebRequest.Post(
@@ -118,7 +118,7 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
-    /// –h‰qƒfƒbƒL“o˜^ˆ—
+    /// é˜²è¡›ãƒ‡ãƒƒã‚­ç™»éŒ²å‡¦ç†
     /// </summary>
     /// <param name="cardID"></param>
     /// <returns></returns>
@@ -126,12 +126,12 @@ public class NetworkManager : MonoBehaviour
     {
         //Create Object Send for Server
         StoreDeckRequest requestData = new StoreDeckRequest();
-        // æ“¾‚µ‚½ID‚ğƒŠƒNƒGƒXƒg‚É“ü‚ê‚é
+        // å–å¾—ã—ãŸIDã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆã«å…¥ã‚Œã‚‹
         requestData.CardID_1 = cardID[0];
         requestData.CardID_2 = cardID[1];
         requestData.CardID_3 = cardID[2];
         requestData.CardID_4 = cardID[3];
-        //ƒT[ƒo‚É‘—M‚·‚éƒIƒuƒWƒFƒNƒg‚ğJAON‚É•ÏŠ·response
+        //ã‚µãƒ¼ãƒã«é€ä¿¡ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’JAONã«å¤‰æ›response
         string json = JsonConvert.SerializeObject(requestData);
         //Send
         UnityWebRequest request = UnityWebRequest.Post(
@@ -141,7 +141,7 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒfƒbƒLŒŸõˆ—
+    /// ãƒ‡ãƒƒã‚­æ¤œç´¢å‡¦ç†
     /// </summary>
     public IEnumerator ShowDeck(Action<DeckResponse[]> result)
     {
@@ -154,11 +154,11 @@ public class NetworkManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success
              && request.responseCode == 200)
         {
-            //’ÊM‚ª¬Œ÷‚µ‚½ê‡A•Ô‚Á‚Ä‚«‚½Json‚ğƒIƒuƒWƒFƒNƒg‚É•ÏŠ·
+            //é€šä¿¡ãŒæˆåŠŸã—ãŸå ´åˆã€è¿”ã£ã¦ããŸJsonã‚’ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¤‰æ›
             string resultJson = request.downloadHandler.text;
             DeckResponse[] response =
                 JsonConvert.DeserializeObject<DeckResponse[]>(resultJson);
-            result?.Invoke(response);//‚±‚±‚ÅŒÄ‚Ño‚µŒ³‚Ìresultˆ—‚ğŒÄ‚Ô
+            result?.Invoke(response);//ã“ã“ã§å‘¼ã³å‡ºã—å…ƒã®resultå‡¦ç†ã‚’å‘¼ã¶
         }
         else
         {
@@ -167,7 +167,7 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
-    /// –h‰qƒfƒbƒLŒŸõˆ—
+    /// é˜²è¡›ãƒ‡ãƒƒã‚­æ¤œç´¢å‡¦ç†
     /// </summary>
     public IEnumerator ShowDefenceDeck(Action<DeckResponse[]> result)
     {
@@ -180,11 +180,11 @@ public class NetworkManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success
              && request.responseCode == 200)
         {
-            //’ÊM‚ª¬Œ÷‚µ‚½ê‡A•Ô‚Á‚Ä‚«‚½Json‚ğƒIƒuƒWƒFƒNƒg‚É•ÏŠ·
+            //é€šä¿¡ãŒæˆåŠŸã—ãŸå ´åˆã€è¿”ã£ã¦ããŸJsonã‚’ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¤‰æ›
             string resultJson = request.downloadHandler.text;
             DeckResponse[] response =
                 JsonConvert.DeserializeObject<DeckResponse[]>(resultJson);
-            result?.Invoke(response);//‚±‚±‚ÅŒÄ‚Ño‚µŒ³‚Ìresultˆ—‚ğŒÄ‚Ô
+            result?.Invoke(response);//ã“ã“ã§å‘¼ã³å‡ºã—å…ƒã®resultå‡¦ç†ã‚’å‘¼ã¶
         }
         else
         {
@@ -193,7 +193,7 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒ†[ƒU“o˜^ˆ—
+    /// ãƒ¦ãƒ¼ã‚¶ç™»éŒ²å‡¦ç†
     /// </summary>
     /// <param name="name"></param>
     /// <param name="result"></param>
@@ -203,7 +203,7 @@ public class NetworkManager : MonoBehaviour
         //Create Object Send for Server
         StoreUserRequest requestData = new StoreUserRequest();
         requestData.Name = randomName(name);
-        //ƒT[ƒo‚É‘—M‚·‚éƒIƒuƒWƒFƒNƒg‚ğJAON‚É•ÏŠ·response
+        //ã‚µãƒ¼ãƒã«é€ä¿¡ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’JAONã«å¤‰æ›response
         string json = JsonConvert.SerializeObject(requestData);
         //Send
         UnityWebRequest request = UnityWebRequest.Post(
@@ -214,22 +214,22 @@ public class NetworkManager : MonoBehaviour
         if(request.result == UnityWebRequest.Result.Success
              && request.responseCode == 200)
         {
-            //’ÊM‚ª¬Œ÷‚µ‚½ê‡A•Ô‚Á‚Ä‚«‚½Json‚ğƒIƒuƒWƒFƒNƒg‚É•ÏŠ·
+            //é€šä¿¡ãŒæˆåŠŸã—ãŸå ´åˆã€è¿”ã£ã¦ããŸJsonã‚’ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¤‰æ›
             string resultJson = request.downloadHandler.text;
             StoreUserresponse response =
                 JsonConvert.DeserializeObject<StoreUserresponse>(resultJson);
-            //ƒtƒ@ƒCƒ‹‚Éƒ†[ƒUID‚ğ•Û‘¶
+            //ãƒ•ã‚¡ã‚¤ãƒ«ã«ãƒ¦ãƒ¼ã‚¶IDã‚’ä¿å­˜
             this.userName = requestData.Name;
             this.userID = response.UserID;
             this.authToken = response.Token;
             SaveUserData();
             isSuccess = true;
         }
-        result?.Invoke(isSuccess);//‚±‚±‚ÅŒÄ‚Ño‚µŒ³‚Ìresultˆ—‚ğŒÄ‚Ô
+        result?.Invoke(isSuccess);//ã“ã“ã§å‘¼ã³å‡ºã—å…ƒã®resultå‡¦ç†ã‚’å‘¼ã¶
     }
 
     /// <summary>
-    /// ƒ†[ƒUî•ñ‚Ì•Û‘¶
+    /// ãƒ¦ãƒ¼ã‚¶æƒ…å ±ã®ä¿å­˜
     /// </summary>
     private void SaveUserData()
     {
@@ -247,7 +247,7 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒ†[ƒUî•ñ‚Ì“Ç‚İ‚İ
+    /// ãƒ¦ãƒ¼ã‚¶æƒ…å ±ã®èª­ã¿è¾¼ã¿
     /// </summary>
     /// <returns></returns>
     public bool LoadUserData()
@@ -270,13 +270,13 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒ‰ƒCƒoƒ‹ƒ‰ƒ“ƒ_ƒ€æ“¾ˆ—
+    /// ãƒ©ã‚¤ãƒãƒ«ãƒ©ãƒ³ãƒ€ãƒ å–å¾—å‡¦ç†
     /// </summary>
     /// <param name="result"></param>
     /// <returns></returns>
     public IEnumerator GetProfile(Action<RivalResponse[]> result)
     {
-        // ƒXƒe[ƒWˆê——æ“¾API‚ğÀs
+        // ã‚¹ãƒ†ãƒ¼ã‚¸ä¸€è¦§å–å¾—APIã‚’å®Ÿè¡Œ
         UnityWebRequest request = UnityWebRequest.Get(
             API_BASE_URL + "battleMode/rivals/get");
         request.SetRequestHeader("Authorization", "Bearer " + authToken);
@@ -286,11 +286,11 @@ public class NetworkManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success
              && request.responseCode == 200)
         {
-            //’ÊM‚ª¬Œ÷‚µ‚½ê‡A•Ô‚Á‚Ä‚«‚½Json‚ğƒIƒuƒWƒFƒNƒg‚É•ÏŠ·
+            //é€šä¿¡ãŒæˆåŠŸã—ãŸå ´åˆã€è¿”ã£ã¦ããŸJsonã‚’ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¤‰æ›
             string resultJson = request.downloadHandler.text;
             RivalResponse[] response =
                 JsonConvert.DeserializeObject<RivalResponse[]>(resultJson);
-            result?.Invoke(response);//‚±‚±‚ÅŒÄ‚Ño‚µŒ³‚Ìresultˆ—‚ğŒÄ‚Ô
+            result?.Invoke(response);//ã“ã“ã§å‘¼ã³å‡ºã—å…ƒã®resultå‡¦ç†ã‚’å‘¼ã¶
         }
         else
         {
@@ -299,13 +299,13 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒXƒe[ƒWˆê——æ“¾ˆ—
+    /// ã‚¹ãƒ†ãƒ¼ã‚¸ä¸€è¦§å–å¾—å‡¦ç†
     /// </summary>
     /// <param name="result"></param>
     /// <returns></returns>
     public IEnumerator GetStage(Action<StageResponse[]> result)
     {
-        // ƒXƒe[ƒWˆê——æ“¾API‚ğÀs
+        // ã‚¹ãƒ†ãƒ¼ã‚¸ä¸€è¦§å–å¾—APIã‚’å®Ÿè¡Œ
         UnityWebRequest request = UnityWebRequest.Get(
             API_BASE_URL + "stages");
 
@@ -314,11 +314,11 @@ public class NetworkManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success
              && request.responseCode == 200)
         {
-            //’ÊM‚ª¬Œ÷‚µ‚½ê‡A•Ô‚Á‚Ä‚«‚½Json‚ğƒIƒuƒWƒFƒNƒg‚É•ÏŠ·
+            //é€šä¿¡ãŒæˆåŠŸã—ãŸå ´åˆã€è¿”ã£ã¦ããŸJsonã‚’ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¤‰æ›
             string resultJson = request.downloadHandler.text;
             StageResponse[] response =
                 JsonConvert.DeserializeObject<StageResponse[]>(resultJson);
-            result?.Invoke(response);//‚±‚±‚ÅŒÄ‚Ño‚µŒ³‚Ìresultˆ—‚ğŒÄ‚Ô
+            result?.Invoke(response);//ã“ã“ã§å‘¼ã³å‡ºã—å…ƒã®resultå‡¦ç†ã‚’å‘¼ã¶
         }
         else
         {
@@ -327,13 +327,13 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ©•ª‚ÌƒvƒƒtƒB[ƒ‹æ“¾ˆ—
+    /// è‡ªåˆ†ã®ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«å–å¾—å‡¦ç†
     /// </summary>
     /// <param name="result"></param>
     /// <returns></returns>
     public IEnumerator GetMyProfile(Action<ProfileResponse[]> result)
     {
-        // ƒvƒƒtƒB[ƒ‹æ“¾API‚ğÀs
+        // ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«å–å¾—APIã‚’å®Ÿè¡Œ
         UnityWebRequest request = UnityWebRequest.Get(
             API_BASE_URL + "battleMode/show");
             request.SetRequestHeader("Authorization", "Bearer " + authToken);
@@ -342,12 +342,12 @@ public class NetworkManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success
              && request.responseCode == 200)
         {
-            //’ÊM‚ª¬Œ÷‚µ‚½ê‡A•Ô‚Á‚Ä‚«‚½Json‚ğƒIƒuƒWƒFƒNƒg‚É•ÏŠ·
+            //é€šä¿¡ãŒæˆåŠŸã—ãŸå ´åˆã€è¿”ã£ã¦ããŸJsonã‚’ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¤‰æ›
             string resultJson = request.downloadHandler.text;
             ProfileResponse[] response =
                 JsonConvert.DeserializeObject<ProfileResponse[]>(resultJson);
 
-            result?.Invoke(response);//‚±‚±‚ÅŒÄ‚Ño‚µŒ³‚Ìresultˆ—‚ğŒÄ‚Ô
+            result?.Invoke(response);//ã“ã“ã§å‘¼ã³å‡ºã—å…ƒã®resultå‡¦ç†ã‚’å‘¼ã¶
         }
         else
         {
@@ -356,13 +356,13 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ©•ª‚ÌƒvƒƒtƒB[ƒ‹æ“¾ˆ—
+    /// è‡ªåˆ†ã®ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«å–å¾—å‡¦ç†
     /// </summary>
     /// <param name="result"></param>
     /// <returns></returns>
     public IEnumerator GetMultiProfile(Action<ProfileResponse[]> result)
     {
-        // ƒvƒƒtƒB[ƒ‹æ“¾API‚ğÀs
+        // ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«å–å¾—APIã‚’å®Ÿè¡Œ
         UnityWebRequest request = UnityWebRequest.Get(
             API_BASE_URL + "battleMode/multiShow?user_ids[]=" + RivalData.rivalIDList[0]
             + "&user_ids[]=" + RivalData.rivalIDList[1]
@@ -372,12 +372,12 @@ public class NetworkManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success
              && request.responseCode == 200)
         {
-            //’ÊM‚ª¬Œ÷‚µ‚½ê‡A•Ô‚Á‚Ä‚«‚½Json‚ğƒIƒuƒWƒFƒNƒg‚É•ÏŠ·
+            //é€šä¿¡ãŒæˆåŠŸã—ãŸå ´åˆã€è¿”ã£ã¦ããŸJsonã‚’ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¤‰æ›
             string resultJson = request.downloadHandler.text;
             ProfileResponse[] response =
                 JsonConvert.DeserializeObject<ProfileResponse[]>(resultJson);
 
-            result?.Invoke(response);//‚±‚±‚ÅŒÄ‚Ño‚µŒ³‚Ìresultˆ—‚ğŒÄ‚Ô
+            result?.Invoke(response);//ã“ã“ã§å‘¼ã³å‡ºã—å…ƒã®resultå‡¦ç†ã‚’å‘¼ã¶
         }
         else
         {
@@ -386,7 +386,7 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒoƒgƒ‹ƒ‚[ƒhƒvƒƒtƒB[ƒ‹“o˜^ˆ—
+    /// ãƒãƒˆãƒ«ãƒ¢ãƒ¼ãƒ‰ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«ç™»éŒ²å‡¦ç†
     /// </summary>
     /// <param name="cardID"></param>
     /// <returns></returns>
@@ -395,7 +395,7 @@ public class NetworkManager : MonoBehaviour
         //Create Object Send for Server
         StoreProfileRequest requestData = new StoreProfileRequest();
 
-        //ƒT[ƒo‚É‘—M‚·‚éƒIƒuƒWƒFƒNƒg‚ğJAON‚É•ÏŠ·response
+        //ã‚µãƒ¼ãƒã«é€ä¿¡ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’JAONã«å¤‰æ›response
         string json = JsonConvert.SerializeObject(requestData);
         //Send
         UnityWebRequest request = UnityWebRequest.Post(
@@ -405,7 +405,7 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒoƒgƒ‹ƒ‚[ƒhƒvƒƒtƒB[ƒ‹XVˆ—
+    /// ãƒãƒˆãƒ«ãƒ¢ãƒ¼ãƒ‰ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«æ›´æ–°å‡¦ç†
     /// </summary>
     /// <param name="cardID"></param>
     /// <returns></returns>
@@ -414,11 +414,11 @@ public class NetworkManager : MonoBehaviour
         //Create Object Send for Server
         StoreProfileRequest requestData = new StoreProfileRequest();
 
-        // æ“¾‚µ‚½ID‚ğƒŠƒNƒGƒXƒg‚É“ü‚ê‚é
+        // å–å¾—ã—ãŸIDã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆã«å…¥ã‚Œã‚‹
         requestData.Name = name;
         requestData.IconName = iconName;
 
-        //ƒT[ƒo‚É‘—M‚·‚éƒIƒuƒWƒFƒNƒg‚ğJAON‚É•ÏŠ·response
+        //ã‚µãƒ¼ãƒã«é€ä¿¡ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’JAONã«å¤‰æ›response
         string json = JsonConvert.SerializeObject(requestData);
         //Send
         UnityWebRequest request = UnityWebRequest.Post(
@@ -428,13 +428,13 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
-    /// g—p‰Â”\ƒJ[ƒhˆê——æ“¾
+    /// ä½¿ç”¨å¯èƒ½ã‚«ãƒ¼ãƒ‰ä¸€è¦§å–å¾—
     /// </summary>
     /// <param name="result"></param>
     /// <returns></returns>
     public IEnumerator GetUsableCard(Action<UsableCardResponse[]> result)
     {
-        // ƒXƒe[ƒWˆê——æ“¾API‚ğÀs
+        // ã‚¹ãƒ†ãƒ¼ã‚¸ä¸€è¦§å–å¾—APIã‚’å®Ÿè¡Œ
         UnityWebRequest request = UnityWebRequest.Get(
             API_BASE_URL + "battleMode/usableCard");
 
@@ -443,11 +443,11 @@ public class NetworkManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success
              && request.responseCode == 200)
         {
-            //’ÊM‚ª¬Œ÷‚µ‚½ê‡A•Ô‚Á‚Ä‚«‚½Json‚ğƒIƒuƒWƒFƒNƒg‚É•ÏŠ·
+            //é€šä¿¡ãŒæˆåŠŸã—ãŸå ´åˆã€è¿”ã£ã¦ããŸJsonã‚’ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¤‰æ›
             string resultJson = request.downloadHandler.text;
             UsableCardResponse[] response =
                 JsonConvert.DeserializeObject<UsableCardResponse[]>(resultJson);
-            result?.Invoke(response);//‚±‚±‚ÅŒÄ‚Ño‚µŒ³‚Ìresultˆ—‚ğŒÄ‚Ô
+            result?.Invoke(response);//ã“ã“ã§å‘¼ã³å‡ºã—å…ƒã®resultå‡¦ç†ã‚’å‘¼ã¶
         }
         else
         {
@@ -456,13 +456,13 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// </summary>
-    /// ƒpƒbƒVƒuƒAƒCƒeƒ€ˆê——æ“¾
+    /// ãƒ‘ãƒƒã‚·ãƒ–ã‚¢ã‚¤ãƒ†ãƒ ä¸€è¦§å–å¾—
     /// </summary>
     /// <param name="result"></param>
     /// <returns></returns>
     public IEnumerator GetItem(Action<ItemResponse[]> result)
     {
-        // ƒXƒe[ƒWˆê——æ“¾API‚ğÀs
+        // ã‚¹ãƒ†ãƒ¼ã‚¸ä¸€è¦§å–å¾—APIã‚’å®Ÿè¡Œ
         UnityWebRequest request = UnityWebRequest.Get(
             API_BASE_URL + "items");
 
@@ -471,11 +471,11 @@ public class NetworkManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success
              && request.responseCode == 200)
         {
-            //’ÊM‚ª¬Œ÷‚µ‚½ê‡A•Ô‚Á‚Ä‚«‚½Json‚ğƒIƒuƒWƒFƒNƒg‚É•ÏŠ·
+            //é€šä¿¡ãŒæˆåŠŸã—ãŸå ´åˆã€è¿”ã£ã¦ããŸJsonã‚’ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¤‰æ›
             string resultJson = request.downloadHandler.text;
             ItemResponse[] response =
                 JsonConvert.DeserializeObject<ItemResponse[]>(resultJson);
-            result?.Invoke(response);//‚±‚±‚ÅŒÄ‚Ño‚µŒ³‚Ìresultˆ—‚ğŒÄ‚Ô
+            result?.Invoke(response);//ã“ã“ã§å‘¼ã³å‡ºã—å…ƒã®resultå‡¦ç†ã‚’å‘¼ã¶
         }
         else
         {
@@ -484,7 +484,7 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒXƒe[ƒWƒNƒŠƒAƒvƒƒZƒX
+    /// ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒªã‚¢ãƒ—ãƒ­ã‚»ã‚¹
     /// </summary>
     /// <param name="stageID"></param>
     public void ClearStage(int stageID)
@@ -505,12 +505,12 @@ public class NetworkManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒ‰ƒ“ƒ_ƒ€ƒl[ƒ€ƒRƒ“ƒo[ƒgˆ—
+    /// ãƒ©ãƒ³ãƒ€ãƒ ãƒãƒ¼ãƒ ã‚³ãƒ³ãƒãƒ¼ãƒˆå‡¦ç†
     /// </summary>
     public string randomName(string name)
     {
         System.Random rand = new System.Random();
-        // ƒtƒ@ƒXƒgƒl[ƒ€’è‹`
+        // ãƒ•ã‚¡ã‚¹ãƒˆãƒãƒ¼ãƒ å®šç¾©
         string[] firstName = new string[]{
             "Nice","Abnormal","Delicious","Difficulty","Mr",
             "Mrs","Master","Huge","Tiny","Clever",
@@ -519,7 +519,7 @@ public class NetworkManager : MonoBehaviour
             "Oriental","Muscly","Mudly","More","Strong",
             "Shiny","Sparkle","Legal","Hardest","Dancing"
         };
-        // ƒZƒJƒ“ƒhƒl[ƒ€’è‹`
+        // ã‚»ã‚«ãƒ³ãƒ‰ãƒãƒ¼ãƒ å®šç¾©
         string[] secondtName = new string[]{
             "Cake","Rock","Slime","Clover","Animal",
             "Fish","Earth","Throat","City","Dwarf",
@@ -528,11 +528,11 @@ public class NetworkManager : MonoBehaviour
             "Thief","Bird","Cat","Water","CowBoy",
             "Skelton","Boots","Game","Card","Data"
         };
-        // 1`30‚Ü‚Å‚Ì—”‚ğ‘ã“ü
+        // 1ï½30ã¾ã§ã®ä¹±æ•°ã‚’ä»£å…¥
         int num = rand.Next(1, 30);
         int num2 = rand.Next(1, 30);
 
-        // Še—”‚É‰‚¶‚½–¼‘O‚ğ‘ã“ü
+        // å„ä¹±æ•°ã«å¿œã˜ãŸåå‰ã‚’ä»£å…¥
         return name = firstName[num] + secondtName[num2];
     }
 }

@@ -4,25 +4,25 @@ using Newtonsoft.Json;
 public class ProfileResponse
 {
     /// <summary>
-    /// ƒ†[ƒUID‚ÌƒvƒƒpƒeƒB
+    /// ãƒ¦ãƒ¼ã‚¶IDã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
     /// </summary>
     [JsonProperty("user_id")]
     public int UserID { get; set; }
 
     /// <summary>
-    /// ƒ|ƒCƒ“ƒgƒvƒƒpƒeƒB
+    /// ãƒã‚¤ãƒ³ãƒˆãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
     /// </summary>
     [JsonProperty("point")]
     public int Point { get; set; }
 
     /// <summary>
-    /// ƒfƒBƒXƒvƒŒƒCƒl[ƒ€‚ÌƒvƒƒpƒeƒB
+    /// ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒãƒ¼ãƒ ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
     /// </summary>
     [JsonProperty("name")]
     public string Name { get; set; }
 
     /// <summary>
-    /// ƒAƒCƒRƒ“–¼‚ÌƒvƒƒpƒeƒB
+    /// ã‚¢ã‚¤ã‚³ãƒ³åã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
     /// </summary>
     [JsonProperty("icon_name")]
     public string IconName { get; set; }

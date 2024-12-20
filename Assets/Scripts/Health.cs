@@ -1,6 +1,6 @@
 /*
  * HealthScript
- * Creator:¼‰YW‘¾ Update:2024/09/02
+ * Creator:è¥¿æµ¦æ™ƒå¤ª Update:2024/09/02
 */
 using System.Collections;
 using System.Collections.Generic;

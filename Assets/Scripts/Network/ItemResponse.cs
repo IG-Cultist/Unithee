@@ -3,31 +3,31 @@ using Newtonsoft.Json;
 public class ItemResponse 
 {
     /// <summary>
-    /// ƒAƒCƒeƒ€ID‚ÌƒvƒƒpƒeƒB
+    /// ã‚¢ã‚¤ãƒ†ãƒ IDã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
     /// </summary>
     [JsonProperty("id")]
     public int ItemID { get; set; }
 
     /// <summary>
-    /// ƒAƒCƒeƒ€–¼‚ÌƒvƒƒpƒeƒB
+    /// ã‚¢ã‚¤ãƒ†ãƒ åã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
     /// </summary>
     [JsonProperty("name")]
     public string Name { get; set; }
 
     /// <summary>
-    /// ƒAƒCƒeƒ€Œø‰Ê’l‚ÌƒvƒƒpƒeƒB
+    /// ã‚¢ã‚¤ãƒ†ãƒ åŠ¹æžœå€¤ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
     /// </summary>
     [JsonProperty("effect")]
     public int Effect { get; set; }
 
     /// <summary>
-    /// “K‰žƒAƒCƒeƒ€–¼‚ÌƒvƒƒpƒeƒB
+    /// é©å¿œã‚¢ã‚¤ãƒ†ãƒ åã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
     /// </summary>
     [JsonProperty("bestItem_name")]
     public string BestItemName { get; set; }
 
     /// <summary>
-    /// ƒAƒCƒeƒ€à–¾‚ÌƒvƒƒpƒeƒB
+    /// ã‚¢ã‚¤ãƒ†ãƒ èª¬æ˜Žã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
     /// </summary>
     [JsonProperty("explain")]
     public string Explain { get; set; }

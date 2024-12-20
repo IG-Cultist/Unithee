@@ -3,19 +3,19 @@ using Newtonsoft.Json;
 public class StageResponse
 {
     /// <summary>
-    /// ƒXƒe[ƒWID‚ÌƒvƒƒpƒeƒB
+    /// ã‚¹ãƒ†ãƒ¼ã‚¸IDã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
     /// </summary>
     [JsonProperty("id")]
     public int StageID { get; set; }
 
     /// <summary>
-    /// ƒXƒe[ƒWƒNƒŠƒA”»’è‚ÌƒvƒƒpƒeƒB
+    /// ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒªã‚¢åˆ¤å®šã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
     /// </summary>
     [JsonProperty("clear")]
     public int Clear { get; set; }
 
     /// <summary>
-    /// ƒXƒe[ƒWŠ®‘SƒNƒŠƒA”»’è‚ÌƒvƒƒpƒeƒB
+    /// ã‚¹ãƒ†ãƒ¼ã‚¸å®Œå…¨ã‚¯ãƒªã‚¢åˆ¤å®šã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
     /// </summary>
     [JsonProperty("perfect")]
     public int Perfect { get; set; }

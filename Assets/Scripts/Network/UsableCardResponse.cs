@@ -3,25 +3,25 @@ using Newtonsoft.Json;
 public class UsableCardResponse
 {
     /// <summary>
-    /// 使用可能カードIDのプロパティ
+    /// 菴ｿ逕ｨ蜿ｯ閭ｽ繧ｫ繝ｼ繝迂D縺ｮ繝励Ο繝代ユ繧｣
     /// </summary>
     [JsonProperty("id")]
     public int CardID { get; set; }
 
     /// <summary>
-    /// 使用可能カード名のプロパティ
+    /// 菴ｿ逕ｨ蜿ｯ閭ｽ繧ｫ繝ｼ繝牙錐縺ｮ繝励Ο繝代ユ繧｣
     /// </summary>
     [JsonProperty("name")]
     public string Name { get; set; }
 
     /// <summary>
-    /// 使用可能カード枚数のプロパティ
+    /// 菴ｿ逕ｨ蜿ｯ閭ｽ繧ｫ繝ｼ繝画椢謨ｰ縺ｮ繝励Ο繝代ユ繧｣
     /// </summary>
     [JsonProperty("stack")]
     public string Stack { get; set; }
 
     /// <summary>
-    /// 使用可能カードの種別のプロパティ
+    /// 菴ｿ逕ｨ蜿ｯ閭ｽ繧ｫ繝ｼ繝峨�ｮ遞ｮ蛻･縺ｮ繝励Ο繝代ユ繧｣
     /// </summary>
     [JsonProperty("type")]
     public string Type { get; set; }

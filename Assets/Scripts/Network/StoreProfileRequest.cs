@@ -3,13 +3,13 @@ using Newtonsoft.Json;
 public class StoreProfileRequest
 {
     /// <summary>
-    /// ƒfƒBƒXƒvƒŒƒCƒl[ƒ€‚ÌƒvƒƒpƒeƒB
+    /// ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ãƒãƒ¼ãƒ ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
     /// </summary>
     [JsonProperty("name")]
     public string Name { get; set; }
 
     /// <summary>
-    /// ƒAƒCƒRƒ“–¼‚ÌƒvƒƒpƒeƒB
+    /// ã‚¢ã‚¤ã‚³ãƒ³åã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
     /// </summary>
     [JsonProperty("icon_name")]
     public string IconName { get; set; }
